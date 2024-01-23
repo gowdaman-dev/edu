@@ -5,11 +5,14 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { useSession } from 'next-auth/react';
 import LoaderPage from "./loader/LoadingPage";
+import UserInfo from "./UserInfo";
 function LoginForm() {
+  const info = UserInfo();
   const { data: session } = useSession();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
+  const [userId, setUserId] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const handleExist = async (e) => {
@@ -25,6 +28,8 @@ function LoginForm() {
       })
       const { user } = await resUserExists.json()
       if (user) {
+        const {_id} = user;
+        setUserId(_id)
         setexist(true)
         setError('')
         setLoading(false);
@@ -50,7 +55,8 @@ function LoginForm() {
         return
       }
       setLoading(false);
-      router.replace('dashboard')
+      router.replace(`/dashboard/${userId}`)
+      console.log(_id);
     } catch (error) {
       console.log(error)
     }
@@ -62,7 +68,8 @@ function LoginForm() {
         loading ? <LoaderPage /> : ''
       }
       {
-        (session?.user?.email) ? router.replace('/dashboard') :
+        
+        (session?.user?.email) ? router.replace(`/dashboard/${userId}`) :
           <div className="flex items-center justify-center p-4 w-[100vw] h-[100vh] overflow-x-hidden bg-[#F3FFF8]">
             <div className="h-screen w-screen absolute top-0 left-0 z-0 overflow-hidden">
               <div className="absolute md:-top-[150px] md:-left-[150px] -top-[50px] -left-[50px] h-fit w-fit opacity-[.5]">
