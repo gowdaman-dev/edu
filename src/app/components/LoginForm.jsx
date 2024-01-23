@@ -52,7 +52,7 @@ function LoginForm() {
       <div className="w-full h-full  flex ">
         <div className="w-[50%] h-screen flex flex-col items-center justify-center">
           <div className="flex flex-col items-center">
-            <Image src={'/logos/logo.png'} height={180} width={250} />
+            <Image src={'/logos/logo.png'} height={180} width={250} alt="logo" />
             <h2 className="text-3xl font-light py-2 text-[#0B1770]">Hello!</h2>
             <p className="text-gray-400 font-light">Please login to continue to <span className="text-[#0B1770]">Education</span></p>
           </div>
@@ -64,7 +64,7 @@ function LoginForm() {
             </div>
             <form onSubmit={exist ? handleSubmit : handleExist} className="w-2/3 flex flex-col gap-4" action="" method="post">
               <div className="cursor-pointer bg-[var(--web-primary-color)] rounded-lg flex justify-between items-center w-full px-4 py-2">
-                <img src="/logos/google.png" alt="google icon" className="p-1 bg-white rounded-full" />
+                <Image src={"/logos/google.png"} height={30} width={30} alt="google icon" className="p-1 bg-white rounded-full" ></Image>
                 <h1 onClick={() => signIn('google')} className="w-full text-center text-white">SignIn With Google</h1>
               </div>
               <p className="text-gray-400 text-center">Or login using email:</p>
