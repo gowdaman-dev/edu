@@ -28,7 +28,7 @@ function LoginForm() {
         setexist(true)
         setError('')
         setLoading(false);
-        return 
+        return
       } else {
         setError("Email does'nt exist")
         setLoading(false);
@@ -58,26 +58,41 @@ function LoginForm() {
   const [exist, setexist] = useState(false)
   return (
     <>
-    {
-      loading?<LoaderPage/>:''
-    }
+      {
+        loading ? <LoaderPage /> : ''
+      }
       {
         (session?.user?.email) ? router.replace('/dashboard') :
-          <div className="flex items-center justify-center p-4 w-screen h-screen bg-[#F3FFF8]">
-            <div className="w-full h-full  flex ">
-              <div className="w-[50%] h-screen flex flex-col items-center justify-center">
+          <div className="flex items-center justify-center p-4 w-[100vw] h-[100vh] overflow-x-hidden bg-[#F3FFF8]">
+            <div className="h-screen w-screen absolute top-0 left-0 z-0 overflow-hidden">
+              <div className="absolute md:-top-[150px] md:-left-[150px] -top-[50px] -left-[50px] h-fit w-fit opacity-[.5]">
+                <div className="md:h-[300px] h-[150px] md:w-[300px] w-[150px] rounded-full bg-gradient-to-tr from-[--web-primary-color] to-[#F3FFF8] absolute top-0 md:left-[100px] left-[50px]"></div>
+                <div className="md:h-[300px] h-[150px] md:w-[300px] w-[150px] rounded-full bg-gradient-to-tr from-[--web-primary-color] to-[#F3FFF8] absolute md:top-[100px] top-[50px] left-0"></div>
+              </div>
+              <div className="absolute md:-bottom-[150px] md:-right-[150px] -bottom-[60px] -right-[60px] h-fit w-fit opacity-[.5] ">
+                <div className="md:h-[300px] h-[150px] md:w-[300px] w-[150px] rounded-full bg-gradient-to-tr from-[--web-primary-color] to-[#F3FFF8] absolute bottom-0 md:right-[100px] right-[50px]"></div>
+                <div className="md:h-[300px] h-[150px] md:w-[300px] w-[150px] rounded-full bg-gradient-to-tr from-[--web-primary-color] to-[#F3FFF8] absolute md:bottom-[100px] bottom-[50px] right-0"></div>
+              </div>
+            </div>
+            <div className="absolute top-0 left-0 z-[1] w-full h-full flex items-center justify-center ">
+              <div className="w-[50%] h-screen hidden lg:flex flex-col items-center justify-center">
                 <div className="flex flex-col items-center">
                   <Image src={'/logos/logo.png'} height={180} width={250} alt="logo" />
                   <h2 className="text-3xl font-light py-2 text-[#0B1770]">Hello!</h2>
                   <p className="text-gray-400 font-light">Please login to continue to <span className="text-[#0B1770]">Education</span></p>
                 </div>
               </div>
-              <div className="h-full w-[50%] grid place-items-center">
-                <div className="h-fit w-[500px] rounded-lg border-2 border-[var(--web-primary-color)] px-4 py-10 grid place-items-center">
+              <div className="relative z-10 h-full lg:w-[50%] w-full md:px-0 px-4 grid place-items-center">
+                <div className="h-fit lg:w-[500px] w-full rounded-lg lg:border-2 border-none border-[var(--web-primary-color)] lg:px-4 px-2 py-10 grid place-items-center">
                   <div className="py-6">
-                    <h1 className="text-[var(--web-primary-color)]">Login</h1>
+                    <h1 className="text-[var(--web-primary-color)] lg:flex hidden text-2xl">Login</h1>
+                    <div className="lg:hidden flex flex-col items-center">
+                      <Image src={'/logos/logo.png'} height={100} width={100} alt="logo" />
+                      <h2 className="text-3xl font-light py-2 text-[#0B1770]">Hello!</h2>
+                      <p className="text-gray-400 font-light">Please login to continue to <span className="text-[#0B1770]">Education</span></p>
+                    </div>
                   </div>
-                  <form onSubmit={exist ? handleSubmit : handleExist} className="w-2/3 flex flex-col gap-4" action="" method="post">
+                  <form onSubmit={exist ? handleSubmit : handleExist} className="md:w-2/3  w-full flex flex-col gap-4" action="" method="post">
                     <div className="cursor-pointer bg-[var(--web-primary-color)] rounded-lg flex justify-between items-center w-full px-4 py-2">
                       <Image src={"/logos/google.png"} height={30} width={30} alt="google icon" className="p-1 bg-white rounded-full" ></Image>
                       <h1 onClick={() => signIn('google')} className="w-full text-center text-white">SignIn With Google</h1>
