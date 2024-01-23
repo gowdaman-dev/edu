@@ -45,7 +45,7 @@ function LoginForm() {
               {
                 !exist && (
                   <>
-                    <div className="bg-[var(--web-primary-color)] rounded-lg flex justify-between items-center w-full px-4 py-2">
+                    <div className="cursor-pointer bg-[var(--web-primary-color)] rounded-lg flex justify-between items-center w-full px-4 py-2">
                       <img src="/logos/google.png" alt="google icon" className="p-1 bg-white rounded-full" srcset="" />
                       <h1 onClick={()=>signIn('google')} className="w-full text-center text-white">SignIn With Google</h1>
                     </div>
