@@ -1,10 +1,21 @@
-import React from 'react'
+'use client'
+import React, { useEffect } from 'react'
 import LoginForm from '../components/LoginForm'
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 function page() {
+  const { data: session } = useSession();
+  const router = useRouter();
   return (
-    <div>
-      <LoginForm />
-    </div>
+    <>
+      {
+        (session?.user?.email)?router.replace('/dashboard'): (
+          <div>
+            <LoginForm />
+          </div>
+        )
+      }
+    </>
   )
 }
 

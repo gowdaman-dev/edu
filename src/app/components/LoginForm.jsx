@@ -1,23 +1,44 @@
 "use client";
 import React, { useState } from "react";
-import Link from "next/link";
 import { signIn } from "next-auth/react"
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-
 function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const router = useRouter();
+  const handleExist = async (e) => {
+    e.preventDefault();
+    try {
+      const resUserExists = await fetch("/api/userExists", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ email })
+      })
+      const { user } = await resUserExists.json()
+      if (user) {
+        setexist(true)
+        setError('')
+        return;
+      } else {
+        setError("Email does'nt exist")
+      }
+    } catch (error) {
+      console.log("error :", error);
+    }
+  }
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     try {
       const res = await signIn('credentials', {
         email, password, redirect: false
       });
       if (res.error) {
-        setError("Invalid Email or Password")
+        setError("Invalid Password")
         return;
       }
       router.replace('dashboard')
@@ -41,23 +62,22 @@ function LoginForm() {
             <div className="py-6">
               <h1 className="text-[var(--web-primary-color)]">Login</h1>
             </div>
-            <form className="w-2/3 flex flex-col gap-4" action="" method="post">
-              {
-                !exist && (
-                  <>
-                    <div className="cursor-pointer bg-[var(--web-primary-color)] rounded-lg flex justify-between items-center w-full px-4 py-2">
-                      <img src="/logos/google.png" alt="google icon" className="p-1 bg-white rounded-full" srcset="" />
-                      <h1 onClick={()=>signIn('google')} className="w-full text-center text-white">SignIn With Google</h1>
-                    </div>
-                    <p className="text-gray-400 text-center">Or login using email:</p>
-                  </>
-                )
-              }
-              <div className="flex flex-col gap-4">
+            <form onSubmit={exist ? handleSubmit : handleExist} className="w-2/3 flex flex-col gap-4" action="" method="post">
+              <div className="cursor-pointer bg-[var(--web-primary-color)] rounded-lg flex justify-between items-center w-full px-4 py-2">
+                <img src="/logos/google.png" alt="google icon" className="p-1 bg-white rounded-full" />
+                <h1 onClick={() => signIn('google')} className="w-full text-center text-white">SignIn With Google</h1>
+              </div>
+              <p className="text-gray-400 text-center">Or login using email:</p>
+              <div className="flex flex-col gap-3">
                 {
                   !exist && (
                     <>
-                      <input type="email" placeholder="Your Email" />
+                      <input onChange={(e) => setEmail(e.target.value)} className="px-2 rounded-lg border border-[--web-primary-color] py-2 outline-none text-gray-700" type="email" placeholder="Your Email" />
+                      {
+                        error && (
+                          <p className="text-[12px] px-2 font-light text-red-400">{error}</p>
+                        )
+                      }
                       <div className="flex gap-2">
                         <input type="checkbox" name="remember" id="remember" />
                         <label htmlFor="remember">Remember Me</label>
@@ -68,11 +88,28 @@ function LoginForm() {
                 }
                 {
                   exist && (
-                    <input type="email" placeholder="Your Email" />
+                    <>
+                      <input onChange={(e) => setPassword(e.target.value)} className="px-2 rounded-lg border border-[--web-primary-color] py-2 outline-none text-gray-700"  type="password" placeholder="Your Password" />
+                      {
+                        error && (
+                          <p className="text-[12px] px-2 font-light text-red-400">{error}</p>
+                        )
+                      }
+                    </>
                   )
                 }
               </div>
+              <div className="">
+                {
+                  !exist ? <>
+                    <button className="w-full text-center rounded-lg bg-[--web-primary-color] text-white py-2" type="submit">Next</button>
+                  </> : <>
+                    <button className="w-full text-center rounded-lg bg-[--web-primary-color] text-white py-2" type="submit">SignIn</button>
+                  </>
+                }
+              </div>
             </form>
+            <p className="text-gray-500 py-2 font-light text-[12px]">If you not have account! contact your <span className="text-[--web-primary-color]">Educator</span></p>
           </div>
         </div>
       </div>
