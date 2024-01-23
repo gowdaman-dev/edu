@@ -4,14 +4,17 @@ import { signIn } from "next-auth/react"
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { useSession } from 'next-auth/react';
+import LoaderPage from "./loader/LoadingPage";
 function LoginForm() {
   const { data: session } = useSession();
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const handleExist = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const resUserExists = await fetch("/api/userExists", {
         method: "POST",
@@ -24,9 +27,11 @@ function LoginForm() {
       if (user) {
         setexist(true)
         setError('')
-        return;
+        setLoading(false);
+        return 
       } else {
         setError("Email does'nt exist")
+        setLoading(false);
       }
     } catch (error) {
       console.log("error :", error);
@@ -34,15 +39,17 @@ function LoginForm() {
   }
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setLoading(true)
     try {
       const res = await signIn('credentials', {
         email, password, redirect: false
       });
       if (res.error) {
         setError("Invalid Password")
-        return;
+        setLoading(false);
+        return
       }
+      setLoading(false);
       router.replace('dashboard')
     } catch (error) {
       console.log(error)
@@ -51,6 +58,9 @@ function LoginForm() {
   const [exist, setexist] = useState(false)
   return (
     <>
+    {
+      loading?<LoaderPage/>:''
+    }
       {
         (session?.user?.email) ? router.replace('/dashboard') :
           <div className="flex items-center justify-center p-4 w-screen h-screen bg-[#F3FFF8]">
