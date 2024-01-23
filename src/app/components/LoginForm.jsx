@@ -25,7 +25,7 @@ function LoginForm() {
       console.log(error)
     }
   }
-  const [exist, setexist] = useState(true)
+  const [exist, setexist] = useState(false)
   return (
     <div className="flex items-center justify-center p-4 w-screen h-screen bg-[#F3FFF8]">
       <div className="w-full h-full  flex ">
@@ -44,13 +44,15 @@ function LoginForm() {
             <form className="w-2/3 flex flex-col gap-4" action="" method="post">
               {
                 !exist && (
-                  <div className="bg-[var(--web-primary-color)] rounded-lg flex justify-between items-center w-full px-4 py-2">
-                    <img src="/logos/google.png" alt="google icon" className="p-1 bg-white rounded-full" srcset="" />
-                    <h1 className="w-full text-center text-white">SignIn With Google</h1>
-                  </div>
+                  <>
+                    <div className="bg-[var(--web-primary-color)] rounded-lg flex justify-between items-center w-full px-4 py-2">
+                      <img src="/logos/google.png" alt="google icon" className="p-1 bg-white rounded-full" srcset="" />
+                      <h1 onClick={()=>signIn('google')} className="w-full text-center text-white">SignIn With Google</h1>
+                    </div>
+                    <p className="text-gray-400 text-center">Or login using email:</p>
+                  </>
                 )
               }
-              <p className="text-gray-400 text-center">Or login using email:</p>
               <div className="flex flex-col gap-4">
                 {
                   !exist && (
