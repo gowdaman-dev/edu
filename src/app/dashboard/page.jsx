@@ -1,7 +1,9 @@
 import React from 'react'
-import UserInfo from '../components/UserInfo'
+
 function page() {
-  return (<UserInfo/>)
+  return (
+    <div>page</div>
+  )
 }
 
 export default page

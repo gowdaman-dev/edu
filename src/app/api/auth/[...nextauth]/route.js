@@ -6,10 +6,6 @@ import User from "@/app/models/user";
 import bcrypt from 'bcryptjs'
 const authOptions = {
     providers: [
-        GoogleProvider({
-            clientId: process.env.GOOGLE_CLIENT_ID,
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET
-        }),
         CredentialsProvider({
             name: "credentials",
             credentials: {},
