@@ -12,9 +12,9 @@ const page = () => {
     <div  className=" mt-16" >
       <p className="text-center px-10 pb-8 text-lg">
         Note: this form is designed for EDUCATORS only. If you are a STUDENT,
-        please{" "}
-        <Link className="text-[--web-primary-color]" href={"recommend"}>
-          recommend&nbsp;it to&nbsp;your&nbsp;school
+        
+        please  <Link className="text-[--web-primary-color]" href={"recommend"}>
+           recommend it to your school
         </Link> instead.
         
       </p>
