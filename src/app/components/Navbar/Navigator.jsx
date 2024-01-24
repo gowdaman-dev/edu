@@ -14,6 +14,13 @@ function Navigator({ children }) {
                     <InlineIcon className='text-gray-600' icon="tdesign:search" height="25" width="25" />
                     <input type="text" className='w-[300px] bg-transparent outline-none px-2 py-1 text-gray-700' placeholder='Search' />
                 </div>
+                <div className="flex">
+                    <select className='' name="" id="">
+                        <option value="1">Grade 1 </option>
+                        <option value="add"> Add Grade </option>
+                        <p>V</p>
+                    </select>
+                </div>
             </div>
         </div>
     )

@@ -18,7 +18,7 @@ const page = () => {
         </Link> instead.
         
       </p>
-      <Request content={content} />
+      <Request content={content}/>
       <div className="mx-auto w-72 md:w-[600px] py-10">
         <h2 className="md:-ml-8 -ml-20 font-bold ">Instructions: </h2>
         <div className="grid py-5 gap-4">
