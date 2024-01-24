@@ -15,13 +15,21 @@ function Navigator({ children }) {
                     <input type="text" className='w-[300px] bg-transparent outline-none px-2 py-1 text-gray-700' placeholder='Search' />
                 </div>
                 <div className="flex">
-                    <select className='' name="" id="">
+                    <select className='px-2 py-2 rounded-lg bg-white shadow-[0px_0px_2px_0px_var(--green-mild)] ' name="" id="">
                         <option value="1">Grade 1 </option>
                         <option value="add"> Add Grade </option>
-                        <p>V</p>
                     </select>
                 </div>
             </div>
+            <div className="flex">
+                <div className="navbar min-w-[250px] h-screen">
+
+                </div>
+                <div className="w-[100%] min-h-screen">
+                    {children}
+                </div>
+            </div>
+
         </div>
     )
 }
