@@ -5,12 +5,12 @@ import Navbar from '../components/readercomp/Navbar'
 import HeadBar from '../components/readercomp/HeadBar'
 function page() {
 
-/* const shadow = {
+const shadow = {
  
   background: '#f3fff8',
   WebkitBoxShadow: '12px 12px 6px #c2ccc6, -12px -12px 6px #ffffff',
   boxShadow: '12px 12px 6px #c2ccc6, -12px -12px 6px #ffffff',
-}; */
+}; 
 
   return (
     <div className="h-screen">
