@@ -1,7 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
+html{
+    background: #F3FFF8;
+}
 :root{
     --web-primary-color: #008C8C;
 }
