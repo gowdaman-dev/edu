@@ -66,7 +66,7 @@ function LoginForm() {
         loading ? <LoaderPage /> : ''
       }
       {
-        userData? redirect(`/dashboard/${userData._id}`) :
+        ()? redirect(`/dashboard`) :
           <div className="flex items-center justify-center p-4 w-[100vw] h-[100vh] overflow-x-hidden bg-[#F3FFF8]">
             <div className="h-screen w-screen absolute top-0 left-0 z-0 overflow-hidden">
               <div className="absolute md:-top-[150px] md:-left-[150px] -top-[50px] -left-[50px] h-fit w-fit opacity-[.5]">
