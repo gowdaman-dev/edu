@@ -1,7 +1,5 @@
 'use client'
-import React, { useContext } from 'react'
-import { signOut } from 'next-auth/react'
-import { UserContext } from '@/ContextUser'
+import React from 'react'
 function page() {
   return (
     <>
