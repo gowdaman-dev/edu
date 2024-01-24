@@ -3,22 +3,21 @@ import Request from '../components/Form'
 import { webName } from '../components/globalDetails'
 import Link from 'next/link'
 const page = () => {
-  const content={
+  const content = {
     Header: `${webName} Edu Request Form`,
 
-    Comment:"Tell us more about yourself and the purpose of using our product",
+    Comment: "Tell us more about yourself and the purpose of using our product",
   }
   return (
-    <div  className=" mt-16" >
+    <div className=" mt-16" >
       <p className="text-center px-10 pb-8 text-lg">
         Note: this form is designed for EDUCATORS only. If you are a STUDENT,
-        
         please  <Link className="text-[--web-primary-color]" href={"recommend"}>
-           recommend it to your school
+          recommend it to your school
         </Link> instead.
-        
+
       </p>
-      <Request content={content}/>
+      <Request content={content} />
       <div className="mx-auto w-72 md:w-[600px] py-10">
         <h2 className="md:-ml-8 -ml-20 font-bold ">Instructions: </h2>
         <div className="grid py-5 gap-4">
