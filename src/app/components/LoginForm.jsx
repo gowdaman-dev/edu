@@ -1,18 +1,17 @@
 "use client";
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { signIn } from "next-auth/react"
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import Image from "next/image";
 import { useSession } from 'next-auth/react';
 import LoaderPage from "./loader/LoadingPage";
-import UserInfo from "./UserInfo";
+import { UserContext } from "@/ContextUser";
 function LoginForm() {
-  const info = UserInfo();
+  const { userData } = useContext(UserContext)
   const { data: session } = useSession();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
-  const [userId, setUserId] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const handleExist = async (e) => {
@@ -28,8 +27,7 @@ function LoginForm() {
       })
       const { user } = await resUserExists.json()
       if (user) {
-        const {_id} = user;
-        setUserId(_id)
+        const { _id } = user;
         setexist(true)
         setError('')
         setLoading(false);
@@ -55,8 +53,9 @@ function LoginForm() {
         return
       }
       setLoading(false);
-      router.replace(`/dashboard/${userId}`)
-      console.log(_id);
+      if(userData){
+        console.log(userData._id);
+      }
     } catch (error) {
       console.log(error)
     }
@@ -68,8 +67,7 @@ function LoginForm() {
         loading ? <LoaderPage /> : ''
       }
       {
-        
-        (session?.user?.email) ? router.replace(`/dashboard/${userId}        return NextResponse.json({user})`) :
+        userData? router.replace(`/dashboard/${userData._id}`) :
           <div className="flex items-center justify-center p-4 w-[100vw] h-[100vh] overflow-x-hidden bg-[#F3FFF8]">
             <div className="h-screen w-screen absolute top-0 left-0 z-0 overflow-hidden">
               <div className="absolute md:-top-[150px] md:-left-[150px] -top-[50px] -left-[50px] h-fit w-fit opacity-[.5]">
@@ -100,11 +98,6 @@ function LoginForm() {
                     </div>
                   </div>
                   <form onSubmit={exist ? handleSubmit : handleExist} className="md:w-2/3  w-full flex flex-col gap-4" action="" method="post">
-                    <div className="cursor-pointer bg-[var(--web-primary-color)] rounded-lg flex justify-between items-center w-full px-4 py-2">
-                      <Image src={"/logos/google.png"} height={30} width={30} alt="google icon" className="p-1 bg-white rounded-full" ></Image>
-                      <h1 onClick={() => signIn('google')} className="w-full text-center text-white">SignIn With Google</h1>
-                    </div>
-                    <p className="text-gray-400 text-center">Or login using email:</p>
                     <div className="flex flex-col gap-3">
                       {
                         !exist && (
