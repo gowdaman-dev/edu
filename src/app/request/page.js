@@ -1,5 +1,5 @@
 import React from 'react'
-import Requestform from '../components/Requestform'
+import Request from '../components/Form'
 import { webName } from '../components/globalDetails'
 import Link from 'next/link'
 const page = () => {
@@ -18,7 +18,7 @@ const page = () => {
         </Link> instead.
         
       </p>
-      <Requestform content={content} />
+      <Request content={content} />
       <div className="mx-auto w-72 md:w-[600px] py-10">
         <h2 className="md:-ml-8 -ml-20 font-bold ">Instructions: </h2>
         <div className="grid py-5 gap-4">
