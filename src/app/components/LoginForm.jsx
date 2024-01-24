@@ -1,12 +1,13 @@
 "use client";
 import React, { useContext, useEffect, useState } from "react";
-import { signIn } from "next-auth/react"
+import { signIn, useSession } from "next-auth/react"
 import { redirect, useRouter } from "next/navigation";
 import Image from "next/image";
 import LoaderPage from "./loader/LoadingPage";
 import { UserContext } from "@/ContextUser";
 function LoginForm() {
   const { userData , check } = useContext(UserContext)
+  const {data:session} = useSession();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
@@ -25,7 +26,6 @@ function LoginForm() {
       })
       const { user } = await resUserExists.json()
       if (user) {
-        const { _id } = user;
         setexist(true)
         setError('')
         setLoading(false);
@@ -66,7 +66,7 @@ function LoginForm() {
         loading ? <LoaderPage /> : ''
       }
       {
-        ()? redirect(`/dashboard`) :
+        (session?.user?.email)? redirect(`/dashboard`) :
           <div className="flex items-center justify-center p-4 w-[100vw] h-[100vh] overflow-x-hidden bg-[#F3FFF8]">
             <div className="h-screen w-screen absolute top-0 left-0 z-0 overflow-hidden">
               <div className="absolute md:-top-[150px] md:-left-[150px] -top-[50px] -left-[50px] h-fit w-fit opacity-[.5]">

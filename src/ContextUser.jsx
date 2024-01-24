@@ -8,7 +8,7 @@ function ContextUserData({ children }) {
     const check = async () => {
         console.log("checking");
         try {
-            const userExist = await fetch('/api/userinfo',
+            const userExist = await fetch(`${process.env.NEXTAUTH_URL}/api/userinfo`,
                 {
                     method: 'POST',
                     headers: {
