@@ -5,32 +5,28 @@ export const UserContext = createContext();
 function ContextUserData({ children }) {
     const { data: session } = useSession();
     const [userData, setUserData] = useState();
-    useEffect(() => {
-        const check = async () => {
-            try {
-                const userExist = await fetch('/api/userinfo',
-                    {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({ email: session?.user?.email })
-                    })
-                const {user}  = await userExist.json()
-                if (user) {
-                    setUserData(user)
-                }else{
-                    setUserData('')
-                    return
-                }
-            } catch (error) {
-                console.log(error);
+    const check = async () => {
+        console.log("checking");
+        try {
+            const userExist = await fetch('/api/userinfo',
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email: session?.user?.email })
+                })
+            const { user } = await userExist.json()
+            console.log(user);
+            if (user) {
+                setUserData(user)
             }
+        } catch (error) {
+            console.log(error);
         }
-        check();
-    },[])
+    }
     return (
-        <UserContext.Provider value={{ userData }}>
+        <UserContext.Provider value={{ userData , check }}>
             {children}
         </UserContext.Provider>
     );
