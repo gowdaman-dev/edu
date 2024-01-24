@@ -3,12 +3,10 @@ import React, { useContext, useEffect, useState } from "react";
 import { signIn } from "next-auth/react"
 import { redirect, useRouter } from "next/navigation";
 import Image from "next/image";
-import { useSession } from 'next-auth/react';
 import LoaderPage from "./loader/LoadingPage";
 import { UserContext } from "@/ContextUser";
 function LoginForm() {
-  const { userData } = useContext(UserContext)
-  const { data: session } = useSession();
+  const { userData , check } = useContext(UserContext)
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
@@ -54,20 +52,21 @@ function LoginForm() {
       }
       setLoading(false);
       if(userData){
-        console.log(userData._id);
+        check();
       }
     } catch (error) {
       console.log(error)
     }
   }
   const [exist, setexist] = useState(false)
+  check();
   return (
     <>
       {
         loading ? <LoaderPage /> : ''
       }
       {
-        userData? router.replace(`/dashboard/${userData._id}`) :
+        userData? redirect(`/dashboard/${userData._id}`) :
           <div className="flex items-center justify-center p-4 w-[100vw] h-[100vh] overflow-x-hidden bg-[#F3FFF8]">
             <div className="h-screen w-screen absolute top-0 left-0 z-0 overflow-hidden">
               <div className="absolute md:-top-[150px] md:-left-[150px] -top-[50px] -left-[50px] h-fit w-fit opacity-[.5]">

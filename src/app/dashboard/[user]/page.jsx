@@ -1,7 +1,12 @@
-import React from 'react'
-import UserInfo from '@/app/components/UserInfo'
+'use client'
+import React, { useContext } from 'react'
+import { signOut } from 'next-auth/react'
+import { UserContext } from '@/ContextUser'
 function page() {
-  return (<UserInfo/>)
+  return (
+    <>
+    </>
+  )
 }
 
 export default page
