@@ -1,22 +1,18 @@
 import React from "react";
-import Link from "next/link";
 import Image from "next/image";
-const Requestform = () => {
-  const about =
-    "Tell us more about yourself and the purpose of using our product";
+const Requestform = (props) => {
   return (
-    <div className="md:mt-32 mt-16" >
-      <p className="text-center px-10 pb-8 text-lg">
-        Note: this form is designed for EDUCATORS only. If you are a STUDENT,
-        please{" "}
-        <Link className="text-[--web-primary-color]" href={""}>
-          recommend&nbsp;it to&nbsp;your&nbsp;school
-        </Link>{" "}
-        instead.
-      </p>
+    <div>
       <div className=" border-[3px] rounded-2xl border-[--web-primary-color] w-fit px-10 mx-auto flex-col justify-center">
-        <Image className="w-32 h-32 mx-auto mt-10 border-2 border-red-300"></Image>       
-        <h1 className="text-center font-bold text-2xl py-10">NaturalReader Edu Request Form</h1>
+        <Image
+          className="w-32 h-32 mx-auto mt-10"
+          src={"logo.svg"}
+          width={100}
+          height={100}
+        />
+        <h1 className="text-center  font-bold text-2xl py-10">
+          {props.content.Header}
+        </h1>
 
         <div className="flex justify-center">
           <div className="flex md:flex-row flex-col justify-center gap-6">
@@ -24,24 +20,24 @@ const Requestform = () => {
               <input
                 type="text"
                 placeholder="Your Name"
-                className="rounded-[3px] h-12  border-2 border-[--web-primary-color] bg-[--web-container]"
+                className="rounded-[3px] pl-2 h-12  border border-[--web-primary-color] bg-[--web-container]"
               />
               <input
                 type="text"
                 placeholder="School Name"
-                className="rounded-[3px] h-12 border-2 border-[--web-primary-color] bg-[--web-container]"
+                className="rounded-[3px] pl-2 h-12 border border-[--web-primary-color] bg-[--web-container]"
               />
             </div>
             <div className="flex flex-col gap-10 w-72 md:w-72">
               <input
                 type="text"
                 placeholder="Your Work Email"
-                className="rounded-[3px] h-12  border-2 border-[--web-primary-color] bg-[--web-container]"
+                className="rounded-[3px] h-12 pl-2 border border-[--web-primary-color] bg-[--web-container]"
               />
               <input
                 type="text"
                 placeholder="Subject Name"
-                className="rounded-[3px] h-12  border-2 border-[--web-primary-color] bg-[--web-container]"
+                className="rounded-[3px] h-12 pl-2 border border-[--web-primary-color] bg-[--web-container]"
               />
             </div>
           </div>
@@ -49,8 +45,8 @@ const Requestform = () => {
         <div className="flex justify-center gap-10 flex-col py-10 ">
           <textarea
             type="text"
-            placeholder={about}
-            className="rounded-[3px] min-h-56 h-auto w-72 md:w-[600px] mx-auto  border-2 border-[--web-primary-color] bg-[--web-container]"
+            placeholder={props.content.Comment}
+            className="rounded-[3px] pl-2 pt-1 min-h-56 h-auto w-72 md:w-[600px] mx-auto  border border-[--web-primary-color] bg-[--web-container]"
           />
           <input
             type="sumbit"
@@ -59,26 +55,7 @@ const Requestform = () => {
           />
         </div>
       </div>
-      <div className="mx-auto w-72 md:w-[600px] py-10">
-        <h2 className="md:-ml-8 -ml-20 font-bold ">Instructions: </h2>
-        <div>
-        <p>
-          1. Only school personnel (not students) may register for an EDU
-          account, such as teachers or school administrators
-        </p>
-        <p>
-          2. Once a School is set up under your account, you as the account
-          owner can create Classes and add Students & Teachers. Users set as
-          "Teachers" have admin access to invite or delete other members.
-        </p>
-        <p>
-        3. Under a free EDU account, all invited users also have free user limitations.
-        </p>
-        <p>
-        4. If you are a student, you can request that your school open an account with us.
-        </p>
-        </div>
-      </div>
+      
     </div>
   );
 };
