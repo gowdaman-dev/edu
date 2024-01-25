@@ -22,9 +22,10 @@ const page = () => {
 
       </p>
       <Request content={content} />
-      <div className="md:mx-auto w-80 md:w-[600px] ml-8 py-10">
-        <h2 className="md:-ml-8   font-bold ">Instructions: </h2>
-        <div className=" py-5  pl-8 leading-6">
+      <div className='grid justify-center'>
+      <div className=" w-80 md:w-[600px] py-10">
+        <h2 className="md:-ml-8 -ml-4  font-bold ">Instructions: </h2>
+        <div className=" py-5 leading-6">
           <p className='pb-3 text-justify'>
             1. Only school personnel (not students) may register for an EDU
             account, such as teachers or school administrators
@@ -42,6 +43,7 @@ const page = () => {
             4. If you are a student, you can <Link href={'recommend'} className='text-[--web-primary-color]'>request that your school</Link>  open an
             account with us.
           </p>
+        </div>
         </div>
       </div>
     </div>

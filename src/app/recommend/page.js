@@ -8,7 +8,7 @@ const page = () => {
   const content = {
     Header: `Recommend ${webName} to your School`,
 
-    Comment: `I am a student and heard that ${webName} is providing a free version for schools right now. ${webName} is a text to speech application that an help us listen to Word documents, PDFs, non-DRM eBooks, and websites. I think it will be very helpful for us, please consider creating an account at ${webName}. After signing up, please invite me to the group so I can login and use ${webName} for my schoolwork`,
+    Comment: `Explore EduLearn: Streamline PDF sharing for educational advancement! Share why EduLearn is a must for your school.`,
    
     input_1:'Your Email', 
 
@@ -22,15 +22,17 @@ const page = () => {
         gain free access.
       </p>
       <Recommend content={content} />
-      <div className="md:mx-auto w-80 md:w-[600px] ml-8 py-10">
-        <h2 className="md:-ml-8 font-bold ">Instructions: </h2>
-        <div className=" py-5 pl-8">
+      <div className='grid justify-center'>
+      <div className=" w-80 md:w-[600px] py-10">
+        <h2 className="md:-ml-8 -ml-4  font-bold">Instructions: </h2>
+        <div className=" py-5 leading-6">
           <p className="text-justify ">
             This is for students to send a request to their school's
             administrators to sign up for an account with NaturalReader. If you
             are an administrator or teacher, you can <Link href={'requeststaff'} className="text-[--web-primary-color]">contact us directly</Link> to open
             an account.
           </p>
+        </div>
         </div>
       </div>
     </div>

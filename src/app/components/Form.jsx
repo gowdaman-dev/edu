@@ -2,8 +2,8 @@ import React from "react";
 import Image from "next/image";
 const Requestform = (props) => {
   return (
-    <div>
-      <div className=" border-[3px] rounded-2xl border-[--web-primary-color] w-fit px-10 mx-auto flex-col justify-center">
+    <div> 
+      <div className=" border-[3px] rounded-2xl border-[--web-primary-color] w-fit px-4 md:px-10 mx-auto flex-col justify-center">
         <Image
           className="w-32 h-32 mx-auto mt-10"
           src={"logo.svg"}
