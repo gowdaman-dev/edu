@@ -9,16 +9,16 @@ function HeadBar () {
 
   return (
     
-      <ul className='flex justify-around items-center h-full '>
-        <li className='grow  flex justify-center gap-x-10 sm:gap-x-20'>
+      <ul className='flex items-center justify-around h-full '>
+        <li className='flex justify-center grow gap-x-10 sm:gap-x-20'>
            {/*  //backword */}
-          <span className='text-3xl mt-[6px] text-[#008C8C]'><FaBackward /></span>
-          <span onClick={()=>setIsPlay(!isPlay)} className='text-[#008C8C] text-4xl'>{isPlay ?<FaRegCirclePause />:<FaPlayCircle />}</span>
+          <span className='text-2xl mt-[6px] text-[#008C8C]'><FaBackward /></span>
+          <span onClick={()=>setIsPlay(!isPlay)} className='text-[#008C8C] text-3xl'>{isPlay ?<FaRegCirclePause />:<FaPlayCircle />}</span>
           {/* forward */}
-          <span  className='text-3xl mt-[6px] text-[#008C8C]'><FaForward /></span>
+          <span  className='text-2xl mt-[6px] text-[#008C8C]'><FaForward /></span>
 
         </li>
-        <li className='text-black text-3xl mr-4'>
+        <li className='mr-4 text-2xl text-gray-700'>
           <BsThreeDots />
         </li>
       </ul>
