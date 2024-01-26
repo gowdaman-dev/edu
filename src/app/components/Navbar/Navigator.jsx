@@ -20,7 +20,7 @@ function Navigator({ children }) {
     const addermenuref = useRef('')
     useEffect(()=>{
         let handler = (e)=>{
-            if (!addermenuref.current.contains(e.target)){
+            if (!addermenuref.current){
                 setAdder(false)
                 console.log(addermenuref.current);
             }
@@ -29,12 +29,12 @@ function Navigator({ children }) {
     })
     return (
         <div className='w-screen h-fit'>
-            <div className="flex px-10 py-4 justify-between items-center">
-                <div className=" flex items-center justify-center gap-2">
+            <div className="flex items-center justify-between px-10 py-4">
+                <div className="flex items-center justify-center gap-2 ">
                     <Image className='' src={'/icons/menu.svg'} height={30} width={30} alt='menu' />
-                    <div className=" flex items-center justify-center gap-2">
+                    <div className="flex items-center justify-center gap-2 ">
                         <Image src={'/logos/logo.svg'} height={30} width={30} alt='logo' />
-                        <h1 className='font-bold tex-gray-900 text-lg'>Edulearn</h1>
+                        <h1 className='text-lg font-bold tex-gray-900'>Edulearn</h1>
                     </div>
                 </div>
                 <div className="flex bg-[#92D1CD99] px-2 rounded-lg items-center">
@@ -51,7 +51,7 @@ function Navigator({ children }) {
             <div className="flex">
                 <div className="navbar min-w-[300px] h-screen">
                     <div className="w-[100%] flex justify-center">
-                        <ul className='flex item-center font-light flex-col py-4 justify-center gap-0'>
+                        <ul className='flex flex-col justify-center gap-0 py-4 font-light item-center'>
                             <button onClick={() => setAdder(!adder)} className='bg-white px-2 rounded-full text-[--web-primary-color] hover:text-teal-400 shadow-[0px_0px_4px_0px] shadow-[--web-primary-color] w-fit text-xl flex items-center justify-center gap-3'><InlineIcon icon="ph:plus-bold" height="20" width="20" /> Add Member</button>
                             {
                                 adder && (
