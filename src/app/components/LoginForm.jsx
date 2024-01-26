@@ -80,7 +80,7 @@ function LoginForm() {
             <div className="absolute top-0 left-0 z-[1] w-full h-full flex items-center justify-center ">
               <div className="w-[50%] h-screen hidden lg:flex flex-col items-center justify-center">
                 <div className="flex flex-col items-center">
-                  <Image src={'/logos/logo.png'} height={280} width={350} alt="logo" />
+                  <Image src={'/logos/logo.svg'} height={280} width={350} alt="logo" />
                   <h2 className="text-4xl font-light py-2 text-[#0B1770]">Hello!</h2>
                   <p className="text-gray-400 font-light">Please login to continue to <span className="text-[#0B1770]">Education</span></p>
                 </div>
