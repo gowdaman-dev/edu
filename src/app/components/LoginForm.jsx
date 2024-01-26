@@ -69,7 +69,7 @@ function LoginForm() {
       {
         (session?.user?.email) ? redirect(`/dashboard`) :
           <div className="flex items-center justify-center p-4 w-[100vw] h-[100vh] overflow-x-hidden bg-[#F3FFF8]">
-            <div className="h-screen w-screen absolute top-0 left-0 z-0 overflow-hidden">
+            <div className="absolute top-0 left-0 z-0 w-screen h-screen overflow-hidden">
               <div className="absolute md:-top-[150px] md:-left-[150px] -top-[50px] -left-[50px] h-fit w-fit opacity-[.5]">
                 <div className="md:h-[300px] h-[150px] md:w-[300px] w-[150px] rounded-full bg-gradient-to-tr from-[--web-primary-color] to-[#F3FFF8] absolute top-0 md:left-[100px] left-[50px]"></div>
                 <div className="md:h-[300px] h-[150px] md:w-[300px] w-[150px] rounded-full bg-gradient-to-tr from-[--web-primary-color] to-[#F3FFF8] absolute md:top-[100px] top-[50px] left-0"></div>
@@ -84,20 +84,20 @@ function LoginForm() {
                 <div className="flex flex-col items-center">
                   <Image src={'/logos/logo.svg'} height={280} width={350} alt="logo" />
                   <h2 className="text-4xl font-light py-2 text-[#0B1770]">Hello!</h2>
-                  <p className="text-gray-400 font-light">Please login to continue to <span className="text-[#0B1770]">Education</span></p>
+                  <p className="font-light text-gray-400">Please login to continue to <span className="text-[#0B1770]">Education</span></p>
                 </div>
               </div>
               <div className="relative z-10 h-full lg:w-[50%] w-full md:px-0 px-4 grid place-items-center">
                 <div className="h-fit lg:w-[500px] w-full rounded-lg md:border-2 border-none border-[var(--web-primary-color)] lg:px-4 px-2 py-10 grid place-items-center">
                   <div className="py-6">
                     <h1 className="text-[var(--web-primary-color)] lg:flex hidden text-2xl">Login</h1>
-                    <div className="lg:hidden flex flex-col items-center">
+                    <div className="flex flex-col items-center lg:hidden">
                       <Image src={'/logos/logo.png'} height={100} width={100} alt="logo" />
                       <h2 className="text-3xl font-light py-2 text-[#0B1770]">Hello!</h2>
-                      <p className="text-gray-400 font-light">Please login to continue to <span className="text-[#0B1770]">Education</span></p>
+                      <p className="font-light text-gray-400">Please login to continue to <span className="text-[#0B1770]">Education</span></p>
                     </div>
                   </div>
-                  <form onSubmit={exist ? handleSubmit : handleExist} className=" w-full flex flex-col gap-4" action="" method="post">
+                  <form onSubmit={exist ? handleSubmit : handleExist} className="flex flex-col w-full gap-4 " action="" method="post">
                     <div className="flex flex-col gap-3">
                       {
                         !exist && (
@@ -146,8 +146,8 @@ function LoginForm() {
               </div>
             </div>
           </div>
-        </div>
-      )}
+        
+      }
     </>
   )
 }
