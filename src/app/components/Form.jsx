@@ -2,8 +2,8 @@ import React from "react";
 import Image from "next/image";
 const Requestform = (props) => {
   return (
-    <div>
-      <div className=" border-[3px] rounded-2xl border-[--web-primary-color] w-fit px-10 mx-auto flex-col justify-center">
+    <div> 
+      <div className=" border-[3px] rounded-2xl border-[--web-primary-color] w-fit px-1 md:px-10 mx-auto flex-col justify-center">
         <Image
           className="w-32 h-32 mx-auto mt-10"
           src={"logo.svg"}
@@ -15,7 +15,7 @@ const Requestform = (props) => {
         </h1>
 
         <div className="flex justify-center">
-          <div className="flex md:flex-row flex-col justify-center gap-6">
+          <div className="flex md:flex-row flex-col justify-center gap-10 md:gap-6">
             <div className="flex flex-col  gap-10 w-72 md:w-72">
               <input
                 type="text"
@@ -31,12 +31,12 @@ const Requestform = (props) => {
             <div className="flex flex-col gap-10 w-72 md:w-72">
               <input
                 type="text"
-                placeholder="Your Work Email"
+                placeholder={props.content.input_1}
                 className="rounded-[3px] h-12 pl-2 outline-none focus:border-[3px] border border-[--web-primary-color] bg-[--web-container]"
               />
               <input
                 type="text"
-                placeholder="Subject Name"
+                placeholder={props.content.input_2}
                 className="rounded-[3px] h-12 pl-2 border outline-none focus:border-[3px] border-[--web-primary-color] bg-[--web-container]"
               />
             </div>
