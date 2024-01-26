@@ -34,11 +34,7 @@ function Main() {
               <IoClose />
             </section>
           )}
-{/* 
-"shadow-[5px_5px_0px_#c0c9c4,
-_____________-5px_-5px_0px_#ffffff]
 
-*/}
           <div
         style={{
           minHeight: '500px'
