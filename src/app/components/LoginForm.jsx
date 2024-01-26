@@ -1,15 +1,13 @@
 "use client";
 import React, { useContext, useEffect, useState } from "react";
-import { signIn } from "next-auth/react"
+import { signIn, useSession } from "next-auth/react"
 import { redirect, useRouter } from "next/navigation";
 import Image from "next/image";
-import { useSession } from 'next-auth/react';
 import LoaderPage from "./loader/LoadingPage";
 import { UserContext } from "@/ContextUser";
 function LoginForm() {
-  const { userData } = useContext(UserContext)
+  const { userData, check } = useContext(UserContext)
   const { data: session } = useSession();
-  const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -27,7 +25,6 @@ function LoginForm() {
       })
       const { user } = await resUserExists.json()
       if (user) {
-        const { _id } = user;
         setexist(true)
         setError('')
         setLoading(false);
@@ -55,21 +52,22 @@ function LoginForm() {
         return
       }
       setLoading(false);
-      if(userData){
-        console.log(userData._id);
+      if (userData) {
+        check();
       }
     } catch (error) {
       console.log(error)
     }
   }
   const [exist, setexist] = useState(false)
+  check();
   return (
     <>
       {
         loading ? <LoaderPage /> : ''
       }
       {
-        userData? router.replace(`/dashboard/${userData._id}`) :
+        (session?.user?.email) ? redirect(`/dashboard`) :
           <div className="flex items-center justify-center p-4 w-[100vw] h-[100vh] overflow-x-hidden bg-[#F3FFF8]">
             <div className="h-screen w-screen absolute top-0 left-0 z-0 overflow-hidden">
               <div className="absolute md:-top-[150px] md:-left-[150px] -top-[50px] -left-[50px] h-fit w-fit opacity-[.5]">
@@ -84,13 +82,13 @@ function LoginForm() {
             <div className="absolute top-0 left-0 z-[1] w-full h-full flex items-center justify-center ">
               <div className="w-[50%] h-screen hidden lg:flex flex-col items-center justify-center">
                 <div className="flex flex-col items-center">
-                  <Image src={'/logos/logo.png'} height={180} width={250} alt="logo" />
-                  <h2 className="text-3xl font-light py-2 text-[#0B1770]">Hello!</h2>
+                  <Image src={'/logos/logo.svg'} height={280} width={350} alt="logo" />
+                  <h2 className="text-4xl font-light py-2 text-[#0B1770]">Hello!</h2>
                   <p className="text-gray-400 font-light">Please login to continue to <span className="text-[#0B1770]">Education</span></p>
                 </div>
               </div>
               <div className="relative z-10 h-full lg:w-[50%] w-full md:px-0 px-4 grid place-items-center">
-                <div className="h-fit lg:w-[500px] w-full rounded-lg lg:border-2 border-none border-[var(--web-primary-color)] lg:px-4 px-2 py-10 grid place-items-center">
+                <div className="h-fit lg:w-[500px] w-full rounded-lg md:border-2 border-none border-[var(--web-primary-color)] lg:px-4 px-2 py-10 grid place-items-center">
                   <div className="py-6">
                     <h1 className="text-[var(--web-primary-color)] lg:flex hidden text-2xl">Login</h1>
                     <div className="lg:hidden flex flex-col items-center">
@@ -99,7 +97,7 @@ function LoginForm() {
                       <p className="text-gray-400 font-light">Please login to continue to <span className="text-[#0B1770]">Education</span></p>
                     </div>
                   </div>
-                  <form onSubmit={exist ? handleSubmit : handleExist} className="md:w-2/3  w-full flex flex-col gap-4" action="" method="post">
+                  <form onSubmit={exist ? handleSubmit : handleExist} className=" w-full flex flex-col gap-4" action="" method="post">
                     <div className="flex flex-col gap-3">
                       {
                         !exist && (
@@ -118,18 +116,20 @@ function LoginForm() {
 
                         )
                       }
-                      {
-                        exist && (
-                          <>
-                            <input onChange={(e) => setPassword(e.target.value)} className="px-2 rounded-lg border border-[--web-primary-color] py-2 outline-none text-gray-700" type="password" placeholder="Your Password" />
-                            {
-                              error && (
-                                <p className="text-[12px] px-2 font-light text-red-400">{error}</p>
-                              )
-                            }
-                          </>
-                        )
-                      }
+                      <>
+                        {
+                          exist && (
+                            <>
+                              <input onChange={(e) => setPassword(e.target.value)} className="px-2 rounded-lg border border-[--web-primary-color] py-2 outline-none text-gray-700" type="password" placeholder="Your Password" />
+                              {
+                                error && (
+                                  <p className="text-[12px] px-2 font-light text-red-400">{error}</p>
+                                )
+                              }
+                            </>
+                          )
+                        }
+                      </>
                     </div>
                     <div className="">
                       {
