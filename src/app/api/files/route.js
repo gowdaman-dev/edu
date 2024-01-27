@@ -1,14 +1,28 @@
 const { NextResponse } = require('next/server')
 import { connectMongoBD } from '@/app/lib/mongodb'
 import libFiles from '@/app/models/libFiles'
+import { headers } from 'next/headers';
 export async function GET (req) {
+const header=headers()
+const token=header.get("token")
   
+
+  if(token==="ONLY_FILE_INFO"){
+
     await connectMongoBD()
     const data = await libFiles.find()
-    console.log(data);
-    if(data)console.log(true);
-    return NextResponse.json(data)
-  
+    if (data.length > 0) {
+      const fileData = data.map(({ filename, size, date, _id }) => ({
+        fname: filename,
+        fsize: size,
+        fdate: date,
+        fid: _id,
+      }));
+
+      return NextResponse.json(fileData);
+  }
+    }
+  return NextResponse.json({message:"File not found"},{status:"404"})
 }
 
 export async function POST (req) {
