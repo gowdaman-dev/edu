@@ -3,7 +3,9 @@ import Image from 'next/image'
 import React, { useEffect, useRef, useState } from 'react'
 import { InlineIcon } from '@iconify/react'
 import { motion } from 'framer-motion'
+import { signOut, useSession } from 'next-auth/react'
 function Navigator({ children }) {
+    const {data : session} = useSession();
     const [adder, setAdder] = useState(false)
     const addervarient = {
         initial: {
@@ -18,15 +20,6 @@ function Navigator({ children }) {
         },
     };
     const addermenuref = useRef('')
-    useEffect(()=>{
-        let handler = (e)=>{
-            if (!addermenuref.current.contains(e.target)){
-                setAdder(false)
-                console.log(addermenuref.current);
-            }
-        }
-        document.addEventListener("mousedown",handler)
-    })
     return (
         <div className='w-screen h-fit'>
             <div className="flex px-10 py-4 justify-between items-center">
@@ -34,7 +27,7 @@ function Navigator({ children }) {
                     <Image className='' src={'/icons/menu.svg'} height={30} width={30} alt='menu' />
                     <div className=" flex items-center justify-center gap-2">
                         <Image src={'/logos/logo.svg'} height={30} width={30} alt='logo' />
-                        <h1 className='font-bold tex-gray-900 text-lg'>Edulearn</h1>
+                        <h1 className='font-bold tex-gray-900 text-lg'>Edulearn welcome {session?.user?.email}</h1>
                     </div>
                 </div>
                 <div className="flex bg-[#92D1CD99] px-2 rounded-lg items-center">
@@ -62,6 +55,7 @@ function Navigator({ children }) {
                                 )
                             }
                         </ul>
+                        <button onClick={()=>signOut()}>SignOut</button>
                     </div>
                 </div>
                 <div className="w-[100%] min-h-screen">
