@@ -32,9 +32,10 @@ const navlinks = [
         path: ''
     },
 ]
-function AdminNavbar() {
+function Navbar() {
     const path = usePathname()
     const [adder, setAdder] = useState(false)
+    const [rolenav, setRolenav] = useState(adminlinks)
     const addermenuref = useRef()
     const addmenuref = useRef()
     useEffect(() => {
@@ -51,9 +52,9 @@ function AdminNavbar() {
     })
 
     return (
-        <div className={`min-w-[280px] border-r h-full overflow-hidden transition-all duration-500 flex flex-col gap-6 py-4 justify-start`}>
+        <div className={`min-w-[280px] border-r h-full overflow-hidden transition-all duration-500 flex flex-col py-4 justify-start`}>
             <ul className='relative flex w-full items-center font-light flex-col  justify-center'>
-                <button ref={addmenuref} onClick={() => setAdder(!adder)} className='bg-white px-2 rounded-lg text-[--web-primary-color] hover:text-teal-400 shadow-[0px_0px_4px_0px] shadow-[--web-primary-color] w-[80%] py-2 text-xl flex items-center justify-center gap-3'><InlineIcon icon="ph:plus-bold" height="20" width="20" /><span>Add Member</span></button>
+                <button ref={addmenuref} onClick={() => setAdder(!adder)} className='bg-white px-2 rounded-lg text-[--web-primary-color] hover:text-teal-400 shadow-[0px_0px_4px_0px] shadow-[--web-primary-color] w-[80%] py-2 flex items-center justify-center gap-3'><InlineIcon icon="ph:plus-bold" height="20" width="20" /><span>Add Member</span></button>
                 {
                     adder && (
                         <div ref={addermenuref} className="absolute -bottom-[200%] py-2 w-[80%] px-4 bg-white flex flex-col gap-2 bg-transparent mt-3 z-[2] rounded-lg shadow">
@@ -63,22 +64,27 @@ function AdminNavbar() {
                     )
                 }
             </ul>
-            {
-                navlinks.map((links) => {
-                    if (path == links.path) {
+            <div className="border-b py-2 mt-2">
+                {
+                    rolenav.map((items) => {
                         return <Link
-                            href={links?.path}
-                            className='w-[90%] h-fit text-white bg-[--web-primary-color] justify-start transition-color duration-500 py-4 rounded-r-full text-left px-4 flex  gap-2 items-center'>
-                            <span className='text-white text-2xl'>
-                                {links.icon}
+                            href={items?.path}
+                            className='w-[90%] h-fit text-[--text-primary] hover:bg-gray-200 justify-start transition-color duration-500 py-4 rounded-r-full text-left px-4 flex  gap-2 items-center'>
+                            <span className='text-2xl'>
+                                {items.icon}
                             </span>
                             <span>
                                 {
-                                    links.label
+                                    items.label
                                 }
                             </span>
                         </Link>
-                    } else {
+                    })
+                }
+            </div>
+            <div className="border-b py-2 ">
+                {
+                    navlinks.map((links) => {
                         return <Link
                             href={links?.path}
                             className='w-[90%] h-fit text-[--text-primary] hover:bg-gray-200 justify-start transition-color duration-500 py-4 rounded-r-full text-left px-4 flex  gap-2 items-center'>
@@ -91,12 +97,14 @@ function AdminNavbar() {
                                 }
                             </span>
                         </Link>
-                    }
-                })
-            }
-            <button className='w-fit text-[--text-primary] hover:bg-gray-200 justify-start transition-color duration-500 py-2 rounded-lg text-left px-4 flex  gap-2 items-center' onClick={() => signOut()}> <Image alt='' src={'/icons/nav/login.svg'} height={24} width={24} /> <span>SignOut</span></button>
+                    })
+                }
+            </div>
+            <div className="py-2 flex items-center ">
+                <button className='w-[90%] text-[--text-primary] hover:bg-gray-200 justify-start transition-color duration-500 py-4 rounded-r-full text-left px-4 flex  gap-2 items-center' onClick={() => signOut()}> <Image alt='' src={'/icons/nav/login.svg'} height={24} width={24} /> <span>SignOut</span></button>
+            </div>
         </div>
     )
 }
 
-export default AdminNavbar
+export default Navbar
