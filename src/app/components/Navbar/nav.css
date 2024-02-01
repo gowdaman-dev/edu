@@ -1,0 +1,9 @@
+.show{
+    position: absolute;
+    left: -50%;
+    transition: .5s;
+}
+.show.active{
+    left: 0;
+    transition:  .5s ease-in;
+}
