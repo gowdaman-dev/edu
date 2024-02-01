@@ -5,7 +5,7 @@ export {default} from "next-auth/middleware";
 export function middleware(req){
     const path = req.nextUrl.pathname;
     const isPublic = path === "/signin"
-    const token =  req.cookies.get('next-auth.session-token',"__Secure-next-auth.session-token")
+    const token =  req.cookies.get('next-auth.session-token'||"__Secure-next-auth.session-token")
     if (isPublic && token){
         return NextResponse.redirect(new URL('/dashboard' , req.nextUrl))
     }
