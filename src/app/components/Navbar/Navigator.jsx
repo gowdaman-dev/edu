@@ -93,7 +93,7 @@ function Navigator({ children }) {
                         <h1 className='font-bold tex-gray-900 text-lg md:flex hidden'>Edulearn</h1>
                     </div>
                 </div>
-                <div className="md:flex hidden bg-[#92D1CD99] px-2 rounded-lg items-center">
+                <div className="md:flex hidden bg-[#92D1CDf9] px-2 rounded-lg items-center">
                     <InlineIcon className='text-gray-600' icon="tdesign:search" height="25" width="25" />
                     <input type="text" className='w-[300px] bg-transparent outline-none px-2 py-1 text-gray-700' placeholder='Search' />
                 </div>

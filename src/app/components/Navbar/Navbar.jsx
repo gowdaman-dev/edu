@@ -79,6 +79,7 @@ function Navbar() {
                     rolenav.map((items) => {
                         if (items.path == path) {
                             return <Link
+                                key={items.label}
                                 href={items?.path}
                                 className='w-[90%] h-fit text-white bg-[--web-primary-color]  justify-start transition-color duration-500 py-4 rounded-r-full text-left px-4 flex  gap-2 items-center'>
                                 <span className='text-2xl'>
@@ -92,6 +93,7 @@ function Navbar() {
                             </Link>
                         } else {
                             return <Link
+                                key={items.label}
                                 href={items?.path}
                                 className='w-[90%] h-fit text-[--text-primary] hover:bg-gray-200 justify-start transition-color duration-500 py-4 rounded-r-full text-left px-4 flex  gap-2 items-center'>
                                 <span className='text-2xl'>
@@ -112,6 +114,7 @@ function Navbar() {
                     navlinks.map((links) => {
                         return <Link
                             href={links?.path}
+                            key={links.label}
                             className='w-[90%] h-fit text-[--text-primary] hover:bg-gray-200 justify-start transition-color duration-500 py-4 rounded-r-full text-left px-4 flex  gap-2 items-center'>
                             <span className='text-2xl'>
                                 {links.icon}
