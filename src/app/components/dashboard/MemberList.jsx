@@ -9,7 +9,7 @@ function MemberList() {
     const filterrefmenu = useRef();
     const filterreflist = useRef();
     useEffect(() => {
-        fetch('/api/memberlist')
+        fetch('/api/memberlist' , {cache:'no-store'})
             .then((data) => data.json())
             .then((data) => {
                 setAcclist(data);
