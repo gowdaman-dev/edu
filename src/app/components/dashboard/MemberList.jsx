@@ -2,12 +2,31 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { IoFilter, IoReload } from "react-icons/io5";
 import { AiOutlineExport } from "react-icons/ai";
-import Acclist from './Acclist';
 function MemberList() {
-    const [roleselected, setRoleselected] = useState('')
+    const [role, setRole] = useState('')
     const [filter, setFilter] = useState(false)
+    const [acclist, setAcclist] = useState([])
     const filterrefmenu = useRef();
     const filterreflist = useRef();
+    useEffect(() => {
+        fetch('/api/memberlist')
+            .then((data) => data.json())
+            .then((data) => {
+                setAcclist(data);
+            })
+    },[])
+    useEffect(() => {
+        let handler = (e) => {
+            try {
+                if (!filterrefmenu.current.contains(e.target)) {
+                    setFilter(false)
+                }
+            } catch (error) {
+
+            }
+        }
+        window.addEventListener('click', handler)
+    })
     return (
         <div className='w-full flex flex-col  '>
             <div className="w-full py-2 border-b flex justify-between items-center">
@@ -21,9 +40,9 @@ function MemberList() {
                         {
                             (filter) && (
                                 <div ref={filterreflist} className="absolute top-full bg-white rounded-lg mt-4 text-center text-gray-800 p-2 flex flex-col rounded-lg border gap-2">
-                                    <p onClick={() => setRoleselected("")} className='cursor-pointer'>all</p>
-                                    <p onClick={() => setRoleselected("student")} className='cursor-pointer'>Student</p>
-                                    <p onClick={() => setRoleselected("teacher")} className='cursor-pointer'>Teacher</p>
+                                    <p onClick={() => setRole("")} className='cursor-pointer'>all</p>
+                                    <p onClick={() => setRole("student")} className='cursor-pointer'>Student</p>
+                                    <p onClick={() => setRole("teacher")} className='cursor-pointer'>Teacher</p>
                                 </div>
                             )
                         }
@@ -38,7 +57,30 @@ function MemberList() {
                 </div>
             </div>
             <div className={`flex flex-col w-full`}>
-                <Acclist role={''}/>
+                <table>
+                    <thead>
+                        <tr>
+                            <td>name</td>
+                            <td>Email</td>
+                            <td>Standard</td>
+                            <td>role</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {
+                            acclist.filter((data)=>{
+                                return role === '' ? data : data.role.includes(role)
+                            }).map((item) => {
+                                return <tr key={item.email}>
+                                    <td>{item.name}</td>
+                                    <td>{item.email}</td>
+                                    <td>{item.standard}</td>
+                                    <td>{item.role}</td>
+                                </tr>
+                            })
+                        }
+                    </tbody>
+                </table>
             </div>
         </div>
     )

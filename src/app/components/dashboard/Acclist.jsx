@@ -4,8 +4,7 @@ const members = async () => {
     try {
         const req = await fetch('/api/memberlist')
         if (req.ok) {
-            const { datalist } = await req.json();
-            console.log(datalist);
+            const  datalist = await req.json();
             return datalist
         }
     } catch (error) {
@@ -14,7 +13,7 @@ const members = async () => {
 }
 
 async function Acclist({ role }) {
-    const data = await members();
+    const {datalist} = await members();
     return (
         <table>
             <thead>
@@ -28,7 +27,7 @@ async function Acclist({ role }) {
             <tbody>
                 {
                     !role && (
-                        data.map((items) => {
+                        datalist?.map((items) => {
                             return <tr key={items.email}>
                                 <td>{items.name}</td>
                                 <td>{items.email}</td>
@@ -40,7 +39,7 @@ async function Acclist({ role }) {
                 }
                 {
                     (role == 'student') && (
-                        data.map((items) => {
+                        datalist?.map((items) => {
                             if (items.role == 'student') {
                                 return <tr key={items.email}>
                                     <td>{items.name}</td>
@@ -54,7 +53,7 @@ async function Acclist({ role }) {
                 }
                 {
                     (role == 'teacher') && (
-                        data.map((items) => {
+                        datalist?.map((items) => {
                             if (items.role == 'teacher') {
                                 return <tr key={items.email}>
                                     <td>{items.name}</td>
