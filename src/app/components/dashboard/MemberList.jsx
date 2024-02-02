@@ -68,8 +68,8 @@ function MemberList() {
                     </thead>
                     <tbody>
                         {
-                            acclist.filter((data)=>{
-                                return role === '' ? data : data.role.includes(role)
+                            acclist.filter((item)=>{
+                                return role === '' ? item : item.role.includes(role)
                             }).map((item) => {
                                 return <tr key={item.email}>
                                     <td>{item.name}</td>
