@@ -8,6 +8,7 @@ import { BiSolidSchool } from "react-icons/bi";
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import React, { useContext, useEffect, useRef, useState } from 'react'
+import ManualAdder from '../adduser/ManualAdder';
 const adminlinks = [
     {
         label: 'Member List',
@@ -36,6 +37,7 @@ function Navbar() {
     const path = usePathname()
     const [adder, setAdder] = useState(false)
     const [rolenav, setRolenav] = useState(adminlinks)
+    const [addmanually, setAddmanually] = useState(false)
     const addermenuref = useRef()
     const addmenuref = useRef()
     useEffect(() => {
@@ -58,7 +60,12 @@ function Navbar() {
                 {
                     adder && (
                         <div ref={addermenuref} className="absolute -bottom-[200%] py-2 w-[80%] px-4 bg-white flex flex-col gap-2 bg-transparent mt-3 z-[2] rounded-lg shadow">
-                            <button>Add Manually</button>
+                            <button className='cursor-pointer' onClick={()=>setAddmanually(true)}>Add Manually</button>
+                            {
+                                addmanually&&(
+                                    <ManualAdder/>
+                                )
+                            }
                             <button>Request</button>
                         </div>
                     )
