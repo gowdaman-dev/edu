@@ -127,9 +127,17 @@ function Navigator({ children }) {
                 </div>
             </div>
             <div className="flex h-full justify-end">
-                <motion.div animate={nav ? { width: '280px' } : { width: '0px' }} className={`h-full md:relative absolute bg-[--web-container]  left-0 flex justify-end`}>
-                    <Navbar />
-                </motion.div>
+                <div className="md:flex hidden">
+                    <motion.div animate={nav ? { width: '280px' } : { width: '0px' }} className={`h-full relative  bg-[--web-container]  left-0 flex justify-end`}>
+                        <Navbar view={"desktop"} />
+                    </motion.div>
+                </div>
+                <div className="md:hidden flex">
+                    <motion.div animate={nav ? { width: '280px' } : { width: '0px' }} className={`h-full absolute z-[8]  bg-[--web-container]  left-0 flex justify-end`}>
+                        <Navbar view={"mobile"} />
+                    </motion.div>
+                </div>
+                
                 <div className="w-[100%] min-h-full p-4 ">
                     {children}
                 </div>
