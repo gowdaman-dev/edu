@@ -16,7 +16,7 @@ function MemberList() {
             .then((data) => {
                 setAcclist(data);
             })
-    },[])
+    },[role])
     useEffect(() => {
         let handler = (e) => {
             try {
