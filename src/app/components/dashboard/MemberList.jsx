@@ -8,8 +8,10 @@ function MemberList() {
     const [acclist, setAcclist] = useState([])
     const filterrefmenu = useRef();
     const filterreflist = useRef();
-    useEffect(() => {
-        fetch('/api/memberlist' , {cache:'no-store'})
+    useEffect(()=> {
+        fetch('/api/memberlist' , {cache:'no-store' , next:{
+            revalidate:1
+        }})
             .then((data) => data.json())
             .then((data) => {
                 setAcclist(data);
