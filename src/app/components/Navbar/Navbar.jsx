@@ -9,6 +9,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import ManualAdder from '../adduser/ManualAdder';
+import { AnimatePresence } from 'framer-motion';
 const adminlinks = [
     {
         label: 'Member List',
@@ -60,12 +61,14 @@ function Navbar() {
                 {
                     adder && (
                         <div ref={addermenuref} className="absolute -bottom-[200%] py-2 w-[80%] px-4 bg-white flex flex-col gap-2 bg-transparent mt-3 z-[2] rounded-lg shadow">
-                            <button className='cursor-pointer' onClick={()=>setAddmanually(true)}>Add Manually</button>
-                            {
-                                addmanually&&(
-                                    <ManualAdder/>
-                                )
-                            }
+                            <button className='cursor-pointer' onClick={() => setAddmanually(true)}>Add Manually</button>
+                            <AnimatePresence mode='wait'>
+                                {
+                                    addmanually && (
+                                        <ManualAdder close={setAddmanually} />
+                                    )
+                                }
+                            </AnimatePresence>
                             <button>Request</button>
                         </div>
                     )
@@ -74,18 +77,33 @@ function Navbar() {
             <div className="border-b py-2 mt-2">
                 {
                     rolenav.map((items) => {
-                        return <Link
-                            href={items?.path}
-                            className='w-[90%] h-fit text-[--text-primary] hover:bg-gray-200 justify-start transition-color duration-500 py-4 rounded-r-full text-left px-4 flex  gap-2 items-center'>
-                            <span className='text-2xl'>
-                                {items.icon}
-                            </span>
-                            <span>
-                                {
-                                    items.label
-                                }
-                            </span>
-                        </Link>
+                        if (items.path == path) {
+                            return <Link
+                                href={items?.path}
+                                className='w-[90%] h-fit text-white bg-[--web-primary-color]  justify-start transition-color duration-500 py-4 rounded-r-full text-left px-4 flex  gap-2 items-center'>
+                                <span className='text-2xl'>
+                                    {items.icon}
+                                </span>
+                                <span>
+                                    {
+                                        items.label
+                                    }
+                                </span>
+                            </Link>
+                        } else {
+                            return <Link
+                                href={items?.path}
+                                className='w-[90%] h-fit text-[--text-primary] hover:bg-gray-200 justify-start transition-color duration-500 py-4 rounded-r-full text-left px-4 flex  gap-2 items-center'>
+                                <span className='text-2xl'>
+                                    {items.icon}
+                                </span>
+                                <span>
+                                    {
+                                        items.label
+                                    }
+                                </span>
+                            </Link>
+                        }
                     })
                 }
             </div>
