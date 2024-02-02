@@ -75,7 +75,7 @@ function MemberList() {
                                     <td>{item.name}</td>
                                     <td>{item.email}</td>
                                     <td>{item.standard}</td>
-                                    <td>{item.role}</td>
+                                    <td>{item?.role}</td>
                                 </tr>
                             })
                         }
