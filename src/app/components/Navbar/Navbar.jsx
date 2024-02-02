@@ -53,7 +53,7 @@ function Navbar() {
 
     return (
         <div className={`min-w-[280px] border-r h-full overflow-hidden transition-all duration-500 flex flex-col py-4 justify-start`}>
-            <ul className='relative flex w-full items-center font-light flex-col  justify-center'>
+            <ul className='relative flex flex-col items-center justify-center w-full font-light'>
                 <button ref={addmenuref} onClick={() => setAdder(!adder)} className='bg-white px-2 rounded-lg text-[--web-primary-color] hover:text-teal-400 shadow-[0px_0px_4px_0px] shadow-[--web-primary-color] w-[80%] py-2 flex items-center justify-center gap-3'><InlineIcon icon="ph:plus-bold" height="20" width="20" /><span>Add Member</span></button>
                 {
                     adder && (
@@ -64,16 +64,17 @@ function Navbar() {
                     )
                 }
             </ul>
-            <div className="border-b py-2 mt-2">
+            <div className="py-2 mt-2 border-b">
                 {
-                    rolenav.map((items) => {
+                    rolenav.map((items,i) => {
                         return <Link
                             href={items?.path}
+                            key={i+"link"}
                             className='w-[90%] h-fit text-[--text-primary] hover:bg-gray-200 justify-start transition-color duration-500 py-4 rounded-r-full text-left px-4 flex  gap-2 items-center'>
-                            <span className='text-2xl'>
+                            <span key={"span"+i} className='text-2xl'>
                                 {items.icon}
                             </span>
-                            <span>
+                            <span key={"span2"+i}>
                                 {
                                     items.label
                                 }
@@ -82,16 +83,18 @@ function Navbar() {
                     })
                 }
             </div>
-            <div className="border-b py-2 ">
+            <div className="py-2 border-b ">
                 {
-                    navlinks.map((links) => {
+                    navlinks.map((links,i) => {
                         return <Link
+                        key={i+"link"}
+
                             href={links?.path}
                             className='w-[90%] h-fit text-[--text-primary] hover:bg-gray-200 justify-start transition-color duration-500 py-4 rounded-r-full text-left px-4 flex  gap-2 items-center'>
-                            <span className='text-2xl'>
+                            <span className='text-2xl' key={"span"+i} >
                                 {links.icon}
                             </span>
-                            <span>
+                            <span key={"span2"+i}>
                                 {
                                     links.label
                                 }
@@ -100,7 +103,7 @@ function Navbar() {
                     })
                 }
             </div>
-            <div className="py-2 flex items-center ">
+            <div className="flex items-center py-2 ">
                 <button className='w-[90%] text-[--text-primary] hover:bg-gray-200 justify-start transition-color duration-500 py-4 rounded-r-full text-left px-4 flex  gap-2 items-center' onClick={() => signOut()}> <Image alt='' src={'/icons/nav/login.svg'} height={24} width={24} /> <span>SignOut</span></button>
             </div>
         </div>

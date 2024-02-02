@@ -99,7 +99,7 @@ function Navigator({ children }) {
                 </div>
                 {
                     mobsearch && (
-                        <div className="md:hidden absolute top-0 left-0 w-full z-[4] flex items-center py-4 bg-white px-4 justify-between">
+                        <div className="absolute top-0 left-0 z-40 flex items-center justify-between w-full px-4 py-4 bg-white md:hidden">
                             <div className="flex items-center px-2 bg-gray-100 rounded-lg">
                                 <InlineIcon className='text-gray-500' icon="tdesign:search" height="25" width="25" />
                                 <input type="text" className='w-[300px] bg-transparent outline-none px-2 py-2 text-sm font-light text-gray-700' placeholder='Search' />
@@ -127,7 +127,7 @@ function Navigator({ children }) {
                 </div>
             </div>
             <div className="flex justify-end h-full">
-                <motion.div animate={nav ? { width: '280px' } : { width: '0px' }} className={`h-full md:relative absolute bg-[--web-container]  left-0 flex justify-end`}>
+                <motion.div animate={nav ? { width: '280px' } : { width: '0px' }} className={`h-full md:relative absolute z-50 bg-[--web-container]  left-0 flex justify-end`}>
                     <Navbar />
                 </motion.div>
                 <div className="w-[100%] min-h-full p-4 ">

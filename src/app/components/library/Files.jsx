@@ -1,23 +1,32 @@
 'use client'
+// pending :hadle file size, file not send eroor handle
+import { BiCloudUpload } from "react-icons/bi"; 
 import React, { useEffect, useState } from 'react'
 import { FaRegFilePdf } from 'react-icons/fa'
 import { BsThreeDotsVertical } from 'react-icons/bs'
-import { FaPlus } from 'react-icons/fa'
+import SkeletonAnimation  from '../SkeletonAnimation'
 import fetchFiles from '@/utils/FetchFiles'
+import axios from "axios";
+import ProgressComp from "./ProgressComponent";
 let filesShow=[]
-async function Files () {
+ function Files () {
   const [data, setData] = useState([])
   const [isAnimate,setIsAnimate]=useState(true)
   const [newFile,setNewFile]=useState(0)
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const responseData = await fetchFiles()
-        if(responseData){
-          setIsAnimate(false)
+  const [progress, setProgress] = useState(0);
+  const [progVisible,setProgVisible]=useState(false)
 
-          setData(responseData)
-        }
+  useEffect(() => {
+    const fetchData =  () => {
+      try {
+       fetchFiles().then((res)=>{
+          
+          if(res){
+            setIsAnimate(false)
+  
+            setData(res)
+          }
+        })
       } catch (error) {
         console.error('Error fetching data:', error)
       }
@@ -26,24 +35,7 @@ async function Files () {
     fetchData()
   }, [newFile])
 
-const tailwindSkeleton=(
-  <div className=" border-teal-200 border-2 bg-white shadow rounded-md p-4 w- w-[80%] mx-auto">
-  <div className="flex space-x-4 animate-pulse">
-    <div className="w-10 h-10 bg-teal-300 rounded-full"></div>
-    <div className="flex-1 py-1 space-y-6">
-      <div className="h-2 bg-teal-300 rounded"></div>
-      <div className="space-y-3">
-        <div className="grid grid-cols-3 gap-4">
-          <div className="h-2 col-span-2 bg-teal-300 rounded"></div>
-          <div className="h-2 col-span-1 bg-teal-300 rounded"></div>
-        </div>
-        <div className="h-2 bg-teal-300 rounded"></div>
-      </div>
-    </div>
-  </div>
-  
-</div>
-)
+
   if(!data.message){
 
     
@@ -54,23 +46,23 @@ const tailwindSkeleton=(
       let id = item.fid
       //work done on items
       //for file name
-      name = name.split('.')
+      name = name.split('.pdf')
       name = name[0]
       name = name.length > 30 ? name.slice(0, 30) + '...' : name
   
       // for file size
       size = size / 1000
-      size = Math.floor(size) + ' KB/s'
+      size=size>1000?(size/1000).toFixed(2) + "MB/s":Math.floor(size) + ' KB/s'
   
       return (
         <div
           key={'file' + index}
-          className='grid grid-flow-col grid-rows-2 bg-[#ffffff] gap-4  grid-cols-8 md:w-[80%] rounded-lg overflow-auto border-[1px] border-[#008C8C] text-[#008C8C]'
+          className='grid grid-flow-col grid-rows-2 bg-[#ffffff] gap-4  grid-cols-8 md:w-[80%] rounded-lg overflow-auto border-[1px] border-[#008C8C] text-[#008C8C] w-full'
         >
-          <span className='grid col-span-1 row-span-2 text-4xl place-content-center text-[#008C8C]'>
+          <span className='grid  col-span-1 row-span-2 sm:text-4xl place-content-center text-[#008C8C] text-3xl '>
             <FaRegFilePdf />
           </span>
-          <p className='block col-span-6 row-span61' key={'filename' + index}>
+          <p className='block col-span-2 row-span61' key={'filename' + index}>
             {name}
           </p>
           <p className='block col-span-6 row-span-1 ' key={'filesize' + index}>
@@ -93,20 +85,31 @@ const tailwindSkeleton=(
   }
 
   async function sendData (data) {
-    const sendFile = await fetch(
-      "http://localhost:3000/api/files",
+    setProgVisible(true)
+    const sendFile = await axios.post(
+      `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}api/files`,data,
       {
-        method: 'POST',
-        body: data
+        
+        onUploadProgress: (progressEvent) => {
+
+          
+          const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+          setProgress(percentCompleted)
+          
+        },
       }
     )
-    if (!sendFile.ok) {
-      throw new Error('File send failed')
+    if (sendFile.status !==200) {
+      // need to handle jk
+     console.log("file send failed");
     } else {
+      setProgVisible(false)
+
       setIsAnimate(true)
       setNewFile((newFile+1))
     }
   }
+
 
   return (
     <div>
@@ -127,14 +130,18 @@ const tailwindSkeleton=(
             htmlFor='fileUpload'
             className=' mr-4 border-2 flex cursor-pointer text-[#008C8C] justify-between items-center px-6 py-2 border-[#008c8c] rounded-md active:scale-90 active:bg-[#92D1CD]'
           >
-            <span className='inline-block text-[#008C8C] pr-4  '>
-              <FaPlus />
+            <span className='inline-block text-[#008C8C] pr-4 text-3xl '>
+             <BiCloudUpload /> 
             </span>
             <span>Upload</span>
           </label>
         </li>
       </ul>
-      <section className='flex flex-col items-center w-full mt-3 gap-y-3'>
+      <section className='relative flex flex-col items-center w-full mt-3 gap-y-3'>
+        {progVisible &&
+<ProgressComp progressChange={progress} click={setProgVisible}/>
+        }
+        
         {
           !isAnimate && filesShow
         }
@@ -143,10 +150,10 @@ const tailwindSkeleton=(
            Oop's {data.message} 
           </p>
         }
-        {isAnimate && tailwindSkeleton}
-        {isAnimate && tailwindSkeleton}
-        {isAnimate && tailwindSkeleton}
-        {isAnimate && tailwindSkeleton}
+        {isAnimate && <SkeletonAnimation/>}
+        {isAnimate && <SkeletonAnimation/>}
+        {isAnimate && <SkeletonAnimation/>}
+        {isAnimate && <SkeletonAnimation/>}
       
       </section>
     </div>
