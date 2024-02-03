@@ -11,6 +11,7 @@ import React, { useContext, useEffect, useRef, useState } from 'react'
 import ManualAdder from '../adduser/ManualAdder';
 import { AnimatePresence, motion } from 'framer-motion';
 import { UserContext } from '@/ContextUser';
+import { GoPlus } from "react-icons/go";
 const adminlinks = [
     {
         label: 'Member List',
@@ -58,7 +59,7 @@ function Navbar() {
     return (
         <div className={`min-w-[280px] h-full overflow-hidden transition-all duration-500 flex flex-col py-4 justify-start`}>
             <ul className='relative flex w-full items-center font-light flex-col justify-center'>
-                <button ref={addmenuref} onClick={() => setAdder(!adder)} className='bg-white px-2 shadow rounded-lg text-[--web-primary-color] hover:text-teal-400 w-[80%] py-2 flex items-center justify-center gap-3'><InlineIcon icon="ph:plus-bold" height="20" width="20" /><span>Add Member</span></button>
+                <button ref={addmenuref} onClick={() => setAdder(!adder)} className='bg-white px-2 shadow rounded-lg text-[--web-primary-color] hover:text-teal-400 w-[80%] py-2 flex items-center justify-center gap-3'><GoPlus className='text-xl' /><span>Add Member</span></button>
                 <AnimatePresence mode='wait'>
                     {
                         adder && (

@@ -65,7 +65,7 @@ const grades = [
     },
 ]
 function Navigator({ children }) {
-    const { setnav, nav , setnavmob, navmob } = useContext(UserContext)
+    const { setnav, nav, setnavmob, navmob } = useContext(UserContext)
     const [grade, setGrade] = useState(grades[0])
     const [showgrade, setShowGrade] = useState(false)
     const [mobsearch, setMobsearch] = useState(false)
@@ -95,15 +95,15 @@ function Navigator({ children }) {
                         <h1 className='font-bold tex-gray-900 text-lg md:flex hidden'>Edulearn</h1>
                     </div>
                 </div>
-                <div className="md:flex hidden bg-[#92D1CDf9] px-2 rounded-lg items-center">
-                    <InlineIcon className='text-gray-600' icon="tdesign:search" height="25" width="25" />
+                <div className="md:flex hidden bg-gray-200 px-2 rounded-lg items-center">
+                    <CiSearch className='text-xl' />
                     <input type="text" className='w-[300px] bg-transparent outline-none px-2 py-1 text-gray-700' placeholder='Search' />
                 </div>
                 {
                     mobsearch && (
                         <div className="md:hidden absolute top-0 left-0 w-full z-[4] flex items-center py-4 bg-white px-4 justify-between">
                             <div className="flex  bg-gray-100 px-2 rounded-lg items-center">
-                                <InlineIcon className='text-gray-500' icon="tdesign:search" height="25" width="25" />
+                                <CiSearch className='text-xl' />
                                 <input type="text" className='w-[300px] bg-transparent outline-none px-2 py-2 text-sm font-light text-gray-700' placeholder='Search' />
                             </div>
                             <IoIosCloseCircleOutline className='text-2xl' onClick={() => setMobsearch(false)} />
@@ -136,10 +136,10 @@ function Navigator({ children }) {
                 </div>
                 <div className="md:hidden flex">
                     <motion.div animate={navmob ? { width: '280px' } : { width: '0px' }} className={`h-full absolute z-[8]  bg-[--web-container]  left-0 flex justify-end`}>
-                        <NavBarMob/>
+                        <NavBarMob />
                     </motion.div>
                 </div>
-                
+
                 <div className="w-[100%] min-h-full p-4 ">
                     {children}
                 </div>
