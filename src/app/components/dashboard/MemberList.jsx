@@ -1,15 +1,9 @@
-import React from 'react'
-import axios from 'axios';
+export const fetchCache = 'force-no-store';
 async function EventHandler() {
-    const res = await axios.get('/api/memberlist',
-        {
-            headers: {
-                'Cache-Control': 'no-cache',
-                'Pragma': 'no-cache',
-                'Expires': '0',
-            }
-        })
-    const data = await res.data;
+    const res = await fetch('/api/memberlist', {
+        cache: 'no-store'
+    })
+    const data = await res.json();
     return data;
 }
 async function Fetched() {
