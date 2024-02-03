@@ -10,6 +10,6 @@ html{
     --green-mild:#44CFB6;
     --text-primary:#292D32;
 }
-/* body{
+body{
     background-color: var(--web-container);
-} */
+}

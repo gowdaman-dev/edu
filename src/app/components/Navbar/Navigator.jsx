@@ -9,6 +9,7 @@ import { IoSchoolOutline } from "react-icons/io5";
 import { IoIosMenu } from "react-icons/io";
 import { CiSearch } from "react-icons/ci";
 import { IoIosCloseCircleOutline } from "react-icons/io";
+import NavBarMob from './NavBarMob'
 const grades = [
     {
         label: 'grade 1',
@@ -64,7 +65,7 @@ const grades = [
     },
 ]
 function Navigator({ children }) {
-    const { setnav, nav } = useContext(UserContext)
+    const { setnav, nav , setnavmob, navmob } = useContext(UserContext)
     const [grade, setGrade] = useState(grades[0])
     const [showgrade, setShowGrade] = useState(false)
     const [mobsearch, setMobsearch] = useState(false)
@@ -87,7 +88,8 @@ function Navigator({ children }) {
         <div className='w-screen h-full'>
             <div className="flex px-10 py-4 justify-between items-center">
                 <div className=" flex items-center justify-center gap-2">
-                    <IoIosMenu onClick={() => setnav(!nav)} className='text-4xl' />
+                    <IoIosMenu onClick={() => setnav(!nav)} className='text-4xl md:flex hidden' />
+                    <IoIosMenu onClick={() => setnavmob(!navmob)} className='text-4xl md:hidden flex' />
                     <div className=" flex items-center justify-center gap-2">
                         <Image src={'/logos/logo.svg'} height={30} width={30} alt='logo' />
                         <h1 className='font-bold tex-gray-900 text-lg md:flex hidden'>Edulearn</h1>
@@ -128,13 +130,13 @@ function Navigator({ children }) {
             </div>
             <div className="flex h-full justify-end">
                 <div className="md:flex hidden">
-                    <motion.div animate={nav ? { width: '280px' } : { width: '0px' }} className={`h-full relative  bg-[--web-container]  left-0 flex justify-end`}>
+                    <motion.div animate={nav ? { width: '280px' } : { width: '0px' }} className={`h-full relative  bg-[--web-container] left-0 flex justify-end`}>
                         <Navbar view={"desktop"} />
                     </motion.div>
                 </div>
                 <div className="md:hidden flex">
-                    <motion.div animate={nav ? { width: '280px' } : { width: '0px' }} className={`h-full absolute z-[8]  bg-[--web-container]  left-0 flex justify-end`}>
-                        <Navbar view={"mobile"} />
+                    <motion.div animate={navmob ? { width: '280px' } : { width: '0px' }} className={`h-full absolute z-[8]  bg-[--web-container]  left-0 flex justify-end`}>
+                        <NavBarMob/>
                     </motion.div>
                 </div>
                 
