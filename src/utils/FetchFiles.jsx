@@ -1,5 +1,5 @@
 async function fetchFiles() {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_NEXTAUTH_URL}api/files`,{
+  const response = await fetch(`/api/files`,{
     headers:{
       'token' : 'ONLY_FILE_INFO'
     },
