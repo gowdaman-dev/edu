@@ -9,7 +9,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import ManualAdder from '../adduser/ManualAdder';
-import { AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { UserContext } from '@/ContextUser';
 const adminlinks = [
     {
@@ -57,23 +57,25 @@ function NavBarMob() {
     })
     return (
         <div className={`min-w-[280px] h-full overflow-hidden transition-all duration-500 flex flex-col py-4 justify-start`}>
-            <ul className='relative flex w-full items-center font-light flex-col  justify-center'>
-                <button ref={addmenuref} onClick={() => setAdder(!adder)} className='bg-white px-2 rounded-lg text-[--web-primary-color] hover:text-teal-400 shadow-[0px_0px_4px_0px] shadow-[--web-primary-color] w-[80%] py-2 flex items-center justify-center gap-3'><InlineIcon icon="ph:plus-bold" height="20" width="20" /><span>Add Member</span></button>
-                {
-                    adder && (
-                        <div ref={addermenuref} className="absolute -bottom-[200%] py-2 w-[80%] px-4 bg-white flex flex-col gap-2 bg-transparent mt-3 z-[2] rounded-lg shadow">
-                            <button className='cursor-pointer' onClick={() => setAddmanually(true)}>Add Manually</button>
-                            <AnimatePresence mode='wait'>
-                                {
-                                    addmanually && (
-                                        <ManualAdder close={setAddmanually} />
-                                    )
-                                }
-                            </AnimatePresence>
-                            <button>Request</button>
-                        </div>
-                    )
-                }
+            <ul className='relative flex w-full items-center font-light flex-col justify-center'>
+                <button ref={addmenuref} onClick={() => setAdder(!adder)} className='bg-white px-2 shadow rounded-lg text-[--web-primary-color] hover:text-teal-400 w-[80%] py-2 flex items-center justify-center gap-3'><InlineIcon icon="ph:plus-bold" height="20" width="20" /><span>Add Member</span></button>
+                <AnimatePresence mode='wait'>
+                    {
+                        adder && (
+                            <motion.div initial={{ opacity: 0.5, x: -10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -10 }} transition={{ duration: .2, type: 'spring' }} ref={addermenuref} className="absolute border -bottom-[200%] py-2 w-[80%] px-4 bg-white flex flex-col gap-2 shadow-sm mt-3 z-[2] rounded-lg">
+                                <button className='cursor-pointer' onClick={() => setAddmanually(true)}>Add Manually</button>
+                                <AnimatePresence mode='wait'>
+                                    {
+                                        addmanually && (
+                                            <ManualAdder close={setAddmanually} />
+                                        )
+                                    }
+                                </AnimatePresence>
+                                <button>Request</button>
+                            </motion.div>
+                        )
+                    }
+                </AnimatePresence>
             </ul>
             <div className="border-b py-2 mt-2 flex flex-col items-center gap-2">
                 {
