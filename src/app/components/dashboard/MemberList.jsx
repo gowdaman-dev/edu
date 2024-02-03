@@ -1,8 +1,6 @@
 export const fetchCache = 'force-no-store';
 async function EventHandler() {
-    const res = await fetch('/api/memberlist', {
-        cache: 'no-store'
-    })
+    const res = await fetch('/api/memberlist',{ cache: 'no-store', next: { revalidate: 0 }})
     const data = await res.json();
     return data;
 }
