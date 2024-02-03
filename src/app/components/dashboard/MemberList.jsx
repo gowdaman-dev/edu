@@ -1,7 +1,8 @@
 import React from 'react'
+import axios from 'axios';
 async function EventHandler() {
-    const res = await fetch(`/api/memberlist`, {cache:"no-store"});
-    const data = await res.json();
+    const res = await axios.get('/api/memberlist')
+    const data = await res.data;
     return data;
 }
 async function Fetched() {
