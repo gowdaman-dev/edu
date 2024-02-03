@@ -22,6 +22,11 @@ function NavBar() {
             }
         }
         window.addEventListener('click', handler)
+        window.addEventListener('resize',()=>{
+            if(window.screenX <= 720){
+                setnav(false)
+            }
+        })
     })
     return (
         <div className='w-screen py-2 flex justify-between px-10 items-center border-b border-gray-200/[.4]'>

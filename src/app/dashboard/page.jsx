@@ -1,9 +1,12 @@
-import React from 'react'
-import MemberList from '../components/dashboard/MemberList'
+'use client'
+import React, { useContext } from 'react'
+import MainDash from '../components/dashboard/MainDash'
+import UserProvider from '../components/dashboard/UserProvider'
 function page() {
   return (
-    <div className="">
-      <MemberList/>
+    <div>
+      <MainDash />
+      <UserProvider/>
     </div>
   )
 }
