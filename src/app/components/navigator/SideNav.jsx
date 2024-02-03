@@ -7,12 +7,13 @@ import { IoIosLogOut } from "react-icons/io";
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 import { UserContext } from '@/ContextUser'
+import ManualAdder from '../adduser/ManualAdder'
 function SideNav() {
     const [addmember, setAddmember] = useState(false)
     const menuref = useRef();
     const menulistref = useRef();
     const path = usePathname();
-    const {nav} = useContext(UserContext)
+    const { nav, addmanually, setAddmanually } = useContext(UserContext)
     const anime = (variants) => {
         return {
             initial: 'initial',
@@ -72,7 +73,7 @@ function SideNav() {
         window.addEventListener('click', handler)
     })
     return (
-        <motion.div animate={nav?'enter':'exit'} exit={"exit"} variants={navvarient} className='h-full md:relative z-[8] absolute left-0 flex justify-end bg-[--web-container]'>
+        <motion.div animate={nav ? 'enter' : 'exit'} exit={"exit"} variants={navvarient} className='h-full md:relative z-[8] absolute left-0 flex justify-end bg-[--web-container]'>
             <div className="flex min-w-[250px] h-full border-r border-gray-200/[.4]">
                 <div className="relative flex flex-col items-center w-full gap-4 px-2 py-2">
                     <button ref={menuref} onClick={() => setAddmember(!addmember)} className='flex items-center justify-center bg-white  text-gray-800 shadow-sm shadow-[--web-primary-color] py-2 rounded w-full'>
@@ -84,7 +85,12 @@ function SideNav() {
                             addmember && (
                                 <motion.div {...anime(addervariant)} ref={menulistref} className="flex flex-col overflow-hidden justify-end py-2 bg-gray-200/[.5] text-gray-800 border rounded w-full ">
                                     <div className="flex flex-col gap-4">
-                                        <button>Add Manually</button>
+                                        <button onClick={() => setAddmanually(true)}>Add Manually</button>
+                                        <AnimatePresence mode='wait'>
+                                            {
+                                                addmanually && (<ManualAdder close={setAddmanually} />)
+                                            }
+                                        </AnimatePresence>
                                         <button>Request</button>
                                     </div>
                                 </motion.div>

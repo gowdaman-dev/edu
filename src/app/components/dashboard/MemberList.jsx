@@ -1,6 +1,6 @@
 import React from 'react'
 async function EventHandler() {
-    const res = await fetch(`/api/memberlist`, { cache: 'no-store' });
+    const res = await fetch(`/api/memberlist`, { cache: 'no-cache' });
     const data = await res.json();
     return data;
 }
