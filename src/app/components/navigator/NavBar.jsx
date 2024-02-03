@@ -1,12 +1,14 @@
 'use client'
 import Image from 'next/image'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState , useContext } from 'react'
 import { AiOutlineMenu } from 'react-icons/ai'
-import { grades } from './grade'
+import { grades } from './Navjson'
 import { AnimatePresence, motion } from 'framer-motion'
+import { UserContext } from '@/ContextUser'
 function NavBar() {
     const [grade, setGrade] = useState(grades[0])
     const [showgrade, setShowGrade] = useState(false)
+    const {nav , setnav} = useContext(UserContext)
     const grademenuref = useRef();
     const grademenulistref = useRef();
     useEffect(() => {
@@ -22,13 +24,13 @@ function NavBar() {
         window.addEventListener('click', handler)
     })
     return (
-        <div className='w-screen py-2 flex justify-between px-10 items-center'>
+        <div className='w-screen py-2 flex justify-between px-10 items-center border-b border-gray-200/[.4]'>
             <div className="flex items-center justify-center gap-4">
-                <AiOutlineMenu className='text-xl' />
+                <AiOutlineMenu onClick={()=>setnav(!nav)} className='text-xl' />
                 <Image src={'/logo.svg'} height={30} width={30}></Image>
                 <h1 className='text-[--web-primary-color] text-xl font-bold'>EDULEARN</h1>
             </div>
-            <div className="search rounded-full bg-gray-200 px-4 py-2">
+            <div className="search md:flex hidden rounded-full bg-gray-200 px-4 py-2">
                 <input type="text" placeholder='search...' className='bg-transparent outline-none text-sm' />
             </div>
             <div className="relative flex item-center justify-center">

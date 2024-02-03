@@ -1,3 +1,7 @@
+import { PiUsersLight } from "react-icons/pi";
+import { VscLibrary } from "react-icons/vsc";
+import { IoSchoolOutline } from "react-icons/io5";
+import { MdOutlineManageAccounts } from "react-icons/md";
 export const grades = [
     {
         label: 'grade 1',
@@ -50,5 +54,28 @@ export const grades = [
     {
         label: 'Teacher',
         value: 'teacher',
+    },
+]
+
+export const adminnavlinks = [
+    {
+        label:"Member List",
+        path:'/dashboard',
+        icon:<PiUsersLight className='text-xl' />
+    },
+    {
+        label:"Sharded Library",
+        path:'/dashboard/library',
+        icon:<VscLibrary  className='text-xl'/>
+    },
+    {
+        label:"School Information",
+        path:'',
+        icon:<IoSchoolOutline className='text-xl'/>
+    },
+    {
+        label:"Account Information",
+        path:'',
+        icon: <MdOutlineManageAccounts className='text-xl'/>
     },
 ]
