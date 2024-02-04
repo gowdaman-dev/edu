@@ -49,7 +49,7 @@ function NavBar() {
                                 exit={{ y: 10, opacity: 0 }}
                                 transition={{ duration: .5, type: 'spring' }}
                                 ref={grademenulistref}
-                                className="flex flex-col absolute top-full text-center bg-white rounded-lg shadow px-2 gap-4 py-2 mt-2 h-[300px] w-[90px] overflow-y-scroll">
+                                className="flex flex-col z-[4] absolute top-full text-center bg-white rounded-lg shadow px-2 gap-4 py-2 mt-2 h-[300px] w-[90px] overflow-y-scroll">
                                 {
                                     grades.map((item) => {
                                         return <p className='text-sm hover:bg-gray-200 p-1 rounded cursor-pointer' key={item.value}>{item.label}</p>
