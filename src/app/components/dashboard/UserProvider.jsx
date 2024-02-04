@@ -2,24 +2,30 @@
 import React, { useContext, useEffect, useState } from 'react'
 import Fetched from './MemberList'
 import { UserContext } from '@/ContextUser'
+import useSWR from 'swr'
 
 function UserProvider({ }) {
     const { fetchrole } = useContext(UserContext)
     const [membersdata, setMemberdata] = useState([])
     const [pulse, setPulse] = useState(false)
-    useEffect(() => {
-        setPulse(true)
-        setMemberdata([])
-        Fetched()
-            .then((res) => {
-                if (res) {
-                    setMemberdata(res);
-                    setPulse(false)
-                }
-            }).catch((err) => {
-                console.log(err);
-            })
-    }, [fetchrole])
+    const fetcher = (...args) => fetch(...args).then(res => res.json())
+    const { data , error , isLoading} = useSWR('/api/memberlist', fetcher)
+
+    if (error) return <div>failed to load</div>
+    if (isLoading) return <div>loading...</div>
+    // useEffect(() => {
+    //     setPulse(true)
+    //     setMemberdata([])
+    //     Fetched()
+    //         .then((res) => {
+    //             if (res) {
+    //                 setMemberdata(res);
+    //                 setPulse(false)
+    //             }
+    //         }).catch((err) => {
+    //             console.log(err);
+    //         })
+    // }, [fetchrole])
     return (
         <div className='w-full'>
             <table className='w-full '>
@@ -33,12 +39,12 @@ function UserProvider({ }) {
                 </thead>
                 <tbody>
                     {
-                        pulse?Array(6).fill(0).map((d , i)=>{
-                            return <Pulsecomponent key={i}/>
-                        }):''
+                        isLoading ? Array(6).fill(0).map((d, i) => {
+                            return <Pulsecomponent key={i} />
+                        }) : ''
                     }
                     {
-                        membersdata.filter((data) => {
+                        data.filter((data) => {
                             return fetchrole == '' ? data : data.role.includes(fetchrole)
                         }).map((data) => {
                             return <tr key={data.email} className={`border-b bg-white/[.2]`}>
