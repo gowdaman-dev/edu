@@ -1,9 +1,9 @@
-'use client'
 import React from 'react'
+import MemberList from '../components/dashboard/MemberList'
 function page() {
   return (
     <div className="">
-      dashboard
+      <MemberList/>
     </div>
   )
 }

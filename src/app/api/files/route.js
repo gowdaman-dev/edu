@@ -2,7 +2,7 @@ const { NextResponse } = require('next/server')
 import { connectMongoBD } from '@/app/lib/mongodb'
 import libFiles from '@/app/models/libFiles'
 import { headers } from 'next/headers';
-export async function GET (req) {
+export async function GET () {
 const header=headers()
 
 
@@ -55,4 +55,26 @@ console.log("from api post /files");
   }
 
   return NextResponse.json({ post: 'ok' })
+}
+
+export async function DELETE(req){
+  console.log("from api/files/delete")
+  try{
+    const {id}=await req.json()
+    if(id){
+      console.log(id);
+   await connectMongoBD()
+   await libFiles.deleteOne({_id:id})
+  return NextResponse.json({message:"deleted successfully"},{status:200})
+     
+    }
+  }catch(e){
+    return NextResponse.json({message:"connection with db throws a error"},{status: 500})
+
+
+  }
+ 
+  return NextResponse.json({message:"file not found"},{status:404})
+
+
 }
