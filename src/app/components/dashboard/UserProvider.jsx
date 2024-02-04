@@ -9,7 +9,7 @@ function UserProvider({ }) {
     const [membersdata, setMemberdata] = useState([])
     const [pulse, setPulse] = useState(false)
     const fetcher = (...args) => fetch(...args).then(res => res.json())
-    const { data , error , isLoading} = useSWR('/api/memberlist', fetcher)
+    const { data , error , isLoading} = useSWR('/api/memberlist', fetcher,{refreshInterval:10})
 
     if (error) return <div>failed to load</div>
     if (isLoading) return <div>loading...</div>
