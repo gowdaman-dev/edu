@@ -133,18 +133,18 @@ function UserProvider({ }) {
     return (
         <div className='md:w-full w-screen overflow-x-scroll'>
             {
-                (pulse) ? <Pulsecomponent /> :<Pulsecomponent/>
-                    // <DataTable columns={columns} data={filterText} direction="auto"
-                    //     fixedHeaderScrollHeight="100%"
-                    //     pagination
-                    //     responsive
-                    //     subHeaderAlign="right"
-                    //     subHeaderWrap
-                    //     customStyles={customStyles}
-                    //     theme='edulearntable'
-                    //     paginationResetDefaultPage={true}
-                    //     highlightOnHover={hoverstyle}
-                    // />
+                (pulse) ? <Pulsecomponent /> :
+                    <DataTable columns={columns} data={filterText} direction="auto"
+                        fixedHeaderScrollHeight="100%"
+                        pagination
+                        responsive
+                        subHeaderAlign="right"
+                        subHeaderWrap
+                        customStyles={customStyles}
+                        theme='edulearntable'
+                        paginationResetDefaultPage={true}
+                        highlightOnHover={hoverstyle}
+                    />
             }
         </div>
     )
