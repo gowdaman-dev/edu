@@ -4,25 +4,22 @@ import Fetched from './MemberList'
 import { UserContext } from '@/ContextUser'
 import DataTable, { createTheme } from 'react-data-table-component';
 import { json2csv } from 'json-2-csv';
-function UserProvider({ }) {
-    const { fetchrole, count, setExporter, exporter } = useContext(UserContext)
+function UserProvider() {
+    const { navSearch, fetchrole, count, setExporter, exporter , navGrade} = useContext(UserContext)
     const [membersdata, setMemberdata] = useState([])
     const [pulse, setPulse] = useState(false)
     useEffect(() => {
         setPulse(true)
-        Fetched()
+        Fetched({navGrade})
             .then((res) => {
                 if (res) {
-                    const finaldata = res.filter((data) => {
-                        return fetchrole == '' ? data : data.row.includes(fetchrole)
-                    })
-                    setMemberdata(finaldata);
+                    setMemberdata(res);
                     setPulse(false)
                 }
             }).catch((err) => {
                 console.log(err);
             })
-    }, [count])
+    }, [count , navGrade])
     createTheme('edulearntable', {
         text: {
             primary: '#000000',
@@ -51,7 +48,7 @@ function UserProvider({ }) {
                 border: 'none',
                 shadow: 'none',
                 background: 'var(--web-container)',
-                width:'100%'
+                width: '100%'
             },
         },
         headCells: {
@@ -62,12 +59,12 @@ function UserProvider({ }) {
                 fontWeight: 400,
                 color: "#6c757d",
                 fontSize: "1rem",
-                width:'100%'
+                width: '100%'
             },
         },
         cells: {
             style: {
-                padding:'8px',
+                padding: '8px',
             },
         },
     };
@@ -111,16 +108,32 @@ function UserProvider({ }) {
     useEffect(() => {
         if (fetchrole == 'student') {
             const studentdata = membersdata.filter((data) => data.role.includes('student'))
-            setFilterText(studentdata)
+            if (navSearch) {
+                const Navsearch = studentdata.filter((data) => data.name.toLowerCase().includes(navSearch.toLowerCase()))
+                setFilterText(Navsearch)
+            }
+            else {
+                setFilterText(studentdata)
+            }
         }
         if (fetchrole == 'teacher') {
             const teacherdata = membersdata.filter((data) => data.role.includes('teacher'))
-            setFilterText(teacherdata)
+            if (navSearch) {
+                const Navsearch = teacherdata.filter((data) => data.name.toLowerCase().includes(navSearch.toLowerCase()))
+                setFilterText(Navsearch)
+            }
+            else {
+                setFilterText(teacherdata)
+            }
         }
-    }, [fetchrole])
+    }, [fetchrole, navSearch ])
     useEffect(() => {
         if (fetchrole == '') {
             setFilterText(membersdata)
+        }
+        if (navSearch && !fetchrole) {
+            const Searchdata = membersdata.filter((data) => data.name.toLowerCase().includes(navSearch.toLowerCase()))
+            setFilterText(Searchdata)
         }
     })
     const hoverstyle = {
