@@ -51,6 +51,7 @@ function UserProvider({ }) {
                 border: 'none',
                 shadow: 'none',
                 background: 'var(--web-container)',
+                width:'100%'
             },
         },
         headCells: {
@@ -61,12 +62,12 @@ function UserProvider({ }) {
                 fontWeight: 400,
                 color: "#6c757d",
                 fontSize: "1rem",
+                width:'100%'
             },
         },
         cells: {
             style: {
-                paddingLeft: '8px', // override the cell padding for data cells
-                paddingRight: '8px',
+                padding:'8px',
             },
         },
     };
@@ -130,7 +131,7 @@ function UserProvider({ }) {
         },
     }
     return (
-        <div className='w-full'>
+        <div className='w-full overflow-x-scroll'>
             {
                 (pulse && !filterText) ? <Pulsecomponent /> :
                     <DataTable columns={columns} data={filterText} direction="auto"
@@ -143,6 +144,7 @@ function UserProvider({ }) {
                         theme='edulearntable'
                         paginationResetDefaultPage={true}
                         highlightOnHover={hoverstyle}
+
                     />
             }
         </div>

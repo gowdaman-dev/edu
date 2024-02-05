@@ -4,14 +4,12 @@ import SideNav from '../components/navigator/SideNav'
 
 function layout({ children }) {
     return (
-        <div>
+        <div className='max-w-screen overflow-hidden'>
             <NavBar />
-            <div className="flex h-screen">
-                <SideNav/>
-                <div className="body flex-1 px-2">
-                    <div>
-                        {children}
-                    </div>
+            <div className="flex h-screen max-w-screen">
+                <SideNav />
+                <div className="body flex-1 px-2 h-screen max-w-screen">
+                    {children}
                 </div>
             </div>
         </div>
