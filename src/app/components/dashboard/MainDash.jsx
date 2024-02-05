@@ -7,7 +7,7 @@ function MainDash() {
     const [filter, setFilter] = useState(false)
     const filterrefmenu = useRef();
     const filterrefmenulist = useRef();
-    const { fetchrole, setFetchrole } = useContext(UserContext);
+    const { fetchrole, setFetchrole , setCount , count , setExporter} = useContext(UserContext);
     useEffect(() => {
         let handler = (e) => {
             try {
@@ -21,7 +21,7 @@ function MainDash() {
         window.addEventListener('click', handler)
     })
     return (
-        <div className='w-full flex flex-col'>
+        <div className='min-w-[100%] flex flex-col'>
             <div className="w-full py-2 border-b flex justify-between items-center">
                 <h1 className='text-xl text-gray-800 font-normal'>MemberList</h1>
                 <div className="flex items-center justify-center gap-4">
@@ -54,12 +54,12 @@ function MainDash() {
                             )
                         }
                     </div>
-                    <div className="cursor-pointer export flex items-center text-sm gap-2 text-[--web-primary-color]">
+                    <div onClick={()=>setExporter("export")} className="cursor-pointer export flex items-center text-sm gap-2 text-[--web-primary-color]">
                         <AiOutlineExport className='text-xl' />
                         <span className='uppercase'>export</span>
                     </div>
                     <div className="reload p-2 hover:bg-gray-100 rounded-full">
-                        <IoReload className='text-xl' />
+                        <IoReload onClick={()=>setCount(count +1)} className='text-xl' />
                     </div>
                 </div>
             </div>

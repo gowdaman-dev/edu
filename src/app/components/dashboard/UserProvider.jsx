@@ -3,13 +3,13 @@ import React, { useContext, useEffect, useState } from 'react'
 import Fetched from './MemberList'
 import { UserContext } from '@/ContextUser'
 import DataTable, { createTheme } from 'react-data-table-component';
+import { json2csv } from 'json-2-csv';
 function UserProvider({ }) {
-    const { fetchrole } = useContext(UserContext)
+    const { fetchrole, count, setExporter, exporter } = useContext(UserContext)
     const [membersdata, setMemberdata] = useState([])
     const [pulse, setPulse] = useState(false)
     useEffect(() => {
         setPulse(true)
-        setMemberdata([])
         Fetched()
             .then((res) => {
                 if (res) {
@@ -22,7 +22,7 @@ function UserProvider({ }) {
             }).catch((err) => {
                 console.log(err);
             })
-    }, [fetchrole])
+    }, [count])
     createTheme('edulearntable', {
         text: {
             primary: '#000000',
@@ -60,7 +60,7 @@ function UserProvider({ }) {
                 background: 'var(--web-container)',
                 fontWeight: 400,
                 color: "#6c757d",
-                fontSize: "1.1rem",
+                fontSize: "1rem",
             },
         },
         cells: {
@@ -83,14 +83,30 @@ function UserProvider({ }) {
         {
             name: 'standard',
             selector: row => row.standard,
-            sortable: true,
         },
         {
             name: 'role',
             selector: row => row.role,
+            sortable: true,
         },
     ];
     const [filterText, setFilterText] = React.useState('');
+    useEffect(() => {
+        if (exporter == "export") {
+            const exported = json2csv(filterText ? filterText : membersdata)
+            let csvContent = "data:text/csv;charset=utf-8," + exported
+            var encodedUri = encodeURI(csvContent);
+            const handleDownload = () => {
+                const link = document.createElement('a');
+                link.download = 'member-list-export';
+                link.href = encodedUri;
+                link.click();
+            };
+            handleDownload()
+            console.log(csvContent);
+            setExporter("false")
+        }
+    }, [exporter])
     useEffect(() => {
         if (fetchrole == 'student') {
             const studentdata = membersdata.filter((data) => data.role.includes('student'))
@@ -107,9 +123,9 @@ function UserProvider({ }) {
         }
     })
     const hoverstyle = {
-        rows:{
+        rows: {
             style: {
-                background:'red'
+                background: 'red'
             }
         },
     }
