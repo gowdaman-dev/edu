@@ -74,7 +74,7 @@ function SideNavMob() {
         window.addEventListener('click', handler)
     })
     return (
-        <motion.div animate={nav ? 'enter' : 'exit'} exit={"exit"} variants={navvarient} className='h-full flex z-[8] absolute left-0 md:hidden justify-end bg-[--web-container]'>
+        <motion.div animate={nav ? 'enter' : 'exit'} exit={"exit"} variants={navvarient} className='h-full absolute z-[8] flex absolute left-0 overflow-x-hidden justify-end bg-[--web-container]'>
             <div className="flex min-w-[250px] h-full border-r border-gray-200/[.4]">
                 <div className="relative flex flex-col items-center w-full gap-4 px-2 py-2">
                     <button ref={menuref} onClick={() => setAddmember(!addmember)} className='flex items-center justify-center bg-white  text-gray-800 shadow-sm shadow-[--web-primary-color] py-2 rounded w-full'>

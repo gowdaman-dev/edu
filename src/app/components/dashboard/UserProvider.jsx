@@ -133,7 +133,7 @@ function UserProvider({ }) {
     return (
         <div className='md:w-full w-screen overflow-x-scroll'>
             {
-                (pulse && !filterText) ? <Pulsecomponent /> :
+                (pulse) ? <Pulsecomponent /> :
                     <DataTable columns={columns} data={filterText} direction="auto"
                         fixedHeaderScrollHeight="100%"
                         pagination

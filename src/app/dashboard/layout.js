@@ -8,8 +8,12 @@ function layout({ children }) {
         <div className='max-w-screen overflow-hidden'>
             <NavBar />
             <div className="flex h-screen max-w-screen">
-                <SideNav />
-                <SideNavMob />
+                <div className="md:flex hidden">
+                    <SideNav />
+                </div>
+                <div className="md:hidden flex">
+                    <SideNavMob />
+                </div>
                 <div className="h-screen md:w-full">
                     {children}
                 </div>
