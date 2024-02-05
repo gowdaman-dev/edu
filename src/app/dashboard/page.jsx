@@ -4,7 +4,7 @@ import MainDash from '../components/dashboard/MainDash'
 import UserProvider from '../components/dashboard/UserProvider'
 function page() {
   return (
-    <div>
+    <div className='min-w-full'>
       <MainDash />
       <UserProvider/>
     </div>
