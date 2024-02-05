@@ -133,19 +133,18 @@ function UserProvider({ }) {
     return (
         <div className='md:w-full w-screen overflow-x-scroll'>
             {
-                (pulse) ? <Pulsecomponent /> :
-                    <DataTable columns={columns} data={filterText} direction="auto"
-                        fixedHeaderScrollHeight="100%"
-                        pagination
-                        responsive
-                        subHeaderAlign="right"
-                        subHeaderWrap
-                        customStyles={customStyles}
-                        theme='edulearntable'
-                        paginationResetDefaultPage={true}
-                        highlightOnHover={hoverstyle}
-
-                    />
+                (pulse) ? <Pulsecomponent /> :<Pulsecomponent/>
+                    // <DataTable columns={columns} data={filterText} direction="auto"
+                    //     fixedHeaderScrollHeight="100%"
+                    //     pagination
+                    //     responsive
+                    //     subHeaderAlign="right"
+                    //     subHeaderWrap
+                    //     customStyles={customStyles}
+                    //     theme='edulearntable'
+                    //     paginationResetDefaultPage={true}
+                    //     highlightOnHover={hoverstyle}
+                    // />
             }
         </div>
     )
@@ -156,7 +155,7 @@ export default UserProvider
 
 const Pulsecomponent = () => {
     return (
-        <div className="w-full py-2 px-2 animate-pulse flex flex-col gap-4">
+        <div className="m:w-full md:relative absolute w-screen py-2 px-2 animate-pulse flex flex-col gap-4">
             <div className="row px-2 py-5 bg-gray-200 w-full rounded-lg"></div>
             <div className="row px-2 py-5 bg-gray-200 w-full rounded-lg"></div>
             <div className="row px-2 py-5 bg-gray-200 w-full rounded-lg"></div>
