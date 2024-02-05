@@ -131,7 +131,7 @@ function UserProvider({ }) {
         },
     }
     return (
-        <div className='w-full overflow-x-scroll'>
+        <div className='md:w-full w-screen overflow-x-scroll'>
             {
                 (pulse && !filterText) ? <Pulsecomponent /> :
                     <DataTable columns={columns} data={filterText} direction="auto"

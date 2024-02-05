@@ -21,7 +21,7 @@ function MainDash() {
         window.addEventListener('click', handler)
     })
     return (
-        <div className='min-w-[100%] flex flex-col'>
+        <div className='w-full flex flex-col'>
             <div className="w-full py-2 border-b flex justify-between items-center">
                 <h1 className='text-xl text-gray-800 font-normal'>MemberList</h1>
                 <div className="flex items-center justify-center gap-4">
