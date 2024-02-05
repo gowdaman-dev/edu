@@ -14,7 +14,7 @@ function SideNavMob() {
     const menuref = useRef();
     const menulistref = useRef();
     const path = usePathname();
-    const { nav , setnav, addmanually, setAddmanually } = useContext(UserContext)
+    const {setnavmob,navmob, addmanually, setAddmanually} = useContext(UserContext)
     const anime = (variants) => {
         return {
             initial: 'initial',
@@ -74,7 +74,7 @@ function SideNavMob() {
         window.addEventListener('click', handler)
     })
     return (
-        <motion.div animate={nav ? 'enter' : 'exit'} exit={"exit"} variants={navvarient} className='h-full absolute z-[8] flex absolute left-0 overflow-x-hidden justify-end bg-[--web-container]'>
+        <motion.div animate={navmob ? 'enter' : 'exit'} exit={"exit"} variants={navvarient} className='h-full absolute z-[8] flex absolute left-0 overflow-x-hidden justify-end bg-[--web-container]'>
             <div className="flex min-w-[250px] h-full border-r border-gray-200/[.4]">
                 <div className="relative flex flex-col items-center w-full gap-4 px-2 py-2">
                     <button ref={menuref} onClick={() => setAddmember(!addmember)} className='flex items-center justify-center bg-white  text-gray-800 shadow-sm shadow-[--web-primary-color] py-2 rounded w-full'>
@@ -86,13 +86,13 @@ function SideNavMob() {
                             addmember && (
                                 <motion.div {...anime(addervariant)} ref={menulistref} className="flex flex-col overflow-hidden justify-end py-2 bg-gray-200/[.5] text-gray-800 border rounded w-full ">
                                     <div className="flex flex-col gap-4">
-                                        <button onClick={() => {setAddmanually(true) ; setnav(false)}}>Add Manually</button>
+                                        <button onClick={() => {setAddmanually(true) ; setnavmob(false)}}>Add Manually</button>
                                         <AnimatePresence mode='wait'>
                                             {
                                                 addmanually && (<ManualAdder close={setAddmanually} />)
                                             }
                                         </AnimatePresence>
-                                        <button onClick={()=>[setnav(false)]}>Request</button>
+                                        <button onClick={()=>[setnavmob(false)]}>Request</button>
                                     </div>
                                 </motion.div>
                             )
@@ -102,7 +102,7 @@ function SideNavMob() {
                         adminnavlinks.map((items) => {
                             if (path == items.path) {
                                 return <Link
-                                    onClick={()=>setnav(false)}
+                                    onClick={()=>setnavmob(false)}
                                     href={items.path}
                                     key={items.label}
                                     className='text-md bg-[--web-primary-color] flex items-center justify-start gap-2 px-4 text-white w-full py-2 text-center rounded'
@@ -112,7 +112,7 @@ function SideNavMob() {
                                 </Link>
                             } else {
                                 return <Link
-                                    onClick={()=>setnav(false)}
+                                    onClick={()=>setnavmob(false)}
                                     href={items.path}
                                     key={items.label}
                                     className='text-md hover:bg-gray-200/[.5] flex items-center justify-start gap-2 px-4 text-gray-800 w-full py-2 text-center rounded'
@@ -123,7 +123,7 @@ function SideNavMob() {
                             }
                         })
                     }
-                    <button onClick={()=>{signOut() ; setnav(false)}} className='text-md hover:bg-gray-200/[.5] flex items-center justify-start gap-2 px-4 text-gray-800 w-full py-2 text-center rounded'>
+                    <button onClick={()=>{signOut() ; setnavmob(false)}} className='text-md hover:bg-gray-200/[.5] flex items-center justify-start gap-2 px-4 text-gray-800 w-full py-2 text-center rounded'>
                         <IoIosLogOut className='text-xl' />
                         <p>Logout</p>
                     </button>

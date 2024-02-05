@@ -8,7 +8,7 @@ import { UserContext } from '@/ContextUser'
 function NavBar() {
     const [grade, setGrade] = useState(grades[0])
     const [showgrade, setShowGrade] = useState(false)
-    const {nav , setnav} = useContext(UserContext)
+    const {nav , setnav,navmob , setnavmob} = useContext(UserContext)
     const grademenuref = useRef();
     const grademenulistref = useRef();
     useEffect(() => {
@@ -31,7 +31,7 @@ function NavBar() {
     return (
         <div className='w-screen py-2 flex justify-between px-10 items-center border-b border-gray-200/[.4]'>
             <div className="flex items-center justify-center gap-4">
-                <AiOutlineMenu onClick={()=>{setnav(!nav)}} className='text-xl' />
+                <AiOutlineMenu onClick={()=>{setnav(!nav);setnavmob(!navmob)}} className='text-xl' />
                 <Image src={'/logo.svg'} height={30} width={30}></Image>
                 <h1 className='text-[--web-primary-color] text-xl font-bold'>EDULEARN</h1>
             </div>
