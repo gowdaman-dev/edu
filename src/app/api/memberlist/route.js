@@ -5,6 +5,6 @@ import { NextResponse } from "next/server";
 export async function PUT(req) {
     const {standard} = await req.json();
     connectMongoBD();
-    let datalist = await User.find({standard})
+    let datalist = await User.find({standard , role: { $nin: ['admin','superadmin'] }})
     return NextResponse.json( datalist ,{ status: '200' })
 }
