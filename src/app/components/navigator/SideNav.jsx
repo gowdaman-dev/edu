@@ -8,6 +8,7 @@ import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 import { UserContext } from '@/ContextUser'
 import ManualAdder from '../adduser/ManualAdder'
+import { signOut, useSession } from 'next-auth/react'
 function SideNav() {
     const [addmember, setAddmember] = useState(false)
     const menuref = useRef();
@@ -72,31 +73,38 @@ function SideNav() {
         }
         window.addEventListener('click', handler)
     })
+    const { data: session, loading } = useSession();
     return (
         <motion.div animate={nav ? 'enter' : 'exit'} exit={"exit"} variants={navvarient} className='h-full flex z-[8] relative left-0 justify-end bg-[--web-container]'>
             <div className="flex min-w-[250px] h-full border-r border-gray-200/[.4]">
                 <div className="relative flex flex-col items-center w-full gap-4 px-2 py-2">
-                    <button ref={menuref} onClick={() => setAddmember(!addmember)} className='flex items-center justify-center bg-white  text-gray-800 shadow-sm shadow-[--web-primary-color] py-2 rounded w-full'>
-                        <AiOutlinePlus className='text-xl' />
-                        <p>Add Members</p>
-                    </button>
-                    <AnimatePresence mode='wait'>
-                        {
-                            addmember && (
-                                <motion.div {...anime(addervariant)} ref={menulistref} className="flex flex-col overflow-hidden justify-end py-2 bg-gray-200/[.5] text-gray-800 border rounded w-full ">
-                                    <div className="flex flex-col gap-4">
-                                        <button onClick={() => setAddmanually(true)}>Add Manually</button>
-                                        <AnimatePresence mode='wait'>
-                                            {
-                                                addmanually && (<ManualAdder close={setAddmanually} />)
-                                            }
-                                        </AnimatePresence>
-                                        <button>Request</button>
-                                    </div>
-                                </motion.div>
-                            )
-                        }
-                    </AnimatePresence>
+                    {
+                        (session?.data?.role == 'admin' || session?.data?.role == 'teacher') && (
+                            <>
+                                <button ref={menuref} onClick={() => setAddmember(!addmember)} className='flex items-center justify-center bg-white  text-gray-800 shadow-sm shadow-[--web-primary-color] py-2 rounded w-full'>
+                                    <AiOutlinePlus className='text-xl' />
+                                    <p>Add Members</p>
+                                </button>
+                                <AnimatePresence mode='wait'>
+                                    {
+                                        addmember && (
+                                            <motion.div {...anime(addervariant)} ref={menulistref} className="flex flex-col overflow-hidden justify-end py-2 bg-gray-200/[.5] text-gray-800 border rounded w-full ">
+                                                <div className="flex flex-col gap-4">
+                                                    <button onClick={() => setAddmanually(true)}>Add Manually</button>
+                                                    <AnimatePresence mode='wait'>
+                                                        {
+                                                            addmanually && (<ManualAdder close={setAddmanually} />)
+                                                        }
+                                                    </AnimatePresence>
+                                                    <button>Request</button>
+                                                </div>
+                                            </motion.div>
+                                        )
+                                    }
+                                </AnimatePresence>
+                            </>
+                        )
+                    }
                     {
                         adminnavlinks.map((items) => {
                             if (path == items.path) {
@@ -120,7 +128,7 @@ function SideNav() {
                             }
                         })
                     }
-                    <button className='text-md hover:bg-gray-200/[.5] flex items-center justify-start gap-2 px-4 text-gray-800 w-full py-2 text-center rounded'>
+                    <button onClick={() => signOut()} className='text-md hover:bg-gray-200/[.5] flex items-center justify-start gap-2 px-4 text-gray-800 w-full py-2 text-center rounded'>
                         <IoIosLogOut className='text-xl' />
                         <p>Logout</p>
                     </button>

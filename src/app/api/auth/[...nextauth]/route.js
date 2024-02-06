@@ -28,6 +28,28 @@ const authOptions = {
             }
         })
     ],
+    callbacks: {
+        async jwt({ token, session, user }) {
+            if (user) {
+                return {
+                    ...token,
+                    role:user.role,
+                    data: user,
+                }
+            }
+            return token
+        },
+        async session({ session, user, token }) {
+            return {
+                ...session,
+                user:{
+                    ...session.user,
+                    role:token.role,
+                    data:token.data
+                }
+            }
+        }
+    },
     session: {
         strategy: "jwt",
     },
@@ -37,5 +59,5 @@ const authOptions = {
     },
 }
 
-const handler = NextAuth(authOptions)
+export const handler = NextAuth(authOptions)
 export { handler as GET, handler as POST }
