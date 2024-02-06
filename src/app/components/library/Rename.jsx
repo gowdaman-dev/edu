@@ -25,7 +25,7 @@ import { MdOutlineDriveFileRenameOutline } from "react-icons/md";
     name:fileName
   }
   console.log("date sent");
-await axios.put("http://localhost:3000/api/files",data).then((res)=>{
+await axios.put("/api/files",data).then((res)=>{
   console.log("yes response came");
   if(res.status===200){
     props.update(fileName)
