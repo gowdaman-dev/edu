@@ -123,7 +123,7 @@ switch(tag){
       return (
         <div
           key={'file' + index}
-          className='grid grid-flow-col grid-rows-3   grid-cols-8 md:w-[80%]  overflow-auto  border-b-[1px]  text-[#008C8C] w-full border-teal-400 relative text-xl'
+          className='grid grid-flow-col grid-rows-3   grid-cols-8 md:w-[80%]  overflow-auto  border-b-[1px]  text-[#008C8C] w-full border-teal-400 relative md:text-xl sm:text-md text-sm'
         >
           <span className='grid col-span-1 row-span-3 text-3xl text-teal-500 sm:text-4xl place-content-center '>
             <FaRegFilePdf />
@@ -135,7 +135,7 @@ switch(tag){
             {name}
           </p>
           <p
-            className='block col-span-6 row-span-1 text-sm text-gray-500'
+            className='block col-span-6 row-span-1 sm:text-sm  text-xs text-gray-500'
             key={'filesize' + index}
           >
             {size}
@@ -234,7 +234,7 @@ if(file){
         <li>
           <input
             type='file'
-            accept='application/pdf'
+            accept='.pdf'
             onChange={e => handleChange(e)}
             name='file'
             id='fileUpload'
