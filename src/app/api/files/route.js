@@ -3,24 +3,21 @@ import { connectMongoBD } from '@/app/lib/mongodb'
 import libFiles from '@/app/models/libFiles'
 import { headers } from 'next/headers';
 export async function GET () {
-const header=headers()
 
 
-const token=header.get("token")
 console.log("from api get /files");
   
 
-  if(token==="ONLY_FILE_INFO"){
 try{
 
   await connectMongoBD()
-  const data = await libFiles.find({},{filebuffer:0})
+  const data = await libFiles.find()
   if (data.length > 0) {
-    const fileData = data.map(({ filename, size, date, _id }) => ({
-      fname: filename,
-      fsize: size,
-      fdate: date,
-      fid: _id,
+    const fileData = data.map(({ file_name, file_size, file_date, file_id }) => ({
+      fname: file_name,
+     fsize: file_size,
+      fdate: file_date,
+      fid: file_id,
     }));
     
     return NextResponse.json(fileData);
@@ -29,7 +26,6 @@ try{
   return NextResponse.json({message:"connection with db throws a error"},{status: 500})
 
 }
-  }
   return NextResponse.json({message:"file not found"},{status:404})
     
 }
@@ -38,15 +34,11 @@ export async function POST (req) {
 console.log("from api post /files");
 
   try {
-    const file = await req.formData()
-    const fileData = file.get('file')
-    const { size, name } = fileData
+    let { fname,fsize,_fid } = await req.json()
+    
     const date = new Date()
-    const bytes = await fileData.arrayBuffer()
-    const buffer = Buffer.from(bytes)
     await connectMongoBD()
-    const createField = await libFiles.create({ filename:name, filebuffer:buffer, size:size, date:date })
-    console.log('createdFile', createField)
+    const createField = await libFiles.create({ file_name:fname, file_id:_fid,file_size:fsize, file_date:date })
   } catch (err) {
     return NextResponse.json(
       { message: 'internal server error' },
@@ -64,7 +56,7 @@ export async function DELETE(req){
     if(id){
       console.log(id);
    await connectMongoBD()
-   await libFiles.deleteOne({_id:id})
+ await libFiles.deleteOne({file_id:id})
   return NextResponse.json({message:"deleted successfully"},{status:200})
      
     }
@@ -75,6 +67,32 @@ export async function DELETE(req){
   }
  
   return NextResponse.json({message:"file not found"},{status:404})
+
+
+}
+
+
+export async function PUT(req){
+  console.log("from api/files/put")
+  try{
+    let {id,name}=await req.json()
+    if(id && name){
+      name=name+".pdf"
+      console.log(name);
+
+      console.log(id);
+   await connectMongoBD()
+  await libFiles.updateOne({file_id:id},{file_name:name})
+
+  return NextResponse.json({message:"Updated successfully"},{status:200})
+
+}
+
+}
+catch(e){
+  return NextResponse.json({message:"connection with db throws a error"},{status: 500})
+}
+return NextResponse.json({message:"file not found"},{status:404})
 
 
 }

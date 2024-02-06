@@ -1,19 +1,19 @@
 import mongoose,{Schema} from "mongoose";
 const libSchema=new Schema({
-    filename:{
+    file_name:{
         type:String,
         required:true
     },
-    filebuffer:{
-        type:Buffer,
+    file_id:{
+        type:String,
         required:true
         
     },
-    size:{
+    file_size:{
         type:Number,
         required:true
     },
-    date:{
+    file_date:{
         type:Date,
         required:true
     }
