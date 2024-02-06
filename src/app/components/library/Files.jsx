@@ -129,7 +129,7 @@ switch(tag){
             <FaRegFilePdf />
           </span>
           <p
-            className=' col-span-6 row-span-2    flex font-serif items-center'
+            className=' col-span-6 row-span-2    flex items-center'
             key={'filename' + index}
           >
             {name}
