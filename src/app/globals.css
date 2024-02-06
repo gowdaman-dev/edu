@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 html{
     background: #F3FFF8;
 }
@@ -12,4 +13,5 @@ html{
 }
 body{
     background-color: var(--web-container);
+    
 }

@@ -5,90 +5,88 @@ import Link from "next/link";
 import { webName } from "../globalDetails";
 
 const renderClass = (SelectedRole) => {
-   
- const student= [
+  const student = [
+    {
+      s_no: 1,
+      
+      grade: "Grade 1",
+    },
+    {
+      s_no: 2,
+      grade: "Grade 2",
+    },
 
-  {
-    s_no : 1,
-    grade : "Grade 1"
-  },
-  {
-    s_no:2,
-    grade : "Grade 2",
-  },
+    {
+      s_no: 3,
+      grade: "Grade 3",
+    },
+    {
+      s_no: 4,
+      grade: "Grade 4",
+    },
+    {
+      s_no: 5,
+      grade: "Grade 5",
+    },
+    {
+      s_no: 6,
+      grade: "Grade 6",
+    },
 
-  {
-    s_no:3,
-    grade : "Grade 3",
-  },
-  {
-    s_no:4,
-    grade : "Grade 4"
-  },
-  {
-    s_no : 5,
-    grade : "Grade 5"
-  },
-  {
-    s_no:6,
-    grade : "Grade 6",
-  },
+    {
+      s_no: 7,
+      grade: "Grade 7",
+    },
+    {
+      s_no: 4,
+      grade: "Grade 8",
+    },
 
-  {
-    s_no:7,
-    grade : "Grade 7",
-  },
-  {
-    s_no:4,
-    grade : "Grade 8"
-  },
-    
-  {
-    s_no : 9,
-    grade : "Grade 9"
-  },
-  {
-    s_no:10,
-    grade : "Grade 10",
-  },
+    {
+      s_no: 9,
+      grade: "Grade 9",
+    },
+    {
+      s_no: 10,
+      grade: "Grade 10",
+    },
 
-  {
-    s_no:11,
-    grade : "Grade 11",
-  },
-  {
-    s_no:12,
-    grade : "Grade 12"
-  },
-
- ]
+    {
+      s_no: 11,
+      grade: "Grade 11",
+    },
+    {
+      s_no: 12,
+      grade: "Grade 12",
+    },
+  ];
 
   return SelectedRole === "student" ? (
     <select
-      name="role"
-      id="role"
+      name="grade"
+      id="grade"
+      defaultValue="default"
       className="rounded-[5px]  bg-[--web-container] mt-10 pl-2 h-14 w-72 md:w-[600px] mx-auto  border-2 border-[--web-primary-color]"
     >
-      <option value= "default" disabled selected>
-      Select Your Grade
-      </option>
-      {
-        student.map((item)=>(
-          <option  
-          key={item.s_no}
-          value={item.s_no}
-          
-          >
-            {item.grade}
-          </option>
-        ))
-      }
-      
+      <option value="default" disabled >Select Your Grade</option>
+      {student.map((item) => (
+        <option key={item.s_no} value={item.s_no}>
+          {item.grade}
+        </option>
+      ))}
     </select>
   ) : null;
 };
+
 const Requestform = () => {
-  
+  const school = [
+    {
+      s_no: 1,
+      schoolName: "ACET",
+    },
+  ];
+ const value = "Default"
+ 
   const Comment =
     "Tell us more about yourself and the purpose of using our product";
   const [SelectedRole, setSelectedRole] = useState("default");
@@ -122,11 +120,21 @@ const Requestform = () => {
                 placeholder="Your Name"
                 className="rounded-[3px] pl-2 h-12 outline-none focus:border-[3px] border border-[--web-primary-color] bg-[--web-container]"
               />
-              <input
-                type="text"
-                placeholder="School Name"
+
+              <select
+               
+                defaultValue="Default"
                 className="rounded-[3px] pl-2 h-12 border outline-none focus:border-[3px] border-[--web-primary-color] bg-[--web-container]"
-              />
+              >
+                <option value="Default" disabled>
+                  School Name
+                </option>
+                {school.map((item) => (
+                  <option key={item.s_no} value={item.s_no}>
+                    {item.schoolName}
+                  </option>
+                ))}
+              </select>
             </div>
             <div className="flex flex-col gap-10 w-72 md:w-72">
               <input
@@ -137,14 +145,13 @@ const Requestform = () => {
               <select
                 name="role"
                 id="role"
+                defaultValue="default"
                 className="rounded-[3px] h-12 pl-2 border outline-none focus:border-[3px] border-[--web-primary-color] bg-[--web-container]"
                 onChange={(event) => {
-                  setSelectedRole(event.target.value)
-                  ;
+                  setSelectedRole(event.target.value);
                 }}
-                >
- 
-                <option value={SelectedRole} selected disabled>
+              >
+                <option value="default" disabled>
                   User Type
                 </option>
                 <option value="owner">Owner</option>
@@ -154,7 +161,7 @@ const Requestform = () => {
             </div>
           </div>
         </div>
-        
+
         {renderClass(SelectedRole)}
         <div className="flex justify-center gap-10 flex-col py-10 ">
           <textarea
