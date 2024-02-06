@@ -12,8 +12,10 @@ import { MdOutlineDriveFileRenameOutline } from "react-icons/md";
     setFileName( e.target.value)
   }
     const rename=async()=>{
+      console.log("rename called ");
     const fieldVal=refRename.current.value.trim()
  if(!fieldVal){
+  console.log("yes no feild val");
    refRename.current.classList.add("border-[#ef233c]","border-[1px]","text-[#ef233c]")
    refRename.current.value="enter any text"
  }
@@ -23,6 +25,7 @@ import { MdOutlineDriveFileRenameOutline } from "react-icons/md";
     name:fileName
   }
 await axios.put("http://localhost:3000/api/files",data).then((res)=>{
+  console.log("yes response came");
   if(res.status===200){
     props.update(fileName)
     props.closePop(null)
