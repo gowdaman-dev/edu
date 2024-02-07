@@ -40,7 +40,7 @@ function NavBar() {
         <div className='w-screen py-2 flex justify-between px-10 items-center border-b border-gray-200/[.4]'>
             <div className="flex items-center justify-center gap-4">
                 <AiOutlineMenu onClick={() => { setnav(!nav); setnavmob(!navmob) }} className='text-xl' />
-                <Image src={'/logo.svg'} height={30} width={30}></Image>
+                <Image src={'/logo.svg'} height={30} width={30} alt=""></Image>
                 <h1 className='text-[--web-primary-color] text-xl font-bold'>EDULEARN</h1>
             </div>
             <div className="search md:flex hidden rounded-full bg-gray-200 px-4 py-2">
