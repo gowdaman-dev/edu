@@ -86,7 +86,7 @@ function ManualAdder({ close }) {
                 body: JSON.stringify({ name, email, password, standard, role })
             })
             if (res.ok) {
-                const form = await e.form();
+                const form = await e.target;
                 form.reset();
                 close(false)
                 return
@@ -128,10 +128,10 @@ function ManualAdder({ close }) {
                         <label className='text-xl' htmlFor="email">Email</label>
                         <input onChange={(e) => { setEmail(e.target.value) }} className='w-[80%] text-sm text-gray-700 outline-none bg-gray-200 p-2 rounded-lg' type="email" required placeholder='Email' id='email' />
                     </div>
-
                     <div className="flex justify-between gap-4 items-center w-full ">
                         <label className='text-xl' htmlFor="standard">Standard</label>
                         <select onChange={(e) => { setStandard(e.target.value) }} className='w-[80%] rounded-lg text-gray-700 p-2' name="standard" required id="standard">
+                            <option value="">Select Grade</option>
                             {
                                 grades.map((grade) => {
                                     return <option key={grade.value} value={grade.value}>{grade.label}</option>

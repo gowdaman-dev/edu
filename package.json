@@ -10,6 +10,7 @@
     "export": "next build && export"
   },
   "dependencies": {
+    "ag-grid-react": "^31.0.3",
     "axios": "^1.6.7",
     "bcryptjs": "^2.4.3",
     "framer-motion": "^10.18.0",

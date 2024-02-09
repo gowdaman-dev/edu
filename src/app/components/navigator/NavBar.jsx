@@ -5,7 +5,9 @@ import { AiOutlineMenu } from 'react-icons/ai'
 import { grades } from './Navjson'
 import { AnimatePresence, motion } from 'framer-motion'
 import { UserContext } from '@/ContextUser'
+import { useSession } from 'next-auth/react'
 function NavBar() {
+    const { data: session } = useSession();
     const [grade, setGrade] = useState(grades[0])
     const [showgrade, setShowGrade] = useState(false)
     const {
@@ -14,7 +16,7 @@ function NavBar() {
         navmob,
         setnavmob,
         setNavSearch,
-        navGrade, 
+        navGrade,
         setNavGrade
     } = useContext(UserContext)
     const grademenuref = useRef();
@@ -44,29 +46,33 @@ function NavBar() {
                 <h1 className='text-[--web-primary-color] text-xl font-bold'>EDULEARN</h1>
             </div>
             <div className="search md:flex hidden rounded-full bg-gray-200 px-4 py-2">
-                <input onChange={(e)=>{setNavSearch(e.target.value)}} type="text" placeholder='search...' className='bg-transparent outline-none text-sm' />
+                <input onChange={(e) => { setNavSearch(e.target.value) }} type="text" placeholder='search...' className='bg-transparent outline-none text-sm' />
             </div>
-            <div className="relative flex item-center justify-center">
-                <button ref={grademenuref} onClick={() => setShowGrade(!showgrade)} className='p-2 bg-white rounded-full shadow text-gray-800'>Grade {navGrade}</button>
-                <AnimatePresence mode='wait'>
-                    {
-                        (showgrade) && (
-                            <motion.div
-                                initial={{ y: 10, opacity: .6 }}
-                                animate={{ y: 0, opacity: 1 }}
-                                exit={{ y: 10, opacity: 0 }}
-                                transition={{ duration: .5, type: 'spring' }}
-                                className="flex flex-col z-[4] absolute top-full text-center bg-white rounded-lg shadow px-2 gap-4 py-2 mt-2 h-[300px] w-[90px] overflow-y-scroll">
-                                {
-                                    grades.map((item) => {
-                                        return <p onClick={()=>setNavGrade(item.value)} className='text-sm hover:bg-gray-200 p-1 rounded cursor-pointer' key={item.value}>{item.label}</p>
-                                    })
-                                }
-                            </motion.div>
-                        )
-                    }
-                </AnimatePresence>
-            </div>
+            {
+                session?.user?.role !== "superadmin" && (
+                    <div className="relative flex item-center justify-center">
+                        <button ref={grademenuref} onClick={() => setShowGrade(!showgrade)} className='p-2 bg-white rounded-full shadow text-gray-800'>Grade {navGrade}</button>
+                        <AnimatePresence mode='wait'>
+                            {
+                                (showgrade) && (
+                                    <motion.div
+                                        initial={{ y: 10, opacity: .6 }}
+                                        animate={{ y: 0, opacity: 1 }}
+                                        exit={{ y: 10, opacity: 0 }}
+                                        transition={{ duration: .5, type: 'spring' }}
+                                        className="flex flex-col z-[4] absolute top-full text-center bg-white rounded-lg shadow px-2 gap-4 py-2 mt-2 h-[300px] w-[90px] overflow-y-scroll">
+                                        {
+                                            grades.map((item) => {
+                                                return <p onClick={() => setNavGrade(item.value)} className='text-sm hover:bg-gray-200 p-1 rounded cursor-pointer' key={item.value}>{item.label}</p>
+                                            })
+                                        }
+                                    </motion.div>
+                                )
+                            }
+                        </AnimatePresence>
+                    </div>
+                )
+            }
         </div>
     )
 }
