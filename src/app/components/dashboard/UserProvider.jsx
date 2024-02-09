@@ -4,10 +4,10 @@ import { UserContext } from '@/ContextUser'
 import DataTable, { createTheme } from 'react-data-table-component';
 import { json2csv } from 'json-2-csv';
 import { useSession } from 'next-auth/react';
-import useSWR from 'swr';
 import { motion } from 'framer-motion';
 import { AiOutlineClose } from 'react-icons/ai';
 import { FaRegEdit } from 'react-icons/fa';
+import { grades } from '../navigator/Navjson';
 
 const datalist = async ({ standard, school, role }) => {
     try {
@@ -34,7 +34,7 @@ function UserProvider() {
     useEffect(() => {
         setMemberdata(undefined)
         setPulse(true)
-        datalist({standard:navGrade , school:session?.user?.school , role:session?.user?.role}).then((data)=>{
+        datalist({ standard: navGrade, school: session?.user?.school, role: session?.user?.role }).then((data) => {
             setMemberdata(data)
             setPulse(false)
             console.log(data);
@@ -167,12 +167,45 @@ function UserProvider() {
     const [detailpop, setDetailpop] = useState(false)
     const [dataeditable, setdataeditable] = useState(false)
     const [selecteddetailpop, setSelectedDetailpop] = useState({})
+    const [removeConformer, setRemoveConformer] = useState(false)
     const RowSelected = async (e) => {
         try {
             await setSelectedDetailpop({ id: e._id, name: e.name, email: e.email, school: e.school, role: e.role, standard: e?.standard });
             await setDetailpop(true)
         } catch (error) {
 
+        }
+    }
+    const userremoveConformer = (e) => {
+        e.preventDefault();
+        setRemoveConformer(true);
+        setDetailpop(false)
+    }
+    const removerbyadmin = () => {
+        const remover = fetch('/api/superadmin/remover', {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ role: selecteddetailpop.role, school: selecteddetailpop.school, id: selecteddetailpop.id })
+        })
+        if (remover) {
+            setRemoveConformer(false)
+        }
+    }
+    const updaterbyadmin = async(e) => {
+        e.preventDefault();
+        const formdata = new FormData(e.target)
+        await formdata.append('id', selectedrecord.id)
+        await formdata.append('oldschool', selectedrecord.school)
+        await formdata.append('grade', selectedrecord.standard)
+        const res = await fetch('/api/adminupdater', {
+            method: 'PUT',
+            body: formdata
+        })
+        if (res.ok) {
+            setdataeditable(false)
+            setDetailpop(false)
         }
     }
     return (
@@ -186,8 +219,8 @@ function UserProvider() {
                                 <h1 className='text-center font-medium text-gray-800'>Account detail ({selecteddetailpop.role})</h1>
                                 <button className="" onClick={() => setdataeditable(!dataeditable)}><FaRegEdit /></button>
                             </div>
-                            <form className='w-full flex flex-col gap-4 py-2 pt-4' action="" method="post">
-                                <div className="flex w-full justify-between">
+                            <form onSubmit={dataeditable ? updaterbyadmin : userremoveConformer} className='w-full flex flex-col gap-4 py-2 pt-4' action="" method="post">
+                                <div className="flex w-full justify-between items-center">
                                     <label htmlFor="name">Name</label>
                                     {
                                         dataeditable ?
@@ -195,7 +228,7 @@ function UserProvider() {
                                             <input type="text" placeholder='name' id='name' name='name' value={selecteddetailpop.name} disabled={!dataeditable} className='w-[80%] rounded-lg px-2 py-1 w-[80%]' />
                                     }
                                 </div>
-                                <div className="flex w-full justify-between">
+                                <div className="flex w-full justify-between items-center">
                                     <label htmlFor="email">Email</label>
                                     {
                                         dataeditable ?
@@ -203,12 +236,27 @@ function UserProvider() {
                                             <input type="eamil" placeholder='email' id='email' name="email" value={selecteddetailpop.email} disabled={!dataeditable} className='w-[80%] rounded-lg px-2 py-1 w-[80%]' />
                                     }
                                 </div>
-                                <div className="flex w-full justify-between">
+                                <div className="flex w-full justify-between items-center">
                                     <label htmlFor="school">school</label>
                                     {
                                         dataeditable ?
                                             <input type="text" placeholder='school' id='school' name='school' className='bg-gray-200 rounded-lg px-2 py-1 w-[80%]' /> :
                                             <input type="text" placeholder='school' id='school' name='school' value={selecteddetailpop.school} disabled={!dataeditable} className='w-[80%] rounded-lg px-2 py-1 w-[80%]' />
+                                    }
+                                </div>
+                                <div className="flex w-full justify-between items-center">
+                                    <label htmlFor="school">Grade</label>
+                                    {
+                                        dataeditable ?
+                                            <select className='w-[80%] rounded-lg px-2 py-1 w-[80%]' name="grade" id="grade">
+                                                <option value="">update grade</option>
+                                                {
+                                                    grades.map((item, i) => {
+                                                        return <option key={i} value={item.value}>{item.label}</option>
+                                                    })
+                                                }
+                                            </select> :
+                                            <p className='w-[80%] rounded-lg px-2 py-1 w-[80%]'>{selecteddetailpop.standard} grade</p>
                                     }
                                 </div>
                                 {
@@ -222,6 +270,29 @@ function UserProvider() {
                                     )
                                 }
                             </form>
+                        </motion.div>
+                    </motion.div>
+                )
+            }
+            {
+                removeConformer && (
+                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ type: 'tween', duration: .5 }} className="top-0 left-0 fixed z-[9] h-screen w-screen bg-gray-500/[.5] backdrop-blur-sm grid place-items-center">
+                        <motion.div initial={{ y: 20 }} animate={{ y: 0 }} exit={{ opacity: 20 }} transition={{ type: 'tween', duration: .3, delay: .2 }} className="flex flex-col bg-white md:w-[500px] w-[90%] rounded-lg p-4 border">
+                            <div className="flex justify-between py-2 border-b text-xl">
+                                <h1 className='text-center font-medium text-gray-800'>Conformation({selecteddetailpop.role})</h1>
+                                <button className='text-red-500 text-md' onClick={() => { setRemoveConformer(false); setDetailpop(true) }}>Cancel</button>
+                            </div>
+                            {
+                                (selecteddetailpop.role == "teacher") && (
+                                    <p className='font-light text-sm text-gray-700 py-2'>Warning removing account <strong>{selecteddetailpop.email}</strong> will terminate <strong>user</strong> belong to {selecteddetailpop.school} school. click conform to remove</p>
+                                )
+                            }
+                            {
+                                (selecteddetailpop.role == "student") && (
+                                    <p className='font-light text-sm text-gray-700 py-2'>Warning removing account <strong>{selecteddetailpop.email}</strong> will terminate <strong>user</strong> belong to {selecteddetailpop.school} school. click conform to remove</p>
+                                )
+                            }
+                            <button onClick={removerbyadmin} className='w-full p-2 text-white rounded-lg bg-red-400'>Conform</button>
                         </motion.div>
                     </motion.div>
                 )
