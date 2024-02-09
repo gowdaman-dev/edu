@@ -50,11 +50,7 @@ export const grades = [
     {
         label: 'grade 12',
         value: 12,
-    },
-    {
-        label: 'Teacher',
-        value: 'teacher',
-    },
+    }
 ]
 
 export const adminnavlinks = [

@@ -5,13 +5,14 @@ import DataTable, { createTheme } from 'react-data-table-component';
 import { json2csv } from 'json-2-csv';
 import { AnimatePresence, motion } from 'framer-motion';
 import { FaRegEdit } from 'react-icons/fa';
-import { AiOutlineClose, AiOutlineCloseCircle, AiOutlineDown, AiOutlineDownload, AiOutlineUp } from 'react-icons/ai';
+import { AiOutlineClose, AiOutlineCloseCircle, AiOutlineDown, AiOutlineDownload, AiOutlineReload, AiOutlineUp } from 'react-icons/ai';
 import useSWR from 'swr';
 function SuperAdminMember() {
   const {
     navSearch,
     fetchrole,
     count,
+    setCount,
     setExporter,
     exporter,
     userDetailpopup,
@@ -30,7 +31,6 @@ function SuperAdminMember() {
     const responce = await userdata.json()
     return responce
   }
-  const { data: membersdata, error: fetcherr, isLoading: memberloading } = useSWR('memberlistsuperadmin', fetcher);
   createTheme('edulearntable', {
     text: {
       primary: '#000000',
@@ -102,7 +102,7 @@ function SuperAdminMember() {
   const [filterText, setFilterText] = React.useState('');
   useEffect(() => {
     if (exporter == "export") {
-      const exported = json2csv(filterText ? filterText : membersdata)
+      const exported = json2csv(filterText ? filterText : memberdata)
       let csvContent = "data:text/csv;charset=utf-8," + exported
       var encodedUri = encodeURI(csvContent);
       const handleDownload = () => {
@@ -180,11 +180,23 @@ function SuperAdminMember() {
     return sklresponce
   }
   const { data: schooldata, error: schoolfetcherr, isLoading: schooloading } = useSWR('scholl fetch', schoolfetcher);
+  const [memberdata, setMemberdata] = useState();
+  useEffect(() => {
+    setMemberdata(undefined)
+    setPulse(true)
+    fetcher().then((data) => {
+      setMemberdata(data)
+      setPulse(false)
+      console.log(data);
+    })
+    //console.log(datalist);
+  }, [count])
+
   const [schoolfilter, setSchoolFilter] = useState('')
   const [schoolfiltertoggle, setSchoolFilterToggle] = useState(false)
   const [roleFilter, setroleFilter] = useState('')
   const [roleFilterToggle, setRoleFilterToggle] = useState(false)
-  const [filterdata, setFilterdata] = useState(membersdata)
+  const [filterdata, setFilterdata] = useState(memberdata)
   const rolejson = ['admin', 'teacher', 'student']
   useEffect(() => {
     let filter = async () => {
@@ -193,7 +205,7 @@ function SuperAdminMember() {
           const sckfilter = filterdata.filter((item) => item.school.includes(schoolfilter))
           setFilterdata(sckfilter)
         }
-        if (roleFilter){
+        if (roleFilter) {
           console.log('selected role', roleFilter);
           console.log('data', filterdata);
           const rlfilter = filterdata.filter((item) => item.role.includes(roleFilter))
@@ -205,7 +217,7 @@ function SuperAdminMember() {
           setFilterdata(nvfilter)
         }
         if (!navSearch && !roleFilter && !schoolfilter) {
-          setFilterdata(membersdata)
+          setFilterdata(memberdata)
         }
       } catch (error) {
         console.log("data undefined");
@@ -375,12 +387,15 @@ function SuperAdminMember() {
                 }
               </div>
             </div>
+            <div className="grid place-items-center p-2 hover:bg-gray-100 rounded-lg border">
+              <AiOutlineReload className='text-xl text-gray-800' onClick={() => setCount(count + 1)} />
+            </div>
           </div>
         </div>
       </div>
       {
         (pulse) ? <Pulsecomponent /> :
-          <DataTable columns={columns} data={filterdata?filterdata:membersdata} direction="auto"
+          <DataTable columns={columns} data={filterdata ? filterdata : memberdata} direction="auto"
             fixedHeaderScrollHeight="100%"
             pagination
             responsive

@@ -8,37 +8,38 @@ import useSWR from 'swr';
 import { motion } from 'framer-motion';
 import { AiOutlineClose } from 'react-icons/ai';
 import { FaRegEdit } from 'react-icons/fa';
-function UserProvider() {
-    const { navSearch, fetchrole, count, setExporter, exporter, navGrade } = useContext(UserContext)
-    const [pulse, setPulse] = useState(false)
-    const { data: session } = useSession()
-    const fetcher = async () => {
+
+const datalist = async ({ standard, school, role }) => {
+    try {
         const res = await fetch('/api/memberlist', {
             method: "PUT",
             headers: {
                 "Content-Type": 'application/json'
             },
-            body: JSON.stringify({ standard: navGrade, school: session?.user?.school, role: session?.user?.role }),
+            body: JSON.stringify({ standard, school, role }),
             cache: 'no-store', next: { revalidate: 0 }
         })
         const data = await res.json();
         return data
+    } catch (error) {
+        console.log(error);
     }
-    const { data: membersdatas, isLoading: memberloading, error: memberfetcherr } = useSWR('memberList', fetcher)
-    const [membersdata, setmembersdata] = useState()
+}
+
+function UserProvider() {
+    const { navSearch, fetchrole, count, setExporter, exporter, navGrade } = useContext(UserContext)
+    const [pulse, setPulse] = useState(false)
+    const { data: session } = useSession()
+    const [memberdata, setMemberdata] = useState()
     useEffect(() => {
-        if (memberloading) {
-            setPulse(true)
-        }
-        if (memberfetcherr) {
-            console.log(memberfetcherr);
-        }
-        if (membersdatas) {
-            setmembersdata(membersdatas)
-            console.log("fetehed".membersdatas);
+        setMemberdata(undefined)
+        setPulse(true)
+        datalist({standard:navGrade , school:session?.user?.school , role:session?.user?.role}).then((data)=>{
+            setMemberdata(data)
             setPulse(false)
-        }
-        console.log('useeffect');
+            console.log(data);
+        })
+        //console.log(datalist);
     }, [count, navGrade])
     createTheme('edulearntable', {
         text: {
@@ -111,7 +112,7 @@ function UserProvider() {
     const [filterText, setFilterText] = React.useState('');
     useEffect(() => {
         if (exporter == "export") {
-            const exported = json2csv(filterText ? filterText : membersdata)
+            const exported = json2csv(filterText ? filterText : memberdata)
             let csvContent = "data:text/csv;charset=utf-8," + exported
             var encodedUri = encodeURI(csvContent);
             const handleDownload = () => {
@@ -127,7 +128,7 @@ function UserProvider() {
     }, [exporter])
     useEffect(() => {
         if (fetchrole == 'student') {
-            const studentdata = membersdata.filter((data) => data.role.includes('student'))
+            const studentdata = memberdata.filter((data) => data.role.includes('student'))
             if (navSearch) {
                 const Navsearch = studentdata.filter((data) => data.name.toLowerCase().includes(navSearch.toLowerCase()))
                 setFilterText(Navsearch)
@@ -137,7 +138,7 @@ function UserProvider() {
             }
         }
         if (fetchrole == 'teacher') {
-            const teacherdata = membersdata.filter((data) => data.role.includes('teacher'))
+            const teacherdata = memberdata.filter((data) => data.role.includes('teacher'))
             if (navSearch) {
                 const Navsearch = teacherdata.filter((data) => data.name.toLowerCase().includes(navSearch.toLowerCase()))
                 setFilterText(Navsearch)
@@ -149,10 +150,10 @@ function UserProvider() {
     }, [fetchrole, navSearch])
     useEffect(() => {
         if (fetchrole == '') {
-            setFilterText(membersdata)
+            setFilterText(memberdata)
         }
         if (navSearch && !fetchrole) {
-            const Searchdata = membersdata.filter((data) => data.name.toLowerCase().includes(navSearch.toLowerCase()))
+            const Searchdata = memberdata.filter((data) => data.name.toLowerCase().includes(navSearch.toLowerCase()))
             setFilterText(Searchdata)
         }
     })
@@ -166,16 +167,16 @@ function UserProvider() {
     const [detailpop, setDetailpop] = useState(false)
     const [dataeditable, setdataeditable] = useState(false)
     const [selecteddetailpop, setSelectedDetailpop] = useState({})
-    const RowSelected = async () => {
+    const RowSelected = async (e) => {
         try {
+            await setSelectedDetailpop({ id: e._id, name: e.name, email: e.email, school: e.school, role: e.role, standard: e?.standard });
             await setDetailpop(true)
-            setSelectedDetailpop({ id: e._id, name: e.name, email: e.email, school: e.school, role: e.role, standard: e?.standard });
         } catch (error) {
 
         }
     }
     return (
-        <div className='md:w-full w-screen overflow-x-scroll'>
+        <div className='md:w-full w-screen h-fit overflow-x-scroll'>
             {
                 detailpop && (
                     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ type: 'tween', duration: .5 }} className="top-0 left-0 fixed z-[9] h-screen w-screen bg-gray-500/[.5] backdrop-blur-sm grid place-items-center">
@@ -185,7 +186,7 @@ function UserProvider() {
                                 <h1 className='text-center font-medium text-gray-800'>Account detail ({selecteddetailpop.role})</h1>
                                 <button className="" onClick={() => setdataeditable(!dataeditable)}><FaRegEdit /></button>
                             </div>
-                            <form  className='w-full flex flex-col gap-4 py-2 pt-4' action="" method="post">
+                            <form className='w-full flex flex-col gap-4 py-2 pt-4' action="" method="post">
                                 <div className="flex w-full justify-between">
                                     <label htmlFor="name">Name</label>
                                     {
