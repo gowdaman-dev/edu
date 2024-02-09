@@ -3,95 +3,25 @@ import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { webName } from "../globalDetails";
+import DropDown from "./DropDown";
 
-const renderClass = (SelectedRole) => {
-  const student = [
-    {
-      s_no: 1,
-      
-      grade: "Grade 1",
-    },
-    {
-      s_no: 2,
-      grade: "Grade 2",
-    },
-
-    {
-      s_no: 3,
-      grade: "Grade 3",
-    },
-    {
-      s_no: 4,
-      grade: "Grade 4",
-    },
-    {
-      s_no: 5,
-      grade: "Grade 5",
-    },
-    {
-      s_no: 6,
-      grade: "Grade 6",
-    },
-
-    {
-      s_no: 7,
-      grade: "Grade 7",
-    },
-    {
-      s_no: 4,
-      grade: "Grade 8",
-    },
-
-    {
-      s_no: 9,
-      grade: "Grade 9",
-    },
-    {
-      s_no: 10,
-      grade: "Grade 10",
-    },
-
-    {
-      s_no: 11,
-      grade: "Grade 11",
-    },
-    {
-      s_no: 12,
-      grade: "Grade 12",
-    },
-  ];
-
-  return SelectedRole === "student" ? (
-    <select
-      name="grade"
-      id="grade"
-      defaultValue="default"
-      className="rounded-[5px]  bg-[--web-container] mt-10 pl-2 h-14 w-72 md:w-[600px] mx-auto  border-2 border-[--web-primary-color]"
-    >
-      <option value="default" disabled >Select Your Grade</option>
-      {student.map((item) => (
-        <option key={item.s_no} value={item.s_no}>
-          {item.grade}
-        </option>
-      ))}
-    </select>
-  ) : null;
-};
 
 const Requestform = () => {
-  const school = [
+  const schoolName = [
     {
-      s_no: 1,
-      schoolName: "ACET",
+      value : 1,
+      label : "ACET",
     },
-  ];
- const value = "Default"
- 
+    {
+      value : 2,
+      label : 'Achariya'
+    }
+  ]
   const Comment =
     "Tell us more about yourself and the purpose of using our product";
   const [SelectedRole, setSelectedRole] = useState("default");
   return (
-    <div className="mt-16">
+    <div className="mt-16 z-30">
       <p className="text-center px-10 pb-8 text-lg">
         Note: this form is designed for EDUCATORS only. If you are a STUDENT,
         please{" "}
@@ -121,20 +51,11 @@ const Requestform = () => {
                 className="rounded-[3px] pl-2 h-12 outline-none focus:border-[3px] border border-[--web-primary-color] bg-[--web-container]"
               />
 
-              <select
-               
-                defaultValue="Default"
-                className="rounded-[3px] pl-2 h-12 border outline-none focus:border-[3px] border-[--web-primary-color] bg-[--web-container]"
-              >
-                <option value="Default" disabled>
-                  School Name
-                </option>
-                {school.map((item) => (
-                  <option key={item.s_no} value={item.s_no}>
-                    {item.schoolName}
-                  </option>
-                ))}
-              </select>
+             
+               <DropDown options= {schoolName} default = {"School Name"}
+
+               />
+             
             </div>
             <div className="flex flex-col gap-10 w-72 md:w-72">
               <input
@@ -162,7 +83,7 @@ const Requestform = () => {
           </div>
         </div>
 
-        {renderClass(SelectedRole)}
+        
         <div className="flex justify-center gap-10 flex-col py-10 ">
           <textarea
             type="text"
