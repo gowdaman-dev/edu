@@ -1,25 +1,45 @@
 'use client'
 import React, { useContext, useEffect, useState } from 'react'
-import Fetched from './MemberList'
 import { UserContext } from '@/ContextUser'
 import DataTable, { createTheme } from 'react-data-table-component';
 import { json2csv } from 'json-2-csv';
+import { useSession } from 'next-auth/react';
+import useSWR from 'swr';
+import { motion } from 'framer-motion';
+import { AiOutlineClose } from 'react-icons/ai';
+import { FaRegEdit } from 'react-icons/fa';
 function UserProvider() {
-    const { navSearch, fetchrole, count, setExporter, exporter , navGrade} = useContext(UserContext)
-    const [membersdata, setMemberdata] = useState([])
+    const { navSearch, fetchrole, count, setExporter, exporter, navGrade } = useContext(UserContext)
     const [pulse, setPulse] = useState(false)
+    const { data: session } = useSession()
+    const fetcher = async () => {
+        const res = await fetch('/api/memberlist', {
+            method: "PUT",
+            headers: {
+                "Content-Type": 'application/json'
+            },
+            body: JSON.stringify({ standard: navGrade, school: session?.user?.school, role: session?.user?.role }),
+            cache: 'no-store', next: { revalidate: 0 }
+        })
+        const data = await res.json();
+        return data
+    }
+    const { data: membersdatas, isLoading: memberloading, error: memberfetcherr } = useSWR('memberList', fetcher)
+    const [membersdata, setmembersdata] = useState()
     useEffect(() => {
-        setPulse(true)
-        Fetched({navGrade})
-            .then((res) => {
-                if (res) {
-                    setMemberdata(res);
-                    setPulse(false)
-                }
-            }).catch((err) => {
-                console.log(err);
-            })
-    }, [count , navGrade])
+        if (memberloading) {
+            setPulse(true)
+        }
+        if (memberfetcherr) {
+            console.log(memberfetcherr);
+        }
+        if (membersdatas) {
+            setmembersdata(membersdatas)
+            console.log("fetehed".membersdatas);
+            setPulse(false)
+        }
+        console.log('useeffect');
+    }, [count, navGrade])
     createTheme('edulearntable', {
         text: {
             primary: '#000000',
@@ -126,7 +146,7 @@ function UserProvider() {
                 setFilterText(teacherdata)
             }
         }
-    }, [fetchrole, navSearch ])
+    }, [fetchrole, navSearch])
     useEffect(() => {
         if (fetchrole == '') {
             setFilterText(membersdata)
@@ -143,8 +163,68 @@ function UserProvider() {
             }
         },
     }
+    const [detailpop, setDetailpop] = useState(false)
+    const [dataeditable, setdataeditable] = useState(false)
+    const [selecteddetailpop, setSelectedDetailpop] = useState({})
+    const RowSelected = async () => {
+        try {
+            await setDetailpop(true)
+            setSelectedDetailpop({ id: e._id, name: e.name, email: e.email, school: e.school, role: e.role, standard: e?.standard });
+        } catch (error) {
+
+        }
+    }
     return (
         <div className='md:w-full w-screen overflow-x-scroll'>
+            {
+                detailpop && (
+                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ type: 'tween', duration: .5 }} className="top-0 left-0 fixed z-[9] h-screen w-screen bg-gray-500/[.5] backdrop-blur-sm grid place-items-center">
+                        <motion.div initial={{ y: 20 }} animate={{ y: 0 }} exit={{ opacity: 20 }} transition={{ type: 'tween', duration: .3, delay: .2 }} className="flex flex-col bg-white md:w-[500px] w-[90%] rounded-lg p-4 border">
+                            <div className="flex justify-between py-2 border-b text-xl">
+                                <button className="" onClick={() => { setDetailpop(false); setdataeditable(false) }}><AiOutlineClose /></button>
+                                <h1 className='text-center font-medium text-gray-800'>Account detail ({selecteddetailpop.role})</h1>
+                                <button className="" onClick={() => setdataeditable(!dataeditable)}><FaRegEdit /></button>
+                            </div>
+                            <form  className='w-full flex flex-col gap-4 py-2 pt-4' action="" method="post">
+                                <div className="flex w-full justify-between">
+                                    <label htmlFor="name">Name</label>
+                                    {
+                                        dataeditable ?
+                                            <input type="text" placeholder='name' id='name' name='name' className='bg-gray-200 rounded-lg px-2 py-1 w-[80%]' /> :
+                                            <input type="text" placeholder='name' id='name' name='name' value={selecteddetailpop.name} disabled={!dataeditable} className='w-[80%] rounded-lg px-2 py-1 w-[80%]' />
+                                    }
+                                </div>
+                                <div className="flex w-full justify-between">
+                                    <label htmlFor="email">Email</label>
+                                    {
+                                        dataeditable ?
+                                            <input type="email" placeholder='email' id='email' name="email" className='bg-gray-200 rounded-lg px-2 py-1 w-[80%]' /> :
+                                            <input type="eamil" placeholder='email' id='email' name="email" value={selecteddetailpop.email} disabled={!dataeditable} className='w-[80%] rounded-lg px-2 py-1 w-[80%]' />
+                                    }
+                                </div>
+                                <div className="flex w-full justify-between">
+                                    <label htmlFor="school">school</label>
+                                    {
+                                        dataeditable ?
+                                            <input type="text" placeholder='school' id='school' name='school' className='bg-gray-200 rounded-lg px-2 py-1 w-[80%]' /> :
+                                            <input type="text" placeholder='school' id='school' name='school' value={selecteddetailpop.school} disabled={!dataeditable} className='w-[80%] rounded-lg px-2 py-1 w-[80%]' />
+                                    }
+                                </div>
+                                {
+                                    dataeditable && (
+                                        <button type='submit' className='w-full p-2 bg-yellow-200 rounded-lg'>Update Account</button>
+                                    )
+                                }
+                                {
+                                    !dataeditable && (
+                                        <button type='submit' className='w-full p-2 bg-red-200 rounded-lg'>Remove Account</button>
+                                    )
+                                }
+                            </form>
+                        </motion.div>
+                    </motion.div>
+                )
+            }
             {
                 (pulse) ? <Pulsecomponent /> :
                     <DataTable columns={columns} data={filterText} direction="auto"
@@ -157,6 +237,7 @@ function UserProvider() {
                         theme='edulearntable'
                         paginationResetDefaultPage={true}
                         highlightOnHover={hoverstyle}
+                        onRowClicked={RowSelected}
                     />
             }
         </div>

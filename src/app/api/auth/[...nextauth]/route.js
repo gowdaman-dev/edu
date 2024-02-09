@@ -31,23 +31,41 @@ const authOptions = {
     callbacks: {
         async jwt({ token, session, user }) {
             if (user) {
-                return {
-                    ...token,
-                    role:user.role,
-                    data: user,
+                if (user.role == 'superadmin') {
+                    return {
+                        ...token,
+                        role: user.role,
+                    }
+                } else {
+                    return {
+                        ...token,
+                        role: user.role,
+                        school: user.school
+                    }
                 }
             }
             return token
         },
         async session({ session, user, token }) {
-            return {
-                ...session,
-                user:{
-                    ...session.user,
-                    role:token.role,
-                    data:token.data
+            if (token.role == "superadmin") {
+                return {
+                    ...session,
+                    user: {
+                        ...session.user,
+                        role: token.role,
+                    }
+                }
+            }else{
+                return{
+                    ...session,
+                    user: {
+                        ...session.user,
+                        role: token.role,
+                        school: token.school
+                    }
                 }
             }
+
         }
     },
     session: {

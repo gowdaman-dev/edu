@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { IoIosCloseCircleOutline } from 'react-icons/io'
 import { motion } from 'framer-motion'
+import { useSession } from 'next-auth/react'
 const grades = [
     {
         label: 'grade 1',
@@ -59,6 +60,7 @@ function ManualAdder({ close }) {
     const [error, setError] = useState('')
     const password = 'Test@1234'
     const inner = useRef()
+    const {data:session} = useSession()
     const SignUpHandler = async (e) => {
         e.preventDefault()
         try {
@@ -83,7 +85,7 @@ function ManualAdder({ close }) {
                 headers: {
                     "Content-Type": 'application/json'
                 },
-                body: JSON.stringify({ name, email, password, standard, role })
+                body: JSON.stringify({ name, email, password, standard , school:session?.user?.school, role })
             })
             if (res.ok) {
                 const form = await e.target;
