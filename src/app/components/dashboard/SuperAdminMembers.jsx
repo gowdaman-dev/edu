@@ -169,15 +169,6 @@ function SuperAdminMember() {
     }
   }
   const [ schoolfilterdata , setSchoolFilterData] = useState({})
-  useEffect(()=>{
-    fetch('/api/schoolList', {
-      method: "PUT",
-      headers: {
-        "Content-Type": 'application/json'
-      },
-      cache: 'no-store', next: { revalidate: 0 }
-    }).then((data)=>data.json()).then((values)=>setSchoolFilterData(values))
-  },[schoolfilter])
   const [memberdata, setMemberdata] = useState();
   useEffect(() => {
     setMemberdata(undefined)
@@ -196,9 +187,21 @@ function SuperAdminMember() {
   const [roleFilterToggle, setRoleFilterToggle] = useState(false)
   const [filterdata, setFilterdata] = useState(memberdata)
   const rolejson = ['admin', 'teacher', 'student']
+  useEffect(()=>{
+    fetch('/api/schoolList', {
+      method: "PUT",
+      headers: {
+        "Content-Type": 'application/json'
+      },
+      cache: 'no-store', next: { revalidate: 0 }
+    }).then((data)=>data.json()).then((values)=>setSchoolFilterData(values)).catch((err)=>console.log("fetching data"))
+  },[schoolfilter , schoolfiltertoggle])
   useEffect(() => {
     let filter = async () => {
       try {
+        if (!navSearch && !roleFilter && !schoolfilter) {
+          setFilterdata(memberdata)
+        }
         if (schoolfilter) {
           const sckfilter = filterdata.filter((item) => item.school.toLowerCase().includes(schoolfilter.toLowerCase()))
           setFilterdata(sckfilter)
@@ -214,26 +217,13 @@ function SuperAdminMember() {
           const nvfilter = filterdata.filter((item) => item.name.toLowerCase().includes(navSearch.toLowerCase()))
           setFilterdata(nvfilter)
         }
-        if (!navSearch && !roleFilter && !schoolfilter) {
-          setFilterdata(memberdata)
-        }
       } catch (error) {
         console.log("data undefined");
       }
     }
     filter()
     console.log(filterdata);
-  }, [navSearch, roleFilter, schoolfilter])
-  useEffect(()=>{
-    try {
-      if (schoolfilter) {
-        const sckfilter = filterdata.filter((item) => item.school.toLowerCase().includes(schoolfilter.toLowerCase()))
-        setFilterdata(sckfilter)
-      }
-    } catch (error) {
-      
-    }
-  })
+  }, [navSearch, roleFilter, schoolfilter , schoolfiltertoggle])
   return (
     <div className='md:w-full w-screen overflow-x-scroll'>
       <AnimatePresence mode='wait'>
@@ -342,23 +332,17 @@ function SuperAdminMember() {
                     </button>
                   )
                 }
-                {
-                  !schooloading && (
-                    <>
-                      {
-                        schoolfiltertoggle && (
-                          <div className="absolute right-0 top-full z-[8] mt-2 min-w-[180px] flex flex-col px-2 py-2 bg-white rounded-lg border">
-                            {
-                              schoolfilterdata.map((item) => {
-                                return <button key={item._id} onClick={() => { setSchoolFilter(item.schoolname); setSchoolFilterToggle(false) }} className='text-sm text-gray-800 rounded-lg py-1 px-2 text-left px-2 hover:bg-gray-100'>{item.schoolname}</button>
-                              })
-                            }
-                          </div>
-                        )
-                      }
-                    </>
-                  )
-                }
+                  {
+                    schoolfiltertoggle && (
+                      <div className="absolute right-0 top-full z-[8] mt-2 min-w-[180px] flex flex-col px-2 py-2 bg-white rounded-lg border">
+                        {
+                          schoolfilterdata.map((item) => {
+                            return <button key={item._id} onClick={() => { setSchoolFilter(item.schoolname);setSchoolFilterToggle(false);}} className='text-sm text-gray-800 rounded-lg py-1 px-2 text-left px-2 hover:bg-gray-100'>{item.schoolname}</button>
+                          })
+                        }
+                      </div>
+                    )
+                  }
               </div>
             </div>
             <div className="flex items-center justify-center">
