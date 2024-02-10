@@ -226,14 +226,14 @@ function SuperAdminMember() {
     filter()
     console.log(filterdata);
   }, [navSearch, roleFilter, schoolfilter])
-  useEffect(() => {
+  useEffect(()=>{
     try {
       if (schoolfilter) {
         const sckfilter = filterdata.filter((item) => item.school.toLowerCase().includes(schoolfilter.toLowerCase()))
         setFilterdata(sckfilter)
       }
     } catch (error) {
-
+      
     }
   })
   return (
@@ -340,7 +340,7 @@ function SuperAdminMember() {
                       className='bg-white text-gray-800 p-2 rounded-lg border flex items-center md:text-md text-sm gap-2'
                       onClick={() => { setSchoolFilterToggle(false); setSchoolFilter('') }}
                     >
-                      school:{schoolfilter}<AiOutlineCloseCircle />
+                      {schoolfilter}<AiOutlineCloseCircle />
                     </button>
                   )
                 }
@@ -380,7 +380,7 @@ function SuperAdminMember() {
                       className='bg-white text-gray-800 p-2 rounded-lg border flex items-center md:text-md text-sm gap-2'
                       onClick={() => { setRoleFilterToggle(false); setroleFilter('') }}
                     >
-                      Role:{roleFilter}<AiOutlineCloseCircle />
+                      {roleFilter}<AiOutlineCloseCircle />
                     </button>
                   )
                 }
