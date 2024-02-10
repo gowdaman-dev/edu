@@ -180,6 +180,7 @@ function SuperAdminMember() {
     return sklresponce
   }
   const { data: schooldata, error: schoolfetcherr, isLoading: schooloading } = useSWR('scholl fetch', schoolfetcher);
+  const [ schoolfilterdata , setSchoolFilterData] = usestate(schooldata)
   const [memberdata, setMemberdata] = useState();
   useEffect(() => {
     setMemberdata(undefined)
@@ -351,7 +352,7 @@ function SuperAdminMember() {
                         schoolfiltertoggle && (
                           <div className="absolute right-0 top-full z-[8] mt-2 min-w-[180px] flex flex-col px-2 py-2 bg-white rounded-lg border">
                             {
-                              schooldata.map((item) => {
+                              schoolfilterdata.map((item) => {
                                 return <button key={item._id} onClick={() => { setSchoolFilter(item.schoolname); setSchoolFilterToggle(false) }} className='text-sm text-gray-800 rounded-lg py-1 px-2 text-left px-2 hover:bg-gray-100'>{item.schoolname}</button>
                               })
                             }
