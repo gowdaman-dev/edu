@@ -226,6 +226,16 @@ function SuperAdminMember() {
     filter()
     console.log(filterdata);
   }, [navSearch, roleFilter, schoolfilter])
+  useEffect(() => {
+    try {
+      if (schoolfilter) {
+        const sckfilter = filterdata.filter((item) => item.school.toLowerCase().includes(schoolfilter.toLowerCase()))
+        setFilterdata(sckfilter)
+      }
+    } catch (error) {
+
+    }
+  })
   return (
     <div className='md:w-full w-screen overflow-x-scroll'>
       <AnimatePresence mode='wait'>
