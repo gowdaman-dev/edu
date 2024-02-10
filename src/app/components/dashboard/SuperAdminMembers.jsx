@@ -180,7 +180,12 @@ function SuperAdminMember() {
     return sklresponce
   }
   const { data: schooldata, error: schoolfetcherr, isLoading: schooloading } = useSWR('scholl fetch', schoolfetcher);
-  const [ schoolfilterdata , setSchoolFilterData] = usestate(schooldata)
+  const [ schoolfilterdata , setSchoolFilterData] = useState({})
+  useEffect(()=>{
+    if(schooldata){
+      setSchoolFilterData(schooldata)
+    }
+  })
   const [memberdata, setMemberdata] = useState();
   useEffect(() => {
     setMemberdata(undefined)
