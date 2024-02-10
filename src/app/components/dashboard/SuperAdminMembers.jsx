@@ -168,24 +168,16 @@ function SuperAdminMember() {
       setdeleteuser(false)
     }
   }
-  const schoolfetcher = async () => {
-    const schoolfetch = await fetch('/api/schoolList', {
+  const [ schoolfilterdata , setSchoolFilterData] = useState({})
+  useEffect(()=>{
+    fetch('/api/schoolList', {
       method: "PUT",
       headers: {
         "Content-Type": 'application/json'
       },
       cache: 'no-store', next: { revalidate: 0 }
-    })
-    const sklresponce = await schoolfetch.json()
-    return sklresponce
-  }
-  const { data: schooldata, error: schoolfetcherr, isLoading: schooloading } = useSWR('scholl fetch', schoolfetcher);
-  const [ schoolfilterdata , setSchoolFilterData] = useState({})
-  useEffect(()=>{
-    if(schooldata){
-      setSchoolFilterData(schooldata)
-    }
-  })
+    }).then((data)=>data.json()).then((values)=>setSchoolFilterData(values))
+  },[schoolfilter])
   const [memberdata, setMemberdata] = useState();
   useEffect(() => {
     setMemberdata(undefined)
