@@ -202,18 +202,18 @@ function SuperAdminMember() {
     let filter = async () => {
       try {
         if (schoolfilter) {
-          const sckfilter = filterdata.filter((item) => item.school.includes(schoolfilter))
+          const sckfilter = filterdata.filter((item) => item.school.toLowerCase().includes(schoolfilter.toLowerCase()))
           setFilterdata(sckfilter)
         }
         if (roleFilter) {
           console.log('selected role', roleFilter);
           console.log('data', filterdata);
-          const rlfilter = filterdata.filter((item) => item.role.includes(roleFilter))
+          const rlfilter = filterdata.filter((item) => item.role.toLowerCase().includes(roleFilter.toLowerCase()))
           console.log('filtered data', rlfilter);
           setFilterdata(rlfilter)
         }
         if (navSearch) {
-          const nvfilter = filterdata.filter((item) => item.name.includes(navSearch))
+          const nvfilter = filterdata.filter((item) => item.name.toLowerCase().includes(navSearch.toLowerCase()))
           setFilterdata(nvfilter)
         }
         if (!navSearch && !roleFilter && !schoolfilter) {
@@ -319,7 +319,7 @@ function SuperAdminMember() {
                   !schoolfilter && (
                     <button
                       onClick={() => setSchoolFilterToggle(!schoolfiltertoggle)}
-                      className='bg-white text-gray-800 p-2 rounded-lg border flex items-center gap-2'
+                      className='bg-white text-gray-800 p-2 rounded-lg border flex items-center md:text-md text-sm gap-2'
                     >All School {schoolfiltertoggle ? <AiOutlineUp /> : <AiOutlineDown />}
                     </button>
                   )
@@ -327,7 +327,7 @@ function SuperAdminMember() {
                 {
                   schoolfilter && (
                     <button
-                      className='bg-white text-gray-800 p-2 rounded-lg border flex items-center  gap-2'
+                      className='bg-white text-gray-800 p-2 rounded-lg border flex items-center md:text-md text-sm gap-2'
                       onClick={() => { setSchoolFilterToggle(false); setSchoolFilter('') }}
                     >
                       school:{schoolfilter}<AiOutlineCloseCircle />
@@ -359,7 +359,7 @@ function SuperAdminMember() {
                   !roleFilter && (
                     <button
                       onClick={() => setRoleFilterToggle(!roleFilterToggle)}
-                      className='bg-white text-gray-800 p-2 rounded-lg border flex items-center gap-2'
+                      className='bg-white text-gray-800 p-2 rounded-lg border flex items-center md:text-md text-sm gap-2'
                     >All Roles {roleFilterToggle ? <AiOutlineUp /> : <AiOutlineDown />}
                     </button>
                   )
@@ -367,7 +367,7 @@ function SuperAdminMember() {
                 {
                   roleFilter && (
                     <button
-                      className='bg-white text-gray-800 p-2 rounded-lg border flex items-center gap-2'
+                      className='bg-white text-gray-800 p-2 rounded-lg border flex items-center md:text-md text-sm gap-2'
                       onClick={() => { setRoleFilterToggle(false); setroleFilter('') }}
                     >
                       Role:{roleFilter}<AiOutlineCloseCircle />

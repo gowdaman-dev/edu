@@ -1,5 +1,5 @@
 'use client'
-import React from 'react'
+import React, { useContext, useEffect } from 'react'
 import NavBar from '../components/navigator/NavBar'
 import SideNav from '../components/navigator/SideNav'
 import SideNavMob from '../components/navigator/SideNavMob'
@@ -8,9 +8,16 @@ import LoaderPage from '../components/loader/LoadingPage'
 import NavBarStudent from '../components/navigator/NavBarStudent'
 import SideNavStudent from '../components/navigator/SideNavStudent'
 import SideNavMobStudent from '../components/navigator/SideNavMobStudent'
+import { UserContext } from '@/ContextUser'
 
 function layout({ children }) {
     const { data: session, loading } = useSession()
+    const { setnav } = useContext(UserContext)
+    useEffect(() => {
+        if (window.screenX <= 640) {
+            setnav(false)
+        }
+    }, [])
     return (
         <>
             {
