@@ -58,10 +58,14 @@ function ManualAdder({ close }) {
     const [standard, setStandard] = useState('')
     const [role, setRole] = useState('')
     const [error, setError] = useState('')
+    const [crtschool, setcrtschool] = useState('')
     const [adding, setAdding] = useState(false)
     const password = 'Test@1234'
     const inner = useRef()
     const {data:session} = useSession()
+    useEffect(()=>{
+        setcrtschool(session?.user?.school)
+    })
     const SignUpHandler = async (e) => {
         e.preventDefault()
         setAdding(true)
@@ -87,7 +91,7 @@ function ManualAdder({ close }) {
                 headers: {
                     "Content-Type": 'application/json'
                 },
-                body: JSON.stringify({ name, email, password, standard , school:session?.user?.school, role })
+                body: JSON.stringify({ name, email, password, standard , school:crtschool, role })
             })
             if (res.ok) {
                 const form = await e.target;

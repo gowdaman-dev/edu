@@ -35,7 +35,8 @@ const authOptions = {
                         ...token,
                         role: user.role,
                     }
-                } else {
+                } 
+                if(!user.role == 'superadmin') {
                     return {
                         ...token,
                         role: user.role,
@@ -55,7 +56,8 @@ const authOptions = {
                         role: token.role,
                     }
                 }
-            } else {
+            }
+            if (!token.role == "superadmin") {
                 const verify = await User.findOne({ email: token.email })
                 if (!verify) return null;
                 return {
@@ -63,6 +65,7 @@ const authOptions = {
                     user: {
                         ...session.user,
                         role: token.role,
+                        school:token.school
                     }
                 }
             }
