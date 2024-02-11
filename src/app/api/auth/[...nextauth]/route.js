@@ -47,8 +47,8 @@ const authOptions = {
             return token
         },
         async session({ session, user, token }) {
+            await connectMongoBD();
             if (token.role == "superadmin") {
-                await connectMongoBD();
                 const verify = User.findOne({ email: token.email }).select('_id')
                 if (verify) {
                     return {
@@ -61,20 +61,16 @@ const authOptions = {
                 }
                 return null
             } else {
-                await connectMongoBD();
-                const verify = User.findOne({ email: token.email }).select('_id')
-                if (verify) {
-                    return {
-                        ...session,
-                        user: {
-                            ...session.user,
-                            role: token.role,
-                        }
+                const verify = User.findOne({ email: user.email })
+                if (!verify) return null;
+                return {
+                    ...session,
+                    user: {
+                        ...session.user,
+                        role: token.role,
                     }
                 }
-                return null
             }
-
         }
     },
     session: {
