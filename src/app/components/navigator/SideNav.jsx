@@ -2,7 +2,7 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import { AiOutlinePlus } from 'react-icons/ai'
-import { adminnavlinks , superadminnavlinks } from './Navjson'
+import { adminnavlinks, superadminnavlinks } from './Navjson'
 import { IoIosLogOut } from "react-icons/io";
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
@@ -10,13 +10,14 @@ import { UserContext } from '@/ContextUser'
 import ManualAdder from '../adduser/ManualAdder'
 import OrganiserManualAdder from '../adduser/OrganiserManualAdder'
 import { signOut, useSession } from 'next-auth/react'
+import Requestform from './Request'
 function SideNav() {
     const [addmember, setAddmember] = useState(false)
     const menuref = useRef();
     const menulistref = useRef();
     const path = usePathname();
-    const { nav, addmanually, setAddmanually } = useContext(UserContext)
-    const [addorganisermanually , setaddorganisermanually ] = useState(false)
+    const { nav, addmanually, setAddmanually, requestedpop, setRequestedpop } = useContext(UserContext)
+    const [addorganisermanually, setaddorganisermanually] = useState(false)
     const anime = (variants) => {
         return {
             initial: 'initial',
@@ -63,7 +64,7 @@ function SideNav() {
             }
         },
     }
-    useEffect(() =>{
+    useEffect(() => {
         let handler = (e) => {
             try {
                 if (!menulistref.current.contains(e.target) && !menuref.current.contains(e.target)) {
@@ -75,14 +76,14 @@ function SideNav() {
         }
         window.addEventListener('click', handler)
     })
-    const { data: session , loading} = useSession();
+    const { data: session, loading } = useSession();
     return (
         <motion.div animate={nav ? 'enter' : 'exit'} exit={"exit"} variants={navvarient} className='h-full flex z-[8] relative left-0 justify-end bg-[--web-container]'>
             <div className="flex min-w-[250px] h-full border-r border-gray-200/[.4]">
                 <div className="relative flex flex-col items-center w-full gap-4 px-2 py-2">
                     <button ref={menuref} onClick={() => setAddmember(!addmember)} className='flex items-center justify-center bg-white  text-gray-800 shadow-sm shadow-[--web-primary-color] py-2 rounded w-full'>
                         <AiOutlinePlus className='text-xl' />
-                        <p>{loading?"loading...":(session?.user?.role == 'superadmin')?"Add Organizers":"Add Members"}</p>
+                        <p>{loading ? "loading..." : (session?.user?.role == 'superadmin') ? "Add Organizers" : "Add Members"}</p>
                     </button>
                     <AnimatePresence mode='wait'>
                         {
@@ -90,19 +91,25 @@ function SideNav() {
                                 <motion.div {...anime(addervariant)} ref={menulistref} className="flex flex-col overflow-hidden justify-end bg-gray-200/[.5] text-gray-800 border rounded w-full ">
                                     <div className="flex flex-col items-center justify-center py-2 h-fit gap-2">
                                         <button onClick={() => setAddmanually(true)}>Add Manually</button>
-                                        <AnimatePresence mode='wait'>setAddmanually
+                                        <AnimatePresence mode='wait'>
                                             {
-                                                session?.user?.role == "superadmin" ? addmanually && (<OrganiserManualAdder  close={setAddmanually}/>) : addmanually && (<ManualAdder close={setAddmanually}/>)
+                                                session?.user?.role == "superadmin" ? addmanually && (<OrganiserManualAdder close={setAddmanually} />) : addmanually && (<ManualAdder close={setAddmanually} />)
                                             }
                                         </AnimatePresence>
-                                        <button>Request</button>
+                                        <button onClick={() => setRequestedpop(true)}>Request</button>
+                                        <AnimatePresence mode='wait'>
+                                            {
+                                                requestedpop && (<Requestform close={setRequestedpop} />)
+                                            }
+                                        </AnimatePresence>
+
                                     </div>
                                 </motion.div>
                             )
                         }
                     </AnimatePresence>
                     {
-                        (session?.user?.role == "admin" ||session?.user?.role == "teacher" )?adminnavlinks.map((items) => {
+                        (session?.user?.role == "admin" || session?.user?.role == "teacher") ? adminnavlinks.map((items) => {
                             if (path == items.path) {
                                 return <Link
                                     href={items.path}
@@ -122,7 +129,7 @@ function SideNav() {
                                     {items.label}
                                 </Link>
                             }
-                        }):superadminnavlinks.map((items) => {
+                        }) : superadminnavlinks.map((items) => {
                             if (path == items.path) {
                                 return <Link
                                     href={items.path}
