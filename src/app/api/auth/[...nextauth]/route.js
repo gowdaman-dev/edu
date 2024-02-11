@@ -1,7 +1,6 @@
 import { connectMongoBD } from "@/app/lib/mongodb";
 import NextAuth from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials"
-import GoogleProvider from 'next-auth/providers/google'
 import User from "@/app/models/user";
 import bcrypt from 'bcryptjs'
 const authOptions = {
@@ -61,7 +60,7 @@ const authOptions = {
                 }
                 return null
             } else {
-                const verify = User.findOne({ email: user.email })
+                const verify = User.findOne({ email: token.email })
                 if (!verify) return null;
                 return {
                     ...session,
