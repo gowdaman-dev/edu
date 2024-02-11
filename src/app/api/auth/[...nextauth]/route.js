@@ -4,6 +4,7 @@ import CredentialsProvider from "next-auth/providers/credentials"
 import GoogleProvider from 'next-auth/providers/google'
 import User from "@/app/models/user";
 import bcrypt from 'bcryptjs'
+import jwt from "jsonwebtoken";
 const authOptions = {
     providers: [
         CredentialsProvider({
@@ -30,17 +31,19 @@ const authOptions = {
     ],
     callbacks: {
         async jwt({ token, session, user }) {
-            if(user){
-                connectMongoBD();
-                const exist = await User.findOne({email:user.email}).select('_id')
-                if(!exist) return null
+            if (user) {
+                const exist  = await User.findOne({email:user.email})
+                if(!exist){
+                    const webtoken = jwt.sign({userId:user.id} , process.env.NEXTAUTH_SECRET,  {expiresIn:"0d"})
+                    token.refreshToken = webtoken;
+                    return token
+                }
                 if (user.role == 'superadmin') {
                     return {
                         ...token,
                         role: user.role,
                     }
                 } else {
-                    console.log("tk", user);
                     return {
                         ...token,
                         role: user.role,
@@ -49,19 +52,16 @@ const authOptions = {
                 }
             }
             return token
-            
         },
         async session({ session, user, token }) {
-            console.log("se", token);
-            connectMongoBD();
-            const sessionexist = await User.findOne({email:token.email}).select('_id')
-            if(!sessionexist)return null
+            const userdata = await User.findOne({email:session.user.email})
             if (token.role == "superadmin") {
                 return {
                     ...session,
                     user: {
                         ...session.user,
                         role: token.role,
+                        auth:userdata?true:false,
                     }
                 }
             } else {
@@ -70,7 +70,8 @@ const authOptions = {
                     user: {
                         ...session.user,
                         role: token.role,
-                        school: token.school
+                        school: token.school,
+                        auth:userdata?true:false,
                     }
                 }
             }

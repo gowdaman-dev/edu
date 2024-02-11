@@ -3,7 +3,7 @@ import React, { useContext, useEffect } from 'react'
 import NavBar from '../components/navigator/NavBar'
 import SideNav from '../components/navigator/SideNav'
 import SideNavMob from '../components/navigator/SideNavMob'
-import { useSession } from 'next-auth/react'
+import { signOut, useSession } from 'next-auth/react'
 import LoaderPage from '../components/loader/LoadingPage'
 import NavBarStudent from '../components/navigator/NavBarStudent'
 import SideNavStudent from '../components/navigator/SideNavStudent'
@@ -18,6 +18,18 @@ function layout({ children }) {
             setnav(false)
         }
     }, [])
+    useEffect(()=>{
+        if(session?.user){
+            try {
+                if(session?.user?.auth == false){
+                    signOut()
+                }
+            } catch (error) {
+                
+            }
+        }
+    })
+    console.log(session?.user);
     return (
         <>
             {
