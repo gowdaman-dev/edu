@@ -58,11 +58,13 @@ function ManualAdder({ close }) {
     const [standard, setStandard] = useState('')
     const [role, setRole] = useState('')
     const [error, setError] = useState('')
+    const [adding, setAdding] = useState(false)
     const password = 'Test@1234'
     const inner = useRef()
     const {data:session} = useSession()
     const SignUpHandler = async (e) => {
         e.preventDefault()
+        setAdding(true)
         try {
             const resexist = await fetch('/api/userExists', {
                 method: 'POST',
@@ -89,6 +91,7 @@ function ManualAdder({ close }) {
             })
             if (res.ok) {
                 const form = await e.target;
+                setAdding(false)
                 form.reset();
                 close(false)
                 return
@@ -110,7 +113,7 @@ function ManualAdder({ close }) {
         window.addEventListener('mousedown', handler)
     })
     return (
-        <motion.div initial={{ opacity: .4 }} animate={{ opacity: 1 }} transition={{ type: 's pring', duration: .5 }} exit={{ opacity: 0 }} className='fixed top-0 left-0 h-full w-full bg-gray-600/[.6] grid place-items-center'>
+        <motion.div initial={{ opacity: .4 }} animate={{ opacity: 1 }} transition={{ type: 'spring', duration: .5 }} exit={{ opacity: 0 }} className='fixed top-0 left-0 h-full w-full bg-gray-600/[.6] grid place-items-center'>
             <div className="absolute top-0">
                 {
                     error && (
@@ -149,7 +152,7 @@ function ManualAdder({ close }) {
                             <option value="student" >Student</option>
                         </select>
                     </div>
-                    <button type='submit' className='w-full mt-2 py-2 bg-[--web-primary-color] rounded-lg text-white tracking-wide'>Add user</button>
+                    <button type='submit' className='w-full mt-2 py-2 bg-[--web-primary-color] rounded-lg text-white tracking-wide' disabled={adding}>{adding?"Loading....":'Add user'}</button>
                     <p className='text-[12px] font-light text-gray-700'>Note: By Default the password is set to "Test@1234"</p>
                 </form>
             </motion.div>

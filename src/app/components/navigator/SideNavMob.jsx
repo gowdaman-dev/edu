@@ -10,12 +10,15 @@ import { UserContext } from '@/ContextUser'
 import ManualAdder from '../adduser/ManualAdder'
 import OrganiserManualAdder from '../adduser/OrganiserManualAdder'
 import { signOut, useSession } from 'next-auth/react'
+import { IoSchoolOutline } from 'react-icons/io5'
+import { MdOutlineManageAccounts } from 'react-icons/md'
+import Accountinformation from '../dashboard/AccountInformation'
 function SideNav() {
     const [addmember, setAddmember] = useState(false)
     const menuref = useRef();
     const menulistref = useRef();
     const path = usePathname();
-    const { nav, setnav, addmanually, setAddmanually } = useContext(UserContext)
+    const { nav, setnav, addmanually, setAddmanually, showAccInfo, setShowAccInfo } = useContext(UserContext)
     const [addorganisermanually, setaddorganisermanually] = useState(false)
     const anime = (variants) => {
         return {
@@ -148,6 +151,19 @@ function SideNav() {
                             }
                         })
                     }
+                    <button className='text-md hover:bg-gray-200/[.5] flex items-center justify-start gap-2 px-4 text-gray-800 w-full py-2 text-center rounded'>
+                        <IoSchoolOutline className='text-xl' /><p>School Information</p>
+                    </button>
+                    <button onClick={() => setShowAccInfo(true)} className='text-md hover:bg-gray-200/[.5] flex items-center justify-start gap-2 px-4 text-gray-800 w-full py-2 text-center rounded'>
+                        <MdOutlineManageAccounts className='text-xl' /><p>Account Information</p>
+                    </button>
+                    <AnimatePresence mode='wait'>
+                        {
+                            showAccInfo && (
+                                <Accountinformation />
+                            )
+                        }
+                    </AnimatePresence>
                     <button onClick={() => signOut()} className='text-md hover:bg-gray-200/[.5] flex items-center justify-start gap-2 px-4 text-gray-800 w-full py-2 text-center rounded'>
                         <IoIosLogOut className='text-xl' />
                         <p>Logout</p>

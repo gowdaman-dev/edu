@@ -13,6 +13,7 @@ function ContextUserData({ children }) {
     const [addmanually, setAddmanually] = useState(false)
     const [userDetailpopup, setUserDetailpopup] = useState(false)
     const [requestedpop, setRequestedpop] = useState(false)
+    const [showAccInfo , setShowAccInfo] = useState(false)
 
     return (
         <UserContext.Provider value={{
@@ -35,7 +36,9 @@ function ContextUserData({ children }) {
             userDetailpopup,
             setUserDetailpopup,
             requestedpop, 
-            setRequestedpop
+            setRequestedpop,
+            showAccInfo , 
+            setShowAccInfo
         }}>
             {children}
         </UserContext.Provider>

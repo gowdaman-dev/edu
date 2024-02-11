@@ -64,31 +64,11 @@ export const adminnavlinks = [
         path:'/dashboard/library',
         icon:<VscLibrary  className='text-xl'/>
     },
-    {
-        label:"School Information",
-        path:'',
-        icon:<IoSchoolOutline className='text-xl'/>
-    },
-    {
-        label:"Account Information",
-        path:'',
-        icon: <MdOutlineManageAccounts className='text-xl'/>
-    },
 ]
 export const superadminnavlinks = [
     {
         label:"Member List",
         path:'/dashboard',
         icon:<PiUsersLight className='text-xl' />
-    },
-    {
-        label:"School Information",
-        path:'',
-        icon:<IoSchoolOutline className='text-xl'/>
-    },
-    {
-        label:"Account Information",
-        path:'',
-        icon: <MdOutlineManageAccounts className='text-xl'/>
-    },
+    }
 ]

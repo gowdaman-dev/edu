@@ -8,6 +8,7 @@ import { motion } from 'framer-motion';
 import { AiOutlineClose } from 'react-icons/ai';
 import { FaRegEdit } from 'react-icons/fa';
 import { grades } from '../navigator/Navjson';
+import { FaSlideshare } from 'react-icons/fa6';
 
 const datalist = async ({ standard, school, role }) => {
     try {
@@ -27,7 +28,7 @@ const datalist = async ({ standard, school, role }) => {
 }
 
 function UserProvider() {
-    const { navSearch, fetchrole, count, setExporter, exporter, navGrade } = useContext(UserContext)
+    const { navSearch, fetchrole, count, setCount, setExporter, exporter, navGrade } = useContext(UserContext)
     const [pulse, setPulse] = useState(false)
     const { data: session } = useSession()
     const [memberdata, setMemberdata] = useState()
@@ -181,30 +182,36 @@ function UserProvider() {
         setRemoveConformer(true);
         setDetailpop(false)
     }
-    const removerbyadmin = () => {
-        const remover = fetch('/api/superadmin/remover', {
+    const [removeanime ,setRemoveanime] = useState(false)
+    const removerbyadmin = async () => {
+        await setRemoveanime(true)
+        await fetch('/api/superadmin/remover', {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({ role: selecteddetailpop.role, school: selecteddetailpop.school, id: selecteddetailpop.id })
+        }).then((data) => {
+            if (data.ok) {
+                setRemoveanime(FaSlideshare)
+                setCount(count + 1)
+                setRemoveConformer(false)
+            }
         })
-        if (remover) {
-            setRemoveConformer(false)
-        }
     }
-    const updaterbyadmin = async(e) => {
+    const updaterbyadmin = async (e) => {
         e.preventDefault();
         const formdata = new FormData(e.target)
-        await formdata.append('id', selectedrecord.id)
-        await formdata.append('oldschool', selectedrecord.school)
-        await formdata.append('grade', selectedrecord.standard)
+        await formdata.append('id', selecteddetailpop.id)
+        await formdata.append('oldschool', selecteddetailpop.school)
+        await formdata.append('grade', selecteddetailpop.standard)
         const res = await fetch('/api/adminupdater', {
             method: 'PUT',
             body: formdata
         })
         if (res.ok) {
             setdataeditable(false)
+            setCount(count + 1)
             setDetailpop(false)
         }
     }
@@ -292,7 +299,7 @@ function UserProvider() {
                                     <p className='font-light text-sm text-gray-700 py-2'>Warning removing account <strong>{selecteddetailpop.email}</strong> will terminate <strong>user</strong> belong to {selecteddetailpop.school} school. click conform to remove</p>
                                 )
                             }
-                            <button onClick={removerbyadmin} className='w-full p-2 text-white rounded-lg bg-red-400'>Conform</button>
+                            <button onClick={removerbyadmin} className='w-full p-2 text-white rounded-lg bg-red-400' disabled={removeanime}>{removeanime?'deleting...':'Conform'}</button>
                         </motion.div>
                     </motion.div>
                 )
