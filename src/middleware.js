@@ -13,4 +13,4 @@ export function middleware(req){
         return NextResponse.redirect(new URL('/signin' , req.nextUrl))
     } 
 }
-export const config = {matcher:["/signin","/dashboard","/dashboard/:user*"]}
+export const config = {matcher:["/signin","/dashboard","/dashboard/library"]}

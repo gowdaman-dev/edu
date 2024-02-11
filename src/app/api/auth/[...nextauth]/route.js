@@ -30,25 +30,32 @@ const authOptions = {
     ],
     callbacks: {
         async jwt({ token, session, user }) {
-            if (user) {
-                const exist = await User.findOne({ email: user.email });
-                if (!exist) return null;
+            if(user){
+                connectMongoBD();
+                const exist = await User.findOne({email:user.email}).select('_id')
+                if(!exist) return null
                 if (user.role == 'superadmin') {
                     return {
                         ...token,
                         role: user.role,
                     }
                 } else {
+                    console.log("tk", user);
                     return {
                         ...token,
                         role: user.role,
                         school: user.school
                     }
-                }s
+                }
             }
             return token
+            
         },
         async session({ session, user, token }) {
+            console.log("se", token);
+            connectMongoBD();
+            const sessionexist = await User.findOne({email:token.email}).select('_id')
+            if(!sessionexist)return null
             if (token.role == "superadmin") {
                 return {
                     ...session,
