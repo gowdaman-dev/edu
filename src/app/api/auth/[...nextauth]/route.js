@@ -32,7 +32,6 @@ const authOptions = {
     callbacks: {
         async jwt({ token, session, user }) {
             if (user) {
-                const exist  = await User.findOne({email:user.email})
                 if(!exist){
                     const webtoken = jwt.sign({userId:user.id} , process.env.NEXTAUTH_SECRET,  {expiresIn:"0d"})
                     token.refreshToken = webtoken;

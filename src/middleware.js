@@ -1,9 +1,5 @@
-import { getToken } from "next-auth/jwt";
-import { getSession } from "next-auth/react";
 import { NextResponse } from "next/server";
 export {default} from "next-auth/middleware";
-// import { getSession } from "next-auth/react"
-// import { handler } from "./app/api/auth/[...nextauth]/route";
 
 export async function middleware(req){
     const path = await req.nextUrl.pathname;
