@@ -1,4 +1,4 @@
-"use client";
+"use client"
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -9,12 +9,23 @@ import DropDown from "./DropDown";
 const Requestform = () => {
   const schoolName = [
     {
-      value : 1,
-      label : "ACET",
+    
+      "label": "ACET"
     },
     {
-      value : 2,
-      label : 'Achariya'
+     
+      "label": "Achariya"
+    }
+  ]
+  const userType = [
+    {
+      "role" : "owner"
+    },
+    {
+      "role" : "Student"
+    },
+    {
+      "role" : "Teacher"
     }
   ]
   const Comment =
@@ -63,22 +74,16 @@ const Requestform = () => {
                 placeholder="Your Work Email"
                 className="rounded-[3px] h-12 pl-2 outline-none focus:border-[3px] border border-[--web-primary-color] bg-[--web-container]"
               />
-              <select
-                name="role"
+              <DropDown options = {userType} default = {"User Type"}
+               /*  name="role"
                 id="role"
                 defaultValue="default"
                 className="rounded-[3px] h-12 pl-2 border outline-none focus:border-[3px] border-[--web-primary-color] bg-[--web-container]"
                 onChange={(event) => {
                   setSelectedRole(event.target.value);
-                }}
-              >
-                <option value="default" disabled>
-                  User Type
-                </option>
-                <option value="owner">Owner</option>
-                <option value="staff">Staff</option>
-                <option value="student">Student</option>
-              </select>
+                }} */
+              />
+               
             </div>
           </div>
         </div>
