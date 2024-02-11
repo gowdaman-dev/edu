@@ -1,36 +1,41 @@
-"use client"
+"use client";
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { webName } from "../globalDetails";
 import DropDown from "./DropDown";
-
+import { grades } from "../navigator/Navjson";
 
 const Requestform = () => {
   const schoolName = [
     {
-    
-      "label": "ACET"
+      label: "acet",
     },
     {
-     
-      "label": "Achariya"
-    }
-  ]
+      label: "achariya",
+    },
+  ];
   const userType = [
     {
-      "role" : "owner"
+      role: "owner",
     },
     {
-      "role" : "Student"
+      role: "student",
     },
     {
-      "role" : "Teacher"
-    }
-  ]
+      role: "staff",
+    },
+  ];
+
+  const [isStudent, setisStudent] = useState(false); // State to store input field value of second dropdown
+
+  const handlerole = (value) => {
+    setisStudent(value); // Update the state with input field value of second dropdown
+  };
+
   const Comment =
     "Tell us more about yourself and the purpose of using our product";
-  const [SelectedRole, setSelectedRole] = useState("default");
+
   return (
     <div className="mt-16 z-30">
       <p className="text-center px-10 pb-8 text-lg">
@@ -59,44 +64,38 @@ const Requestform = () => {
               <input
                 type="text"
                 placeholder="Your Name"
+                required
                 className="rounded-[3px] pl-2 h-12 outline-none focus:border-[3px] border border-[--web-primary-color] bg-[--web-container]"
               />
 
-             
-               <DropDown options= {schoolName} default = {"School Name"}
-
-               />
-             
+              <DropDown options={schoolName} default={"School Name"} />
             </div>
             <div className="flex flex-col gap-10 w-72 md:w-72">
               <input
+                required
                 type="text"
                 placeholder="Your Work Email"
                 className="rounded-[3px] h-12 pl-2 outline-none focus:border-[3px] border border-[--web-primary-color] bg-[--web-container]"
               />
-              <DropDown options = {userType} default = {"User Type"}
-               /*  name="role"
-                id="role"
-                defaultValue="default"
-                className="rounded-[3px] h-12 pl-2 border outline-none focus:border-[3px] border-[--web-primary-color] bg-[--web-container]"
-                onChange={(event) => {
-                  setSelectedRole(event.target.value);
-                }} */
+              <DropDown
+                options={userType}
+                default={"User Type"}
+                handleRole={handlerole} // Pass the callback function
               />
-               
             </div>
           </div>
         </div>
-
-        
+        {isStudent && <DropDown options = {grades} default={"Grade"} />}
         <div className="flex justify-center gap-10 flex-col py-10 ">
           <textarea
             type="text"
+            required
             placeholder={Comment}
             className="rounded-[3px] pl-2 pt-1 min-h-56 outline-none focus:border-[3px] h-auto w-72 md:w-[600px] mx-auto  border border-[--web-primary-color] bg-[--web-container]"
           />
           <input
             type="submit"
+            required
             value={"Send"}
             className="rounded-[5px] cursor-pointer text-white h-14 bg-[--web-primary-color] text-center w-72 md:w-[600px] mx-auto  border-2 border-[--web-primary-color]"
           />
