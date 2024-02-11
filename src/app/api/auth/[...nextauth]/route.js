@@ -1,6 +1,7 @@
 import { connectMongoBD } from "@/app/lib/mongodb";
 import NextAuth from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials"
+import GoogleProvider from 'next-auth/providers/google'
 import User from "@/app/models/user";
 import bcrypt from 'bcryptjs'
 const authOptions = {
@@ -30,24 +31,24 @@ const authOptions = {
     callbacks: {
         async jwt({ token, session, user }) {
             if (user) {
+                const exist = await User.findOne({ email: user.email });
+                if (!exist) return null;
                 if (user.role == 'superadmin') {
                     return {
                         ...token,
                         role: user.role,
                     }
-                } 
-                if(!user.role == 'superadmin') {
+                } else {
                     return {
                         ...token,
                         role: user.role,
                         school: user.school
                     }
-                }
+                }s
             }
             return token
         },
         async session({ session, user, token }) {
-            await connectMongoBD();
             if (token.role == "superadmin") {
                 return {
                     ...session,
@@ -56,19 +57,17 @@ const authOptions = {
                         role: token.role,
                     }
                 }
-            }
-            if (!token.role == "superadmin") {
-                const verify = await User.findOne({ email: token.email })
-                if (!verify) return null;
+            } else {
                 return {
                     ...session,
                     user: {
                         ...session.user,
                         role: token.role,
-                        school:token.school
+                        school: token.school
                     }
                 }
             }
+
         }
     },
     session: {
