@@ -4,7 +4,6 @@ import CredentialsProvider from "next-auth/providers/credentials"
 import GoogleProvider from 'next-auth/providers/google'
 import User from "@/app/models/user";
 import bcrypt from 'bcryptjs'
-import jwt from "jsonwebtoken";
 const authOptions = {
     providers: [
         CredentialsProvider({
@@ -32,11 +31,6 @@ const authOptions = {
     callbacks: {
         async jwt({ token, session, user }) {
             if (user) {
-                if(!exist){
-                    const webtoken = jwt.sign({userId:user.id} , process.env.NEXTAUTH_SECRET,  {expiresIn:"0d"})
-                    token.refreshToken = webtoken;
-                    return token
-                }
                 if (user.role == 'superadmin') {
                     return {
                         ...token,
@@ -53,14 +47,14 @@ const authOptions = {
             return token
         },
         async session({ session, user, token }) {
-            const userdata = await User.findOne({email:session.user.email})
+            await connectMongoBD()
+            const userdata = await User.findOne({email:token.email}).select('_id')
             if (token.role == "superadmin") {
                 return {
                     ...session,
                     user: {
                         ...session.user,
                         role: token.role,
-                        auth:userdata?true:false,
                     }
                 }
             } else {
@@ -70,7 +64,7 @@ const authOptions = {
                         ...session.user,
                         role: token.role,
                         school: token.school,
-                        auth:userdata?true:false,
+                        auth:userdata?true:false
                     }
                 }
             }
