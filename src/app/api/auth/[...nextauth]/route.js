@@ -61,14 +61,18 @@ const authOptions = {
                 }
                 return null
             } else {
-                return {
-                    ...session,
-                    user: {
-                        ...session.user,
-                        role: token.role,
-                        school: token.school
+                await connectMongoBD();
+                const verify = User.findOne({ email: token.email }).select('_id')
+                if (verify) {
+                    return {
+                        ...session,
+                        user: {
+                            ...session.user,
+                            role: token.role,
+                        }
                     }
                 }
+                return null
             }
 
         }

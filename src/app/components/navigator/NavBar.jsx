@@ -62,7 +62,7 @@ function NavBar() {
             {
                 session?.user?.role !== "superadmin" && (
                     <div className="relative flex item-center justify-center">
-                        <button ref={grademenuref} onClick={() => setShowGrade(!showgrade)} className='p-2 bg-white rounded-full shadow text-gray-800'>Grade {navGrade}</button>
+                        <button ref={grademenuref} onClick={() => setShowGrade(!showgrade)} className='p-2 bg-white rounded-lg shadow text-gray-800'>Grade {navGrade}</button>
                         <AnimatePresence mode='wait'>
                             {
                                 (showgrade) && (
