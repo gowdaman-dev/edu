@@ -10,15 +10,21 @@ function Accountinformation() {
     const { showAccInfo, setShowAccInfo } = useContext(UserContext)
     const [gradeinfo, setGradeinfo] = useState({})
     const { data: session } = useSession()
-    useEffect(() => {
-        fetch('/api/userinfo', {
+    const infofetch = async () => {
+        const res = await fetch('/api/userinfo', {
             method: 'POST',
             headers: {
                 'Content-type': 'application/json'
             },
             body: JSON.stringify({ email: session?.user?.email })
-        }).then((data) =>data.json()).then((data) => { console.log(data);setGradeinfo(data); return data })
-    },[])
+        })
+        const { user } = await res.json();
+        return user
+    }
+    const { data: userdata } = useSWR('user info', infofetch);
+    useEffect(() => {
+        console.log(userdata);
+    }, [userdata])
     return (
         <motion.div initial={{ opacity: .4 }} animate={{ opacity: 1 }} transition={{ type: 'spring', duration: .5 }} exit={{ opacity: 0 }} className='flex fixed w-screen top-0 left-0 justify-center h-[100vh]  bg-slate-200/[.5] backdrop-blur-sm flex items-center justify-center '>
             <motion.div initial={{ scale: .7, opacity: .4 }} animate={{ scale: 1, opacity: 1 }} transition={{ type: 'spring', duration: .5 }} exit={{ scale: .7, opacity: 0 }} className='h-[500px] md:w-[600px] w-[90%] text-gray-800 flex flex-col items-start bg-white p-4 overflow-hidden rounded-lg shadow-xl shadow-slate-800/20 relative '>
@@ -50,8 +56,10 @@ function Accountinformation() {
                                     Grade :
                                 </h1>
                                 <h3>
-                                    {
-                                        gradeinfo.standard
+                                    grade {
+                                        userdata && (
+                                            userdata.standard
+                                        )
                                     }
                                 </h3>
                             </div>

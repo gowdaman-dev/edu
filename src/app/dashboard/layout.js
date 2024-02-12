@@ -29,7 +29,6 @@ function layout({ children }) {
             }
         }
     })
-    console.log(session?.user);
     return (
         <>
             {
