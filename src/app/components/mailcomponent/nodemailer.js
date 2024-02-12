@@ -3,10 +3,10 @@ import nodemailer from 'nodemailer'
 export const transporter = nodemailer.createTransport({
     service:"gmail",
     auth:{
-        user:"damangowdaman@gmail.com",
-        pass:"iuep tmiv gegx shxf",
+        user:process.env.NODEMAILER_USER,
+        pass:process.env.NODEMAILER_PASSWORD,
     }
 })
 export const mailOption = {
-    from:"damangowdaman@gmail.com",
+    from:process.env.NODEMAILER_USER,
 }

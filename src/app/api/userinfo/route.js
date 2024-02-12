@@ -19,10 +19,10 @@ export async function PUT(req) {
         await connectMongoBD();
         const { id } = await req.json();
         const password = await User.findOne({ _id:id }).select('password')
-        if (user == null) {
-            return NextResponse.json({ user: null })
+        if (password == null) {
+            return NextResponse.json({ password: null })
         }
-        return NextResponse.json({ password })
+        return NextResponse.json(password ,{status:201})
     } catch (error) {
         console.log(error)
     }
