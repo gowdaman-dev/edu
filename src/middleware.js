@@ -12,4 +12,4 @@ export async function middleware(req){
         return NextResponse.redirect(new URL('/signin' , req.nextUrl))
     } 
 }
-export const config = {matcher:["/signin","/dashboard","/dashboard/library"]}
+export const config = {matcher:["/signin","/dashboard","/dashboard/library" , "/resetpassword/:path*"]}
