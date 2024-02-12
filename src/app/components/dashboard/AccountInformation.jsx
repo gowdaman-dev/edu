@@ -1,7 +1,5 @@
 'use client'
 import React, { useContext, useEffect, useState } from 'react'
-import { TbRefresh } from "react-icons/tb";
-import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 import useSWR from 'swr';
 import { UserContext } from '@/ContextUser';
