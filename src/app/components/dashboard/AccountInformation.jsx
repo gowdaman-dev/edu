@@ -8,7 +8,7 @@ import { UserContext } from '@/ContextUser';
 import { motion } from 'framer-motion';
 function Accountinformation() {
     const { showAccInfo, setShowAccInfo } = useContext(UserContext)
-    const [gradeinfo, setGradeinfo] = useState({s})
+    const [gradeinfo, setGradeinfo] = useState({})
     const { data: session } = useSession()
     useEffect(() => {
         fetch('/api/userinfo', {
