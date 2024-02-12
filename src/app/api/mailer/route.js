@@ -2,7 +2,7 @@ import { mailOption, transporter } from '@/app/components/mailcomponent/nodemail
 export async function POST(req) {
     try {
         const { id, email, name } = await req.json()
-        const link = await `http://localhost:3000/resetpassword/${id}`
+        const link = await `${process.env.NEXTAUTH_URL}${id}`
         const data = await transporter.sendMail({
             ...mailOption,
             to: email,
