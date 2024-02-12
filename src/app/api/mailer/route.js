@@ -1,5 +1,4 @@
 import { mailOption, transporter } from '@/app/components/mailcomponent/nodemailer';
-import { resetpassword } from '@/app/components/mailcomponent/sendmain';
 export async function POST(req) {
     try {
         const { id, email, name } = await req.json()
