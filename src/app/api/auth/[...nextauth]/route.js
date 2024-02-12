@@ -35,12 +35,14 @@ const authOptions = {
                     return {
                         ...token,
                         role: user.role,
+                        acId: user._id,
                     }
                 } else {
                     return {
                         ...token,
                         role: user.role,
-                        school: user.school
+                        school: user.school,
+                        acId: user._id,
                     }
                 }
             }
@@ -48,13 +50,14 @@ const authOptions = {
         },
         async session({ session, user, token }) {
             await connectMongoBD()
-            const userdata = await User.findOne({email:token.email}).select('_id')
+            const userdata = await User.findOne({ email: token.email }).select('_id')
             if (token.role == "superadmin") {
                 return {
                     ...session,
                     user: {
                         ...session.user,
                         role: token.role,
+                        acId:token.acId,
                     }
                 }
             } else {
@@ -64,7 +67,8 @@ const authOptions = {
                         ...session.user,
                         role: token.role,
                         school: token.school,
-                        auth:userdata?true:false
+                        auth: userdata ? true : false,
+                        acId:token.acId
                     }
                 }
             }
