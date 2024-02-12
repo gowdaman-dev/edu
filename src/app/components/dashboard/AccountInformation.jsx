@@ -9,7 +9,26 @@ import { motion } from 'framer-motion';
 function Accountinformation() {
     const { showAccInfo, setShowAccInfo } = useContext(UserContext)
     const [gradeinfo, setGradeinfo] = useState({})
+    const [resetrequest, setresetrequest] = useState(false)
+    const [resetrequesttext, setresetrequesttext] = useState('change password')
     const { data: session } = useSession()
+    const mailnow = async (e) => {
+        e.preventDefault();
+        await setresetrequest(true);
+        await setresetrequesttext('sending mail...')
+        fetch('/api/mailer', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email: session?.user?.email, name: session?.user?.name, id: session?.user?.acId })
+        }).then(() => {
+            setresetrequest(false); setInterval(() => {
+                setresetrequesttext('mail sent!')
+            }, 2000);
+        }).catch((err) => console.log(err))
+        await setresetrequesttext('change password')
+    }
     const infofetch = async () => {
         const res = await fetch('/api/userinfo', {
             method: 'POST',
@@ -45,9 +64,9 @@ function Accountinformation() {
                     </h1>
                     {session?.user?.email}
                 </div>
-                <button className='text-purple-800 w-fit px-4'>
-                    Change Password
-                </button>
+                <form onSubmit={mailnow} action="" method="post">
+                    <button className='text-purple-800 w-fit px-4' disabled={resetrequest} type='submit'>{resetrequesttext}</button>
+                </form>
                 {
                     session?.user?.role == "teacher" && (
                         <div className='h-fit flex p-3   '>

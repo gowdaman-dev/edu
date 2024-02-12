@@ -6,6 +6,7 @@ const resend = new Resend(process.env.RESEND_API);
 export async function POST(req) {
     try {
         const { email, name, id } = await req.json()
+        console.log({ email, name, id });
         const { data, error } = await resend.emails.send({
             from: 'edulearn <onboarding@resend.dev>',
             to: email,
