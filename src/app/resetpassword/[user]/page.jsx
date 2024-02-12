@@ -9,30 +9,36 @@ function page({ params }) {
     })
     const [error, seterror] = useState('')
     console.log(user)
-    const resetPassword = async (e)=>{
+    const resetPassword = async (e) => {
         e.preventDefault();
         const match = await currentpass.password === currentpass.conform;
-        if(!match){
+        if (!match) {
             seterror("your new password dosen't match")
             return
         }
-        try{
-            const res = await fetch('/api/userinfo' , {
-                method:'PUT',
-                headers:{
-                    'Content-Type':'application/json',
+        try {
+            const res = await fetch('/api/userinfo', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
                 },
-                body:JSON.stringify({id:user})
+                body: JSON.stringify({ id: user })
             })
-            const {password} = await res.json();
-            const passverify = bcrypt.compare(currentpass.password , password);
-            if(!passverify){
+            const { password } = await res.json();
+            const passverify = bcrypt.compare(currentpass.password, password);
+            if (!passverify) {
                 seterror('Invalid password')
                 return
             }
-            
-        }catch(err){
-
+            const resreset = await fetch('/api/resetpassword', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application.json',
+                },
+                body: JSON.stringify({ id: user, password: currentpass.password })
+            })
+        } catch (err) {
+            console.log(err);
         }
     }
     return (
