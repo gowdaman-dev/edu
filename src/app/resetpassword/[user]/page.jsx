@@ -1,7 +1,7 @@
 'use client'
 import React, { useEffect, useState } from 'react'
 import bcrypt from 'bcryptjs'
-import { signOut } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 function page({ params }) {
     const { user } = params;
@@ -13,6 +13,7 @@ function page({ params }) {
     const [oldpass, setoldpass] = useState('')
     const [status, setstatus] = useState('')
     const [error, seterror] = useState('')
+    const {data : session } = useSession()
     const resetPassword = async (e) => {
         setstatus('resetting password')
         e.preventDefault();
@@ -45,7 +46,7 @@ function page({ params }) {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ _id: user, password: currentpass.password })
+                body: JSON.stringify({ _id: user, password: currentpass.password , email:session?.user?.email , name:session?.user?.name })
             })
             if (resreset.ok) {
                 console.log("success");
