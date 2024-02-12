@@ -5,6 +5,7 @@ import React, { useEffect, useState, useRef } from "react";
 const DropDown = (props) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState("");
+  const [isValid,setIsValid] = useState(true);
   const dropdownRef = useRef();
   //close dropdown when click happended outside of the field
   useEffect(() => {
@@ -24,7 +25,6 @@ const DropDown = (props) => {
     setSelectedOption(e.target.value);
     
   };
- 
  // send the value to parent file when out of the field is clicked
 
  const handleBlur = e => {
@@ -36,7 +36,8 @@ const DropDown = (props) => {
       const optionValues = Object.values(option);
       return optionValues.some(value => value.toLowerCase() === e.target.value);
     });
-    if (optionExists) {
+    if (!optionExists) {
+      setIsValid(false)
       console.log("done");
     } else {console.log("no");}
 
@@ -44,6 +45,7 @@ const DropDown = (props) => {
   
   const handleClick = label => {
     setSelectedOption(label);
+    setIsValid(true)
 //send the value to parent file
     props.handleRole ? (
     props.handleRole(label[0]) ) : null
@@ -64,7 +66,8 @@ const DropDown = (props) => {
         a
         required
       />
-      <p>please Choose give option</p>
+      {!isValid && (<p>please Choose give option</p>)}
+      
       <AnimatePresence mode="wait">
         {isOpen && (
           <motion.div
