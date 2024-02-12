@@ -4,34 +4,40 @@ import Image from "next/image";
 import Link from "next/link";
 import { webName } from "../globalDetails";
 import DropDown from "./DropDown";
-import { grades } from "../navigator/Navjson";
+import { grades } from "./grade";
 
 const Requestform = () => {
   const schoolName = [
     {
-      label: "acet",
+      "school": "acet",
     },
     {
-      label: "achariya",
+      "school": "achariya",
     },
   ];
   const userType = [
     {
-      role: "owner",
+      "role": "student",
     },
     {
-      role: "student",
-    },
-    {
-      role: "staff",
+      "role": "staff",
     },
   ];
+  const regualarClass =
+    "rounded-[3px] capitalize pl-2 w-72 text-b h-12 border outline-none focus:border-[3px] border-[--web-primary-color] bg-[--web-container]";
+  const roleClass =
+    "rounded-[3px] pl-2 h-12 pt-1 mt-10 outline-none focus:border-[3px] w-72 md:w-[600px] mx-auto  border border-[--web-primary-color] bg-[--web-container]";
 
   const [isStudent, setisStudent] = useState(false); // State to store input field value of second dropdown
 
+
   const handlerole = (value) => {
-    setisStudent(value); // Update the state with input field value of second dropdown
+  
+    value.trim() === "student" ? setisStudent(true) : setisStudent(false);
   };
+  const handleSubmit = e =>{
+    e.preventDefault();
+  }
 
   const Comment =
     "Tell us more about yourself and the purpose of using our product";
@@ -54,52 +60,67 @@ const Requestform = () => {
           height={100}
           alt="logo"
         />
-        <h1 className="text-center  font-bold text-2xl py-10">
-          {webName} Edu Request Form
+        <h1 className="text-center font-bold text-2xl py-10">
+          {webName} Request Form
         </h1>
+        <form action="">
+          <div className="flex justify-center">
+            <div className="flex md:flex-row flex-col justify-center gap-10 md:gap-6">
+              <div className="flex flex-col  gap-10 w-72 ">
+                <input
+                  type="text"
+                  placeholder="Your Name"
+                  required
+                  className="rounded-[3px] pl-2 h-12 outline-none focus:border-[3px] border border-[--web-primary-color] bg-[--web-container]"
+                />
 
-        <div className="flex justify-center">
-          <div className="flex md:flex-row flex-col justify-center gap-10 md:gap-6">
-            <div className="flex flex-col  gap-10 w-72 md:w-72">
-              <input
-                type="text"
-                placeholder="Your Name"
-                required
-                className="rounded-[3px] pl-2 h-12 outline-none focus:border-[3px] border border-[--web-primary-color] bg-[--web-container]"
-              />
-
-              <DropDown options={schoolName} default={"School Name"} />
-            </div>
-            <div className="flex flex-col gap-10 w-72 md:w-72">
-              <input
-                required
-                type="text"
-                placeholder="Your Work Email"
-                className="rounded-[3px] h-12 pl-2 outline-none focus:border-[3px] border border-[--web-primary-color] bg-[--web-container]"
-              />
-              <DropDown
-                options={userType}
-                default={"User Type"}
-                handleRole={handlerole} // Pass the callback function
-              />
+                <DropDown
+                  options={schoolName}
+                  className={regualarClass}
+                  default={"School Name"}
+                />
+              </div>
+              <div className="flex flex-col gap-10 w-72 ">
+                <input
+                  required
+                  type="email"
+                  placeholder="Your Email"
+                  className="rounded-[3px] h-12 pl-2 outline-none focus:border-[3px] border border-[--web-primary-color] bg-[--web-container]"
+                />
+                <DropDown
+                  className={regualarClass}
+                  options={userType}
+                  default={"User Type"}
+                  handleRole={handlerole} // Pass the callback function
+                />
+              </div>
             </div>
           </div>
-        </div>
-        {isStudent && <DropDown options = {grades} default={"Grade"} />}
-        <div className="flex justify-center gap-10 flex-col py-10 ">
-          <textarea
-            type="text"
-            required
-            placeholder={Comment}
-            className="rounded-[3px] pl-2 pt-1 min-h-56 outline-none focus:border-[3px] h-auto w-72 md:w-[600px] mx-auto  border border-[--web-primary-color] bg-[--web-container]"
-          />
-          <input
-            type="submit"
-            required
-            value={"Send"}
-            className="rounded-[5px] cursor-pointer text-white h-14 bg-[--web-primary-color] text-center w-72 md:w-[600px] mx-auto  border-2 border-[--web-primary-color]"
-          />
-        </div>
+          <div className="mx-10">
+            {isStudent && (
+              <DropDown
+                className={roleClass}
+                options={grades}
+                default={"Grade"}
+              />
+            )}{" "}
+          </div>
+          <div className="flex justify-center gap-10 flex-col py-10 ">
+            <textarea
+              type="text"
+              
+              placeholder={Comment}
+              className="rounded-[3px] pl-2 pt-1 min-h-56 outline-none focus:border-[3px] h-auto w-72 md:w-[600px] mx-auto  border border-[--web-primary-color] bg-[--web-container]"
+            />
+            <input
+              type="submit"
+              value={"Send"}
+              onClick={handleSubmit}
+              onSubmit={"recommend"}
+              className="rounded-[5px] cursor-pointer text-white h-14 bg-[--web-primary-color] text-center w-72 md:w-[600px] mx-auto  border-2 border-[--web-primary-color]"
+            />
+          </div>
+        </form>
       </div>
       <div className="grid justify-center">
         <div className=" w-80 md:w-[600px] py-10">
