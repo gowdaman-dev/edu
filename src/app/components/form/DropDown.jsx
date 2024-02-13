@@ -9,48 +9,50 @@ const DropDown = (props) => {
   const dropdownRef = useRef();
   //close dropdown when click happended outside of the field
   useEffect(() => {
-    const handleClose = (e) => {
+    const handleClose = e => {
       if (e.target != dropdownRef.current) {
         setIsOpen(false);
       }
     };
     window.addEventListener("click", handleClose);
   }, []);
-
-  const toggle = () => {
-    setIsOpen(true);
-  };
-
-  const handleChange = (e) => {
-    setSelectedOption(e.target.value);
-  };
-  // send the value to parent file when out of the field is clicked
-  const handleBlur = (e) => {
-    props.handleRole ? props.handleRole(e.target.value) : null;
-
+ useEffect(() =>{
+  const validate = () =>{
     const optionExists = props.options.some((option) => {
       const optionValues = Object.values(option);
       return optionValues.some(
-        (value) => value.toLowerCase() === e.target.value
+        (value) => value.toLowerCase() === selectedOption
       );
     });
+    
     if (!optionExists) {
       setIsValid(false);
       console.log("done");
     } else {
       setIsValid(true);
       console.log("no");
-    }
+    } 
+  }
+  validate()
+ },[selectedOption]);
+  const toggle = () => {
+    setIsOpen(true);
   };
 
-  const handleClick = (label) => {
+  const handleChange = e => {
+    setSelectedOption(e.target.value);
+  };
+  
+  const handleBlur = e => {
+   setSelectedOption(e.target.value)
+  };   
+  
+  const handleClick = label => {
     setSelectedOption(label);
     setIsValid(true);
-    //send the value to parent file
-    props.handleRole ? props.handleRole(label[0]) : null;
-
     setIsOpen(false);
   };
+
 
   return (
     <div className="relative ">
@@ -62,7 +64,6 @@ const DropDown = (props) => {
         onBlur={handleBlur}
         onClick={toggle}
         value={selectedOption}
-        a
         required
       />
       {!isValid && <p>please Choose give option</p>}
@@ -79,26 +80,24 @@ const DropDown = (props) => {
             {" "}
             {props.options
               // filter the data according to input
-              .filter((data) => {
+              .filter( data => {
                 return selectedOption === ""
                   ? true
-                  : Object.keys(data).some((key) =>
-                      data[key].toLowerCase().includes(selectedOption)
-                    );
+                  : data.school.toLowerCase().includes(selectedOption)
+                 
               })
-              .map((option) => {
-                const label = Object.keys(option).map((key) => option[key]);
-
+              .map( option => {
+                
                 return (
                   <p
                     className="capitalize cursor-pointer p-1 w-[273px] rounded-lg hover:bg-gray-100"
                     onClick={() => {
-                      handleClick(label);
+                      handleClick(option.school);
                     }}
-                    key={label}
+                    key={option.school}
                   >
                     {" "}
-                    {label}
+                    {option.school}
                   </p>
                 );
               })}

@@ -16,16 +16,10 @@ const Requestform = () => {
       school: "achariya",
     },
   ];
-  const userType = [
-    {
-      role: "student",
-    },
-    {
-      role: "staff",
-    },
-  ];
 
-  const [isOpen, setIsOpen] = useState(false);
+  const [isRoleOpen, setIsRoleOpen] = useState(false);
+  const [isGradeOpen, setIsGradeOpen] = useState(false);
+  const [isStudent, setisStudent] = useState(false);
   const [data, setData] = useState({
     userName: "",
     email: "",
@@ -34,13 +28,20 @@ const Requestform = () => {
     grade: "",
     comment: "",
   });
-  const { schoolName } = data;
-  const dropdownRef = useRef();
+  const { role } = data;
+  const { grade } = data;
+  const roleRef = useRef();
+  const  gradeRef = useRef();
+
   //close dropdown when click happended outside of the field
   useEffect(() => {
     const handleClose = (e) => {
-      if (e.target != dropdownRef.current) {
-        setIsOpen(false);
+      if (e.target != roleRef.current) {
+        setIsRoleOpen(false);
+        
+      }
+      if (e.target != gradeRef.current){
+        setIsGradeOpen(false);
       }
     };
     window.addEventListener("click", handleClose);
@@ -49,24 +50,41 @@ const Requestform = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
   };
-  const toggle = () => {
-    setIsOpen(true);
+  const toggleRole = () => {
+    setIsRoleOpen(true);
+  };
+  const toggleGrade = () => {
+    setIsGradeOpen(true);
+  };
+  const handleRoleClick = value => {
+    
+       setData((prev) => ({ ...prev, role: value }))
+       
+     // setIsRoleOpen(false)
   };
 
-  const regualarClass =
-    "rounded-[3px] capitalize pl-2 w-72 text-b h-12 border outline-none focus:border-[3px] border-[--web-primary-color] bg-[--web-container]";
-  const roleClass =
-    "rounded-[3px] pl-2 h-12 pt-1 mt-10 outline-none focus:border-[3px] w-72 md:w-[600px] mx-auto  border border-[--web-primary-color] bg-[--web-container]";
+  const handleGradeClick = value =>{
+    setData((prev) => ({ ...prev, grade: value }));
+    //  setIsGradeOpen(false);
+  }
 
-  const [isStudent, setisStudent] = useState(false); // State to store input field value of second dropdown
+  useEffect(() => {
+    handleRole();
+  }, [role]);
 
-  const handlerole = (value) => {
-    value.trim() === "student" ? setisStudent(true) : setisStudent(false);
+  const handleRole = () => {
+    role.trim() === "student" ? setisStudent(true) : setisStudent(false);
   };
+
+  const color = role === "" ? " text-gray-400" : "text-black";
+
+  const roleClass = `rounded-[3px] ${color}  pt-2 capitalize pl-2 w-72 text-b h-12 border cursor-pointer outline-none focus:border-[3px] border-[--web-primary-color] bg-[--web-container]`;
+  const regualarClass = `rounded-[3px] capitalize pl-2 w-72 text-b h-12 border cursor-pointer outline-none focus:border-[3px] border-[--web-primary-color] bg-[--web-container]`;
+  const gradeClass = ` rounded-[3px] pt-2 pl-2 h-12 pt-1 mt-10 outline-none focus:border-[3px] w-72 md:w-[600px] mx-auto  border border-[--web-primary-color] bg-[--web-container]`;
 
   const Comment =
     "Tell us more about yourself and the purpose of using our product";
-
+ 
   return (
     <div className="mt-16 z-30">
       <p className="text-center px-10 pb-8 text-lg">
@@ -96,84 +114,98 @@ const Requestform = () => {
                   type="text"
                   placeholder="Your Name"
                   required
-                  className="rounded-[3px] pl-2 h-12 outline-none focus:border-[3px] border border-[--web-primary-color] bg-[--web-container]"
+                  className={regualarClass}
                 />
-                {
-                  <div className="relative ">
-                    <div
-                      ref={dropdownRef}
-                      className="rounded-[3px] cursor-pointer capitalize pl-2 py-3 w-72 text-b h-12 border outline-none focus:border-[3px] border-[--web-primary-color] bg-[--web-container]"
-                      onChange={(e) => setData({ ...data, schoolName })}
-                      onClick={toggle}
-                    >
-                      {" "}
-                      { {schoolName} || "School Name"} {" "}
-                    </div>
-
-                    <AnimatePresence mode="wait">
-                      {isOpen && (
-                        <motion.div
-                          initial={{ y: 10, opacity: 0.6 }}
-                          animate={{ y: 0, opacity: 1 }}
-                          exit={{ y: 10, opacity: 0 }}
-                          transition={{ duration: 0.5, type: "spring" }}
-                          className="absolute max-h-64 overflow-auto w-72 mt-2 z-40 pl-2 py-2  rounded-lg grid gap-2 bg-white round"
-                        >
-                          {" "}
-                          
-                          {  
-                              schoolname.map((option) => {
-                              const label = Object.keys(option).map(
-                                (key) => option[key]
-                              );
-
-                              return (
-                                <div>
-                                  <p>School Name</p>
-                                <p
-                                  className="capitalize cursor-pointer p-1 w-[273px] rounded-lg hover:bg-gray-100"
-                                  onClick={ () => setData({...data,schoolName: label}) }
-                                  key={label}
-                                >
-                                  {" "}
-                                  {label}
-                                </p>
-                                </div>
-                              );
-                            })}
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                   
-                  </div>
-                }
-                 {console.log({schoolName})}
+                <DropDown
+                  options={schoolname}
+                  default={"School Name"}
+                  className={regualarClass}
+                />
               </div>
               <div className="flex flex-col gap-10 w-72 ">
                 <input
                   required
                   type="email"
                   placeholder="Your Email"
-                  className="rounded-[3px] h-12 pl-2 outline-none focus:border-[3px] border border-[--web-primary-color] bg-[--web-container]"
+                  className="rounded-[3px] h-12 pl-2 outline-none focus:border-[3px] border border-[--web-primary-color] bg-[--web-container]
+                  "
                 />
-                <DropDown
-                  className={regualarClass}
-                  options={userType}
-                  default={"User Type"}
-                  handleRole={handlerole} // Pass the callback function
-                />
+                <div className="relative ">
+                  <div
+                    ref={roleRef}
+                    className={roleClass}
+                    onClick={toggleRole}
+                  >
+                    {" "}
+                    {role || "Select Your Role"}{" "}
+                  </div>
+                  <AnimatePresence mode="wait">
+                    {isRoleOpen && (
+                      <motion.div
+                        initial={{ y: 10, opacity: 0.6 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        exit={{ y: 10, opacity: 0 }}
+                        transition={{ duration: 0.5, type: "spring" }}
+                        className="absolute max-h-64 overflow-auto w-72 mt-2 z-40 pl-2 py-2  rounded-lg grid gap-2 bg-white round "
+                      >
+                        {" "}
+                        <p
+                        className="cursor-pointer"
+                          onClick={() => {
+                            
+                            handleRoleClick("student");
+                          }}
+                        >
+                          Student
+                        </p>
+                        <p
+                        className="cursor-pointer"
+                          onClick={() => {
+                            handleRoleClick("teacher");
+                          }}
+                        >
+                          Teacher
+                        </p>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
               </div>
             </div>
           </div>
           <div className="mx-10">
             {isStudent && (
-              <DropDown
-                className={roleClass}
-                options={grades}
-                default={"Grade"}
-              />
+              <div
+                ref={gradeRef}
+                onClick={toggleGrade}
+                className={gradeClass}
+              >
+                {" "}
+                {grade || "Select Your Grade"}{" "}
+              </div>
             )}{" "}
           </div>
+          <AnimatePresence mode="wait">
+            {isGradeOpen && (
+              <motion.div
+                initial={{ y: 10, opacity: 0.6 }}
+                animate={{ y: 0, opacity: 1 }}
+                exit={{ y: 10, opacity: 0 }}
+                transition={{ duration: 0.5, type: "spring" }}
+                className="absolute max-h-64 overflow-auto w-72 mt-2 z-40 pl-2 py-2  rounded-lg grid gap-2 bg-white round "
+              >
+                {" "}
+               {
+                grades.map(item =>(
+                  <p key={item} className="cursor-pointer" onClick={()=>{
+                    handleGradeClick(item)
+                  }}>{ item }</p>
+                ))
+               }
+              </motion.div>
+            )}
+          </AnimatePresence>
+          {console.log(data)}
           <div className="flex justify-center gap-10 flex-col py-10 ">
             <textarea
               type="text"
