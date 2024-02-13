@@ -3,13 +3,11 @@ import { AnimatePresence, motion } from "framer-motion";
 import React, { useEffect, useState, useRef } from "react";
 
 const DropDown = (props) => {
-
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState("");
   const [isNotValid, setIsNotValid] = useState(false);
-  const [check,setCheck] = useState ("")
+  const [check, setCheck] = useState("");
   const dropdownRef = useRef();
-  
 
   //close dropdown when click happended outside of the field
   useEffect(() => {
@@ -22,13 +20,14 @@ const DropDown = (props) => {
   }, []);
   useEffect(() => {
     const validate = () => {
-      props.handleSchool(selectedOption)
+      props.handleSchool(selectedOption);
 
-      const optionExist = props.options.find(item => item.school === selectedOption)
+      const optionExist = props.options.find(
+        (item) => item.school === selectedOption
+      );
       optionExist || selectedOption == ""
         ? setIsNotValid(false)
-        : setIsNotValid(true)
-
+        : setIsNotValid(true);
     };
     validate();
   }, [check]);
@@ -42,7 +41,7 @@ const DropDown = (props) => {
 
   const handleBlur = (e) => {
     const value = e.target.value.toLowerCase();
-    setCheck(value)
+    setCheck(value);
     setSelectedOption(value);
   };
 
@@ -55,6 +54,7 @@ const DropDown = (props) => {
 
   return (
     <div className="relative ">
+      {isNotValid && <p className="text-red-500 absolute -mt-6">please Choose give option</p>}
       <input
         ref={dropdownRef}
         className={props.className}
@@ -65,7 +65,6 @@ const DropDown = (props) => {
         value={selectedOption}
         required
       />
-      {isNotValid && <p className="text-red-500">please Choose give option</p>}
 
       <AnimatePresence mode="wait">
         {isOpen && (

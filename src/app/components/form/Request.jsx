@@ -13,7 +13,7 @@ const Requestform = () => {
       school: "acet",
     },
     {
-      school: "achariya",
+      school: "achariya college of engineering technology",
     },
   ];
 
@@ -83,9 +83,9 @@ const Requestform = () => {
   const roleColor = role === "" ? " text-gray-400" : "text-black" ;
   const gradeColor =  grade === "" ? " text-gray-400" : "text-black";
 
-  const roleClass = `rounded-[3px] ${roleColor}  pt-2 capitalize pl-2 w-72 text-b h-12 border cursor-pointer outline-none focus:border-[3px] border-[--web-primary-color] bg-[--web-container]`;
-  const regualarClass = `rounded-[3px] capitalize pl-2 w-72 text-b h-12 border cursor-pointer outline-none focus:border-[3px] border-[--web-primary-color] bg-[--web-container]`;
-  const gradeClass = ` rounded-[3px] cursor-pointer ${gradeColor}  pt-2 pl-2 h-12 pt-1 mt-10 outline-none focus:border-[3px] w-72 md:w-[600px] mx-auto  border border-[--web-primary-color] bg-[--web-container]`;
+  const roleClass = `rounded-[3px] ${roleColor} capitalize pl-2 w-72 text-b h-12 border cursor-pointer outline-none focus:border-[3px] border-[--web-primary-color] bg-[--web-container]`;
+  const regualarClass = `rounded-[3px] capitalize pl-2 w-72 text-b h-12 border outline-none focus:border-[3px] border-[--web-primary-color] bg-[--web-container]`;
+  const gradeClass = ` rounded-[3px] cursor-pointer ${gradeColor} pl-2 h-12  mt-10 outline-none focus:border-[3px] w-72 md:w-[600px]  border border-[--web-primary-color] bg-[--web-container]`;
 
   const Comment =
     "Tell us more about yourself and the purpose of using our product";
@@ -93,7 +93,7 @@ const Requestform = () => {
   return (
     <div className="mt-16 w-screen z-30">
       <p className="text-center px-10 pb-8 text-lg">
-        Note: this form is designed for EDUCATORS only. If you are a STUDENT,
+        Note: this form is designed for MEMBERS OF REGISTERED SCHOOL  only. If your ,
         please{" "}
         <Link className="text-[--web-primary-color]" href={"recommend"}>
           recommend it to your school
@@ -140,14 +140,16 @@ const Requestform = () => {
                   "
                 />
                 <div className="relative ">
-                  <div
+                  <input
                     ref={roleRef}
                     className={roleClass}
+                    placeholder="Select Your Role"
+                    value={role}
+                    readOnly
                     onClick={toggleRole}
-                  >
+                  />
                     {" "}
-                    {role || "Select Your Role"}{" "}
-                  </div>
+                  
                   <AnimatePresence mode="wait">
                     {isRoleOpen && (
                       <motion.div
@@ -182,16 +184,16 @@ const Requestform = () => {
               </div>
             </div>
           </div>
-          <div className="mx-10">
+          <div>
             {isStudent && (
-              <div
+              <input
                 ref={gradeRef}
                 onClick={toggleGrade}
+                placeholder="Select Your Grade"
                 className={gradeClass}
-              >
-                {" "}
-                {grade || "Select Your Grade"}{" "}
-              </div>
+                value={grade}
+              />
+              
             )}{" "}
           </div>
           <AnimatePresence mode="wait">
@@ -201,7 +203,7 @@ const Requestform = () => {
                 animate={{ y: 0, opacity: 1 }}
                 exit={{ y: 10, opacity: 0 }}
                 transition={{ duration: 0.5, type: "spring" }}
-                className="absolute max-h-64 overflow-auto w-72 mt-2 z-40 pl-2 py-2  rounded-lg grid gap-2  bg-white round "
+                className="absolute max-h-64 overflow-auto w-72 z-40 pl-2 py-2  rounded-lg grid gap-2 mt-2 bg-white round "
               >
                 {" "}
                {

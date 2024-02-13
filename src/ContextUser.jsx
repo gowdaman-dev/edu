@@ -11,6 +11,9 @@ function ContextUserData({ children }) {
     const [navGrade, setNavGrade] = useState('1')
     const [count, setCount] = useState(0)
     const [addmanually, setAddmanually] = useState(false)
+    const [userDetailpopup, setUserDetailpopup] = useState(false)
+    const [requestedpop, setRequestedpop] = useState(false)
+    const [showAccInfo , setShowAccInfo] = useState(false)
 
     return (
         <UserContext.Provider value={{
@@ -28,8 +31,14 @@ function ContextUserData({ children }) {
             setExporter,
             navSearch,
             setNavSearch,
-            navGrade, 
-            setNavGrade
+            navGrade,
+            setNavGrade,
+            userDetailpopup,
+            setUserDetailpopup,
+            requestedpop, 
+            setRequestedpop,
+            showAccInfo , 
+            setShowAccInfo
         }}>
             {children}
         </UserContext.Provider>
