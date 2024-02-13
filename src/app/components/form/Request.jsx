@@ -30,6 +30,7 @@ const Requestform = () => {
   });
   const { role } = data;
   const { grade } = data;
+  const {schoolName} = data;
   const roleRef = useRef();
   const  gradeRef = useRef();
 
@@ -49,6 +50,7 @@ const Requestform = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log(schoolName);
   };
   const toggleRole = () => {
     setIsRoleOpen(true);
@@ -58,16 +60,18 @@ const Requestform = () => {
   };
   const handleRoleClick = value => {
     
-       setData((prev) => ({ ...prev, role: value }))
+       setData({ ...data, role: value });
        
      // setIsRoleOpen(false)
   };
 
   const handleGradeClick = value =>{
-    setData((prev) => ({ ...prev, grade: value }));
+    setData({ ...data, grade: value });
     //  setIsGradeOpen(false);
   }
-
+  const handleSchool = value =>{
+      setData({...data,schoolName : value})
+  }
   useEffect(() => {
     handleRole();
   }, [role]);
@@ -76,17 +80,18 @@ const Requestform = () => {
     role.trim() === "student" ? setisStudent(true) : setisStudent(false);
   };
 
-  const color = role === "" ? " text-gray-400" : "text-black";
+  const roleColor = role === "" ? " text-gray-400" : "text-black" ;
+  const gradeColor =  grade === "" ? " text-gray-400" : "text-black";
 
-  const roleClass = `rounded-[3px] ${color}  pt-2 capitalize pl-2 w-72 text-b h-12 border cursor-pointer outline-none focus:border-[3px] border-[--web-primary-color] bg-[--web-container]`;
+  const roleClass = `rounded-[3px] ${roleColor}  pt-2 capitalize pl-2 w-72 text-b h-12 border cursor-pointer outline-none focus:border-[3px] border-[--web-primary-color] bg-[--web-container]`;
   const regualarClass = `rounded-[3px] capitalize pl-2 w-72 text-b h-12 border cursor-pointer outline-none focus:border-[3px] border-[--web-primary-color] bg-[--web-container]`;
-  const gradeClass = ` rounded-[3px] pt-2 pl-2 h-12 pt-1 mt-10 outline-none focus:border-[3px] w-72 md:w-[600px] mx-auto  border border-[--web-primary-color] bg-[--web-container]`;
+  const gradeClass = ` rounded-[3px] cursor-pointer ${gradeColor}  pt-2 pl-2 h-12 pt-1 mt-10 outline-none focus:border-[3px] w-72 md:w-[600px] mx-auto  border border-[--web-primary-color] bg-[--web-container]`;
 
   const Comment =
     "Tell us more about yourself and the purpose of using our product";
  
   return (
-    <div className="mt-16 z-30">
+    <div className="mt-16 w-screen z-30">
       <p className="text-center px-10 pb-8 text-lg">
         Note: this form is designed for EDUCATORS only. If you are a STUDENT,
         please{" "}
@@ -95,7 +100,7 @@ const Requestform = () => {
         </Link>{" "}
         instead.
       </p>
-      <div className=" border-[3px] rounded-2xl border-[--web-primary-color] w-fit px-1 md:px-10 mx-auto flex-col justify-center">
+      <div className=" md:border-[3px]  rounded-2xl border-[--web-primary-color] w-fit px-1 md:px-10 mx-auto flex-col justify-center">
         <Image
           className="w-32 h-32 mx-auto mt-10"
           src={"logo.svg"}
@@ -113,12 +118,14 @@ const Requestform = () => {
                 <input
                   type="text"
                   placeholder="Your Name"
+                  onChange={e =>setData({...data,userName : e.target.value})}
                   required
                   className={regualarClass}
                 />
                 <DropDown
                   options={schoolname}
                   default={"School Name"}
+                  handleSchool = {handleSchool}
                   className={regualarClass}
                 />
               </div>
@@ -127,6 +134,8 @@ const Requestform = () => {
                   required
                   type="email"
                   placeholder="Your Email"
+                  onChange={e =>setData({...data,email : e.target.value})}
+
                   className="rounded-[3px] h-12 pl-2 outline-none focus:border-[3px] border border-[--web-primary-color] bg-[--web-container]
                   "
                 />
@@ -192,7 +201,7 @@ const Requestform = () => {
                 animate={{ y: 0, opacity: 1 }}
                 exit={{ y: 10, opacity: 0 }}
                 transition={{ duration: 0.5, type: "spring" }}
-                className="absolute max-h-64 overflow-auto w-72 mt-2 z-40 pl-2 py-2  rounded-lg grid gap-2 bg-white round "
+                className="absolute max-h-64 overflow-auto w-72 mt-2 z-40 pl-2 py-2  rounded-lg grid gap-2  bg-white round "
               >
                 {" "}
                {
@@ -205,11 +214,13 @@ const Requestform = () => {
               </motion.div>
             )}
           </AnimatePresence>
-          {console.log(data)}
+         
           <div className="flex justify-center gap-10 flex-col py-10 ">
             <textarea
               type="text"
               placeholder={Comment}
+              onChange={e =>setData({...data,comment : e.target.value})}
+
               className="rounded-[3px] pl-2 pt-1 min-h-56 outline-none focus:border-[3px] h-auto w-72 md:w-[600px] mx-auto  border border-[--web-primary-color] bg-[--web-container]"
             />
             <input
