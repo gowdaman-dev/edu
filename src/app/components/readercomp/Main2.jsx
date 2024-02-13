@@ -15,8 +15,8 @@ async function fetchBytes(){
             params:{
                 url: URL ,
             },
-            responseType: 'ararybuffer'
-        },).then(res=>setBuffer(res))
+/*             responseType: 'ararybuffer'
+ */        },).then(res=>setBuffer(res.data.data.data))
         
 
     } catch (error) {
@@ -27,7 +27,9 @@ async function fetchBytes(){
 }
 fetchBytes()
     },[])
-  
+useEffect(()=>{
+    console.log(buffer);
+},[buffer])
     return (
         <div>jshs</div>
     )

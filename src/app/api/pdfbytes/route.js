@@ -11,8 +11,8 @@ try {
     const response=await fetcher.blob()
 const buffer=await response.arrayBuffer()
 const bytes=Buffer.from(buffer)
-
-return NextResponse.json({data:buffer})
+console.log(bytes);
+return NextResponse.json({data:bytes})
     
 } catch (error) {
     return NextResponse.json({message:"problem on data fetch" });
