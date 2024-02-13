@@ -50,11 +50,7 @@ export const grades = [
     {
         label: 'grade 12',
         value: 12,
-    },
-    {
-        label: 'Teacher',
-        value: 'teacher',
-    },
+    }
 ]
 
 export const adminnavlinks = [
@@ -68,14 +64,11 @@ export const adminnavlinks = [
         path:'/dashboard/library',
         icon:<VscLibrary  className='text-xl'/>
     },
+]
+export const superadminnavlinks = [
     {
-        label:"School Information",
-        path:'',
-        icon:<IoSchoolOutline className='text-xl'/>
-    },
-    {
-        label:"Account Information",
-        path:'',
-        icon: <MdOutlineManageAccounts className='text-xl'/>
-    },
+        label:"Member List",
+        path:'/dashboard',
+        icon:<PiUsersLight className='text-xl' />
+    }
 ]

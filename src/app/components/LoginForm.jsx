@@ -61,7 +61,7 @@ function LoginForm() {
       {
         loading ? <LoaderPage /> : ''
       }
-      <div className="flex items-center justify-center p-4 w-[100vw] h-[100vh] overflow-x-hidden bg-[#F3FFF8]">
+      <div className="flex items-center justify-center p-4 w-[100vw] h-[100vh] overflow-x-hidden bg-[--web-container]">
         <div className="absolute top-0 left-0 z-0 w-screen h-screen overflow-hidden">
           <div className="absolute md:-top-[150px] md:-left-[150px] -top-[50px] -left-[50px] h-fit w-fit opacity-[.5]">
             <div className="md:h-[300px] h-[150px] md:w-[300px] w-[150px] rounded-full bg-gradient-to-tr from-[--web-primary-color] to-[#F3FFF8] absolute top-0 md:left-[100px] left-[50px]"></div>
@@ -85,7 +85,7 @@ function LoginForm() {
               <div className="py-6">
                 <h1 className="text-[var(--web-primary-color)] lg:flex hidden text-2xl">Login</h1>
                 <div className="flex flex-col items-center lg:hidden">
-                  <Image src={'/logos/logo.png'} height={100} width={100} alt="logo" />
+                  <Image src={'/logos/logo.svg'} height={100} width={100} alt="logo" />
                   <h2 className="text-3xl font-light py-2 text-[#0B1770]">Hello!</h2>
                   <p className="font-light text-gray-400">Please login to continue to <span className="text-[#0B1770]">Education</span></p>
                 </div>

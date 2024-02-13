@@ -28,6 +28,53 @@ const authOptions = {
             }
         })
     ],
+    callbacks: {
+        async jwt({ token, session, user }) {
+            if (user) {
+                if (user.role == 'superadmin') {
+                    return {
+                        ...token,
+                        role: user.role,
+                        acId: user._id,
+                    }
+                } else {
+                    return {
+                        ...token,
+                        role: user.role,
+                        school: user.school,
+                        acId: user._id,
+                    }
+                }
+            }
+            return token
+        },
+        async session({ session, user, token }) {
+            await connectMongoBD()
+            const userdata = await User.findOne({ email: token.email }).select('_id')
+            if (token.role == "superadmin") {
+                return {
+                    ...session,
+                    user: {
+                        ...session.user,
+                        role: token.role,
+                        acId:token.acId,
+                    }
+                }
+            } else {
+                return {
+                    ...session,
+                    user: {
+                        ...session.user,
+                        role: token.role,
+                        school: token.school,
+                        auth: userdata ? true : false,
+                        acId:token.acId
+                    }
+                }
+            }
+
+        }
+    },
     session: {
         strategy: "jwt",
     },
@@ -37,5 +84,5 @@ const authOptions = {
     },
 }
 
-const handler = NextAuth(authOptions)
+export const handler = NextAuth(authOptions)
 export { handler as GET, handler as POST }
