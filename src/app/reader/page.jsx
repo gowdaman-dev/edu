@@ -11,7 +11,7 @@ function Page () {
         <HeadBar />
       </header>
         <main className='flex justify-center h-[90%] '>
-      <Main3/>
+      <Main2/>
         </main>
     </div>
   )
