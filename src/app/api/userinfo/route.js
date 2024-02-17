@@ -14,3 +14,16 @@ export async function POST(req) {
         console.log(error)
     }
 }
+export async function PUT(req) {
+    try {
+        await connectMongoBD();
+        const { id } = await req.json();
+        const password = await User.findOne({ _id:id }).select('password')
+        if (password == null) {
+            return NextResponse.json({ password: null })
+        }
+        return NextResponse.json(password ,{status:201})
+    } catch (error) {
+        console.log(error)
+    }
+}
