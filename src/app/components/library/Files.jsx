@@ -153,13 +153,17 @@ switch(tag){
       )
     })
   }
-  const renderData = (
-    data.message ? (
-      <p className='bg-gray-200 text-gray-600 p-10 rounded-lg'>Oop's {data.message}</p>
-    ) : !isAnimate && (
-      filesShow
-    )
-  );
+const renderData = (
+  data.message ? (
+    !isAnimate ? (
+      <p className='bg-gray-200 text-gray-600 p-10 rounded-lg mt-20'>Oop's {data.message}</p>
+    ) : null
+  ) : !isAnimate && (
+    filesShow
+  )
+);
+
+  
   
  
   function handleChange(e) {
@@ -245,7 +249,7 @@ if(file){
           />
           <label
             htmlFor='fileUpload'
-            className=' mr-4 border-2 flex cursor-pointer text-gray-500 justify-between items-center px-6 py-2  rounded-md active:scale-90 active:bg-[#92D1CD]'
+            className=' mr-4 border-2 flex cursor-pointer text-gray-500 justify-between items-center px-6 py-2  rounded-md active:scale-90 active:bg-gray-100'
           >
             <span className='inline-block text-[--web-primary-color] pr-4 text-3xl '>
               <BiCloudUpload />
