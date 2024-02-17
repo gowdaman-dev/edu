@@ -41,17 +41,17 @@ function Popper(props) {
 
 
       <div className='fixed grid grid-rows-2 rounded-md bg-white border-gray-400 border z-[2] md:right-44 right-16 sm:right-28 lg:right-60 xl:right-96 ' >
-        <div className="grid grid-cols-3 row-span-1 md:py-2 active:bg-teal-100 delete_rename  ">
-          <span className="col-span-1 grid place-content-center ">
+        <div className="grid grid-cols-3 row-span-1 md:py-2 active:bg-gray-100 delete_rename  ">
+          <span className="col-span-1 grid place-content-center text-[--web-primary-color]">
 
             <MdDelete />
           </span>
           <span className=' col-span-2  flex items-center' onClick={() => handleDelete()}>Delete</span>
 
         </div>
-        <div className="grid grid-cols-3 row-span-1 py-2 md:py-4 active:bg-teal-100 delete_rename">
+        <div className="grid grid-cols-3 row-span-1 py-2 md:py-4 active:bg-gray-100 delete_rename">
 
-          <span className="col-span-1 grid place-content-center">
+          <span className="col-span-1 grid place-content-center text-[--web-primary-color]">
 
 
             <MdOutlineDriveFileRenameOutline />

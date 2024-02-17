@@ -25,7 +25,7 @@ try{
   return NextResponse.json({message:"connection with db throws a error"},{status: 500})
 
 }
-  return NextResponse.json({message:"file not found"},{status:404})
+  return NextResponse.json({message:"there is no files"},{status:404})
     
 }
 

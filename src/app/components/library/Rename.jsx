@@ -37,12 +37,12 @@ await axios.put("/api/files",data).then((res)=>{
  }
 
   }
-  return (<div className='absolute p-4 md:p-6 grid grid-flow-col bg-[#e5e7eb] rounded-md grid-cols-5'>
+  return (<div className='absolute p-4 md:p-6 grid grid-flow-col bg-gray-200 rounded-md grid-cols-5'>
 
 
     <input type="text" ref={refRename} autoFocus className='h-10 rounded-tl-full rounded-bl-full outline-none pl-6 inline-block col-span-3 md:col-span-4' value={fileName} onChange={(e) => handleChange(e)} />
 
-    <button className='text-white h-10 p-2 rounded-tr-full rounded-br-full bg-[#008c8c] active:bg-[#89dbd2] col-span-2 md:col-span-1' onClick={()=>rename()}><span className='inline-block   text-end text-white '>
+    <button className='text-white h-10 p-2 rounded-tr-full rounded-br-full bg-[--web-primary-color] active:bg-blue-400 col-span-2 md:col-span-1' onClick={()=>rename()}><span className='inline-block   text-end text-white '>
 
       <MdOutlineDriveFileRenameOutline />
     </span>

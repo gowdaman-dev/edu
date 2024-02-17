@@ -1,16 +1,16 @@
 'use client'
 // pending :hadle file size, file not send eroor handle
+import { MdPictureAsPdf } from "react-icons/md"; 
 import { BiCloudUpload } from 'react-icons/bi'
 import React, { useEffect, useState } from 'react'
-import { FaRegFilePdf } from 'react-icons/fa'
 import { BsThreeDotsVertical } from 'react-icons/bs'
 import SkeletonAnimation from '../SkeletonAnimation'
 import fetchFiles from '@/utils/FetchFiles'
 import axios from 'axios'
 import ProgressComp from './ProgressComponent'
 import Popper from './DeleteRename_Poppper'
-import { v4 as uuid } from 'uuid'
 import { db } from '@/firebase/firebase'
+import { v4 as uuid } from 'uuid'
 import {ref,uploadBytesResumable, getDownloadURL} from "firebase/storage"
 let filesShow = []
 function Files() {
@@ -126,23 +126,18 @@ switch(tag){
       return (
         <div
           key={'file' + index}
-          className='grid grid-flow-col grid-rows-3   grid-cols-8 md:w-[80%]  text-balance  border-b-[1px]  text-[#008C8C] w-full border-teal-400 relative md:text-xl sm:text-md text-sm'
+          className='grid grid-flow-col grid-rows-3   grid-cols-8   text-balance  border-b-[1px]  text-gray-500 w-full border-gray-200 relative md:text-xl sm:text-md text-sm py-3' 
         >
-          <span className='grid col-span-1 row-span-3 text-3xl text-teal-500 sm:text-4xl place-content-center '>
-            <FaRegFilePdf />
+          <span className='grid col-span-1 row-span-3 text-3xl text-gray-500 sm:text-4xl place-content-center'>
+           <MdPictureAsPdf />
           </span>
           <p
-            className=' col-span-6 row-span-2    flex items-center'
+            className=' col-span-6 row-span-3 font-light    flex items-center'
             key={'filename' + index}
           >
             {name}
           </p>
-          <p
-            className='block col-span-6 row-span-1 sm:text-sm  text-xs text-gray-500'
-            key={'filesize' + index}
-          >
-            {size}
-          </p>
+      
           <span className='grid col-span-1 row-span-3 text-xl place-content-center rounded-full active:bg-gray-100' key={index} onClick={() => { handlePopClick(index, id,trimName) }} >
             <BsThreeDotsVertical />
           </span>
@@ -160,7 +155,7 @@ switch(tag){
   }
   const renderData = (
     data.message ? (
-      <p className='bg-[#92d1cd9a] p-10 rounded-lg'>Oop's {data.message}</p>
+      <p className='bg-gray-200 text-gray-600 p-10 rounded-lg'>Oop's {data.message}</p>
     ) : !isAnimate && (
       filesShow
     )
@@ -235,8 +230,8 @@ if(file){
 
   return (
     <div>
-      <ul className='flex items-center justify-between h-16 border-b-2 border-teal-700'>
-        <li>
+      <ul className='flex items-center justify-between h-16 border-b border-gray-100 w-screen md:w-full'>
+        <li className="px-4 text-gray-600">
           <b>Shared Files ({data.length || 0})</b>
         </li>
         <li>
@@ -250,16 +245,16 @@ if(file){
           />
           <label
             htmlFor='fileUpload'
-            className=' mr-4 border-2 flex cursor-pointer text-[#008C8C] justify-between items-center px-6 py-2 border-[#008c8c] rounded-md active:scale-90 active:bg-[#92D1CD]'
+            className=' mr-4 border-2 flex cursor-pointer text-gray-500 justify-between items-center px-6 py-2  rounded-md active:scale-90 active:bg-[#92D1CD]'
           >
-            <span className='inline-block text-[#008C8C] pr-4 text-3xl '>
+            <span className='inline-block text-[--web-primary-color] pr-4 text-3xl '>
               <BiCloudUpload />
             </span>
             <span>Upload</span>
           </label>
         </li>
       </ul>
-      <section className='relative flex flex-col items-center w-full mt-3 z-[1] '>
+      <section className='relative flex flex-col items-center w-full  z-[1] '>
         {progVisible && (
           <ProgressComp progressChange={progress} click={setProgVisible} />
         )}
