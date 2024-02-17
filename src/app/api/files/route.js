@@ -1,7 +1,6 @@
 const { NextResponse } = require('next/server')
 import { connectMongoBD } from '@/app/lib/mongodb'
 import libFiles from '@/app/models/libFiles'
-import { headers } from 'next/headers';
 export async function GET () {
 
 
@@ -34,11 +33,11 @@ export async function POST (req) {
 console.log("from api post /files");
 
   try {
-    let { fname,fsize,_fid } = await req.json()
+    let { fname,fsize,_fid,fgrade,fschool,furl, } = await req.json()
     
     const date = new Date()
     await connectMongoBD()
-    const createField = await libFiles.create({ file_name:fname, file_id:_fid,file_size:fsize, file_date:date })
+await libFiles.create({ file_name:fname, file_id:_fid,file_size:fsize, file_date:date,file_grade:fgrade,file_school:fschool,file_url:furl })
   } catch (err) {
     return NextResponse.json(
       { message: 'internal server error' },

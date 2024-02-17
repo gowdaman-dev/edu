@@ -16,7 +16,24 @@ const libSchema=new Schema({
     file_date:{
         type:Date,
         required:true
-    }
+    },
+    file_grade:{
+        type:String,
+        required:true
+        
+    },
+    file_school:{
+        type:String,
+        required:true
+        
+    },
+    file_url:{
+        type:String,
+        required:true
+        
+    },
+
+
 
 })
 

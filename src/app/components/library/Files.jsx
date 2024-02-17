@@ -14,6 +14,8 @@ import { v4 as uuid } from 'uuid'
 import {ref,uploadBytesResumable, getDownloadURL} from "firebase/storage"
 let filesShow = []
 function Files() {
+  const SCHOOL="default"
+  const GRADE="default"
   const [data, setData] = useState([])
   const [isAnimate, setIsAnimate] = useState(true)
   const [newFile, setNewFile] = useState(0)
@@ -170,11 +172,7 @@ switch(tag){
     //TODO:firebase operation
 if(file){
   setProgVisible(true)
-  const fileData={
-    fname:file.name,
-    fsize:file.size,
-    _fid:_uuid
-  }
+  
   const reference=ref(db,`files/${_uuid}`)
   const uploadTask = uploadBytesResumable(reference, file);
 
@@ -197,11 +195,20 @@ if(file){
   
   },()=>{
     getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-      console.log('File available at', downloadURL);})
-  sendData(fileData)
+      const fileData={
+        fname:file.name,
+        fsize:file.size,
+        _fid:_uuid,
+        furl:downloadURL,
+        fgrade:GRADE,
+        fschool:SCHOOL
 
+      }
+      sendData(fileData)
       setProgVisible(false)
       setProgress(0)
+   })
+
   })
   
    

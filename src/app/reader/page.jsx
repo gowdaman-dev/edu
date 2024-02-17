@@ -1,8 +1,6 @@
 import Navbar from '../components/readercomp/Navbar'
 import HeadBar from '../components/readercomp/HeadBar'
 import Main  from '../components/readercomp/Main'
-import Main2 from '../components/readercomp/Main2'
-import Main3 from '../components/readercomp/Main3'
 function Page () {
  
   return (
@@ -11,7 +9,8 @@ function Page () {
         <HeadBar />
       </header>
         <main className='flex justify-center h-[90%] '>
-      <Main2/>
+      <Main/>
+      
         </main>
     </div>
   )

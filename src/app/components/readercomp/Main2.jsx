@@ -1,43 +1,34 @@
-"use client"
-import React, { useEffect, useState } from 'react'
-import { db } from '@/firebase/firebase'
-import { getDownloadURL, ref } from 'firebase/storage'
-import axios from 'axios'
-import Main3 from './Main3'
-function Main2() {
-    const [buffer, setBuffer] = useState([])
+"use client";
+import { Viewer, Worker } from "@react-pdf-viewer/core";
+import "@react-pdf-viewer/core/lib/styles/index.css";
+import { useEffect, useState } from "react";
 
+import { defaultLayoutPlugin } from "@react-pdf-viewer/default-layout";
+import "@react-pdf-viewer/default-layout/lib/styles/index.css";
+import { PdfFetch } from "./Main3";
+const PdfViewer = () => {
+    const [buffer, setBuffer] = useState([])
     useEffect(() => {
         async function fetchBytes() {
             try {
-                const data = await Main3();
-                const utf8Bytes = new TextEncoder().encode(data);
-
-                const uint8Array = new Blob(utf8Bytes);
-                const arrayBuffer = await uint8Array.arrayBuffer();
-
-                setBuffer(Buffer.from(arrayBuffer));
-
-
+                const data = await PdfFetch();
+                console.log(data);
+                await setBuffer(data);
             } catch (error) {
                 console.log(error.message);
             }
         }
         fetchBytes();
-    }, []);
-    const doenloadpdf = () => {
-        const url = window.URL.createObjectURL(new Blob([buffer]));
-        const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', 'file.pdf');
-        document.body.appendChild(link);
-        link.click();
-    }
-    return (
-        <div>
-            <button onClick={doenloadpdf}>pdf download</button>
-        </div>
-    )
-}
-
-export default Main2
+    },[]);
+  const defaultLayoutPluginInstance = defaultLayoutPlugin();
+  return (
+    <div className="h-screen w-screen">
+      <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js">
+        <Viewer
+          fileUrl={buffer}
+        />
+      </Worker>
+    </div>
+  );
+};
+export default PdfViewer;
