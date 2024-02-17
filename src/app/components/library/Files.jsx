@@ -9,8 +9,8 @@ import fetchFiles from '@/utils/FetchFiles'
 import axios from 'axios'
 import ProgressComp from './ProgressComponent'
 import Popper from './DeleteRename_Poppper'
-import { db } from '@/firebase/firebase'
 import { v4 as uuid } from 'uuid'
+import { db } from '@/firebase/firebase'
 import {ref,uploadBytesResumable, getDownloadURL} from "firebase/storage"
 let filesShow = []
 function Files() {
