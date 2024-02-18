@@ -52,7 +52,7 @@ export async function POST(req) {
           return NextResponse.json(fileData);
           
      } catch (error) {
-        return NextResponse.json({message:"Error converting file"},{status:500});
+        return NextResponse.json({message:"Error converting file"+error},{status:500});
         
      }
 }
