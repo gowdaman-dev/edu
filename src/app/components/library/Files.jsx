@@ -113,8 +113,7 @@ switch(tag){
       let trimName=item.fname
       trimName=trimName.split(".pdf")
       trimName=trimName[0]
-      name = name.split('.pdf')
-      name = name[0]
+      name = name.split(/\.(pdf|docx|doc)$/)[0];
       name = name.length > 30 ? name.slice(0, 30) + '...' : name
       // for file size
       size = size / 1000
@@ -169,51 +168,88 @@ const renderData = (
   function handleChange(e) {
     let file = e.target.files[0]
     const _uuid=uuid()
+    const NAME=file.name
     //TODO:firebase operation
 if(file){
-  setProgVisible(true)
+  if(NAME.includes(".pdf")){
+    setProgVisible(true)
   
-  const reference=ref(db,`files/${_uuid}`)
-  const uploadTask = uploadBytesResumable(reference, file);
-
-  uploadTask.on("state_changed",(snapshot)=>{
-    let progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-    progress=Math.round(progress)
-
-  setProgress(progress);
-    switch (snapshot.state) {
-      case 'paused':
-        console.log('Upload is paused');
-        break;
-      case 'running':
-        console.log('Upload is running');
-        break;
-    }
+    const reference=ref(db,`files/${_uuid}`)
+    const uploadTask = uploadBytesResumable(reference, file);
   
-  },(err)=>{
-    
+    uploadTask.on("state_changed",(snapshot)=>{
+      let progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+      progress=Math.round(progress)
   
-  },()=>{
-    getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-      const fileData={
-        fname:file.name,
-        fsize:file.size,
-        _fid:_uuid,
-        furl:downloadURL,
-        fgrade:GRADE,
-        fschool:SCHOOL
-
+    setProgress(progress);
+      switch (snapshot.state) {
+        case 'paused':
+          console.log('Upload is paused');
+          break;
+        case 'running':
+          console.log('Upload is running');
+          break;
       }
-      sendData(fileData)
-      setProgVisible(false)
-      setProgress(0)
-   })
-
-  })
-  
-   
+    
+    },(err)=>{
       
-    }
+    
+    },()=>{
+      getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+        const fileData={
+          fname:file.name,
+          fsize:file.size,
+          _fid:_uuid,
+          furl:downloadURL,
+          fgrade:GRADE,
+          fschool:SCHOOL
+  
+        }
+        sendData(fileData)
+        setProgVisible(false)
+        setProgress(0)
+     })
+  
+    })
+    
+     
+        
+      }
+      else if(NAME.includes(".doc")|| NAME.includes(".docx")) {
+      setProgVisible(true);
+
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("name", NAME);
+      formData.append("_uuid", _uuid);
+      formData.append("fgrade", GRADE);
+      formData.append("fschool", SCHOOL);
+
+      axios.post(`/api/files/docs`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        },
+        onUploadProgress: progressEvent => {
+          let progress = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+          setProgress(progress);
+        }
+      })
+      .then(response => {
+        if (response.status === 200) {
+          sendData(response.data)
+          setProgVisible(false);
+          setProgress(0);
+        }
+      })
+      .catch(error => {
+        console.error("Error uploading file: ", error);
+        setProgVisible(false);
+      });
+      }
+      else{
+        alert("Only pdf and docx files are allowed")
+      }
+  }
 }
 
   async function sendData(data) {
@@ -241,7 +277,7 @@ if(file){
         <li>
           <input
             type='file'
-            accept='.pdf'
+            accept='.pdf,.doc,.docx'
             onChange={e => handleChange(e)}
             name='file'
             id='fileUpload'
