@@ -80,8 +80,8 @@ function LoginForm() {
               <p className="font-light text-gray-400">Please login to continue to <span className="text-[#0B1770]">Education</span></p>
             </div>
           </div>
-          <div className="relative z-10 h-full lg:w-[50%] w-full md:px-0 px-4 grid place-items-center">
-            <div className="h-fit lg:w-[500px] w-full rounded-lg md:border-2 border-none border-[var(--web-primary-color)] lg:px-4 px-2 py-10 grid place-items-center">
+          <div className="relative  z-10 h-full lg:w-[50%] w-full md:px-0 px-4 grid place-items-center">
+            <div className="h-fit lg:w-[500px] w-full rounded-lg md:border-2 border-none border-[--web-primary-color] lg:px-4 px-2 py-10 grid place-items-center">
               <div className="py-6">
                 <h1 className="text-[var(--web-primary-color)] lg:flex hidden text-2xl">Login</h1>
                 <div className="flex flex-col items-center lg:hidden">
