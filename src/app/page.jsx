@@ -1,5 +1,6 @@
 'use client'
 import { AnimatePresence, motion } from 'framer-motion'
+import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
@@ -22,6 +23,7 @@ function page() {
     })
   })
   const [homemenu, setHomemenu] = useState(false)
+  const { data:session, error } = useSession();
   return (
     <div className='min-w-screen overflow-x-hidden h-fit'>
       <div className="nav w-screen flex justify-between">
@@ -51,7 +53,10 @@ function page() {
               )
             }
           </AnimatePresence>
-          <Link className={`p-2 ${homemenusrl ? 'bg-[--web-primary-color] text-gray-800 border-none hover:bg-[--web-primary-color]' : 'border border-white'} px-4 tracking-widest rounded-xl hover:text-[--web-primary-color] hover:bg-white transition-color duration-500 ease-in-out text-white`} href={'/signin'}>SignIn</Link>
+          {
+            session?<Link className={`p-2 ${homemenusrl ? 'bg-[--web-primary-color] text-gray-800 border-none hover:bg-[--web-primary-color]' : 'border border-white'} px-4 tracking-widest rounded-xl hover:text-[--web-primary-color] hover:bg-white transition-color duration-500 ease-in-out text-white`} href={'/dasboard'}>Dashboard</Link>:
+            <Link className={`p-2 ${homemenusrl ? 'bg-[--web-primary-color] text-gray-800 border-none hover:bg-[--web-primary-color]' : 'border border-white'} px-4 tracking-widest rounded-xl hover:text-[--web-primary-color] hover:bg-white transition-color duration-500 ease-in-out text-white`} href={'/signin'}>SignIn</Link>
+          }
           {homemenu ? <AiOutlineClose onClick={() => setHomemenu(false)} className='relative z-[10] block md:hidden text-2xl' /> : <FaBars onClick={() => setHomemenu(true)} className='relative z-[10] block md:hidden text-2xl' />}
         </div>
       </div>

@@ -10,6 +10,7 @@ function Accountinformation() {
     const [resetrequest, setresetrequest] = useState(false)
     const [resetrequesttext, setresetrequesttext] = useState('change password')
     const { data: session } = useSession()
+    console.log(session?.user);
     const mailnow = async (e) => {
         e.preventDefault();
         await setresetrequest(true);
@@ -93,6 +94,20 @@ function Accountinformation() {
                         </h3>
                     </div>
                 </div>
+                {
+                    (session?.user?.role !== 'superadmin') && (
+                        <div className='h-fit flex p-3'>
+                            <div className='flex w-full h-fit gap-4 items-center'>
+                                <h1 className='text-lg font-medium'>
+                                    School :
+                                </h1>
+                                <h3>
+                                    {session?.user?.school}
+                                </h3>
+                            </div>
+                        </div>
+                    )
+                }
                 <footer className=' h-fit justify-end p-3  flex w-[100%] right-0 bottom-0 border-t absolute'>
                     <button onClick={() => setShowAccInfo(false)} className='text-purple-700 font-normal'>
                         Cancel
