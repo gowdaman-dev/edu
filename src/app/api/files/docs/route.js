@@ -49,7 +49,6 @@ export async function POST(req) {
              fgrade:fgrade,
              fschool:fschool
           };
-console.log(downloadURL);
           return NextResponse.json(fileData);
           
      } catch (error) {

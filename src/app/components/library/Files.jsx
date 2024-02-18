@@ -217,6 +217,7 @@ if(file){
       }
       else if(NAME.includes(".doc")|| NAME.includes(".docx")) {
       setProgVisible(true);
+console.log(file);
 
       const formData = new FormData();
       formData.append("file", file);
@@ -236,6 +237,7 @@ if(file){
       })
       .then(response => {
         if (response.status === 200) {
+          console.log(response.data);
           sendData(response.data)
           setProgVisible(false);
           setProgress(0);
