@@ -67,15 +67,15 @@ function page() {
           <Image src={'/homeimg.svg'} width={200} height={200} className='h-full w-full' alt='' />
         </div>
       </section>
-      <section id="trusted" className="py-20 bg-white text-center">
+      <section id="trusted" className="py-20 px-8 bg-white text-center">
         <div className="container mx-auto">
           <h2 className="text-4xl font-bold mb-8">Trusted by over 2000+ Students</h2>
           <p className="text-lg text-gray-800">Our platform is trusted by over 2000 students to enhance their learning experience and achieve their educational goals. Join us today and be part of our growing community!</p>
         </div>
       </section>
-      <section id="service" className="py-20 bg-blue-50">
+      <section id="service" className="py-20 px-8 bg-blue-50">
         <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 items-center">
-          <div className="text-center md:text-left px-4 text-gray-800">
+          <div className="text-center md:text-left text-gray-800">
             <h2 className="text-4xl font-bold mb-4">Edulearn LMS</h2>
             <p className="text-lg mb-4 font-light">This LMS webpage is developed to enable schools to provide online access to their students. There are three roles in this web project: admin (principal or owner), teacher, and student. The uploaded PDFs can only be viewed by your school. We have integrated a voice API to read the notes in PDFs for you.</p>
           </div>
@@ -102,12 +102,12 @@ function page() {
         </div>
       </section>
       <section id="services" className="bg-fixed bg-cover bg-[url('/about02.svg')] text-gray-900">
-        <div className="container mx-auto text-center py-20 backdrop-blur-lg">
+        <div className="container mx-auto text-center py-20 backdrop-blur-lg  px-8">
           <h2 className="text-4xl font-black mb-4">services EduLearn</h2>
           <p className="mb-8">EduLearn is a leading online learning platform that helps anyone learn business, software, technology, and creative skills to achieve personal and professional goals. Through individual, corporate, academic, and government subscriptions, members have access to the EduLearn portfolio of course content.</p>
         </div>
       </section>
-      <section id="contact" className="py-20">
+      <section id="contact" className="py-20 px-8">
         <div className="container mx-auto">
           <h2 className="text-4xl font-bold text-center mb-8">Contact Us</h2>
           <div className="flex justify-center">
