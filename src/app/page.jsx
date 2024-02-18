@@ -58,7 +58,7 @@ function page() {
       <section id="home" className='w-screen h-fit flex md:flex-row flex-col px-8 py-8 py-[6rem] bg-[url(/hero_shape.png)] bg-[center] bg-cover bg-blue-300 items-center md:justify-between justify-center'>
         <div className="md:w-[50%] w-full h-full grid place-items-center">
           <div className="flex w-full flex-col items-start gap-2">
-            <h1 className='md:text-6xl space-2 text-4xl tracking-wide text-gray-700 font-black'>Welcome <br />To Our Best <br /> E Learning Platform </h1>
+            <h1 className='md:text-6xl space-2 text-4xl tracking-wide text-gray-700 font-black font-[Pacifico]'>Welcome <br />To Our Best <br /> E Learning Platform </h1>
             <Link href={'/recomend'} className='flex items-center justify-center gap-2 px-6 py-4 mt-2 text-white rounded-full bg-[--web-primary-color]'>Get Start your journey<FaCircleChevronRight /></Link>
             <p className='px-6'>Are You A User? <Link href={'signin'} className='text-[--web-primary-color]'>SignIn here!</Link></p>
           </div>
