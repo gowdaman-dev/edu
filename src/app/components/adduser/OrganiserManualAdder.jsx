@@ -57,11 +57,13 @@ function ManualAdder({ close }) {
 	const [school, setSchool] = useState('')
 	const [about, setAbout] = useState('')
 	const [error, setError] = useState('')
+	const [saloader, setsaloader] = useState(false)
 	const password = 'Admin@1234'
 	const role = "admin"
 	const inner = useRef()
 	const SignUpHandler = async (e) => {
 		e.preventDefault()
+		await setsaloader(true)
 		try {
 			const resexist = await fetch('/api/userExists', {
 				method: 'POST',
@@ -73,10 +75,12 @@ function ManualAdder({ close }) {
 			const { user } = await resexist.json()
 			if (user !== null) {
 				setError('Account Already exist')
+				setsaloader(false)
 				return
 			}
 		} catch (error) {
 			console.log(error);
+			setsaloader(false)
 		}
 		try {
 			const resschoolexist = await fetch('/api/organiser/schollverify', {
@@ -89,6 +93,7 @@ function ManualAdder({ close }) {
 			const { exist } = await resschoolexist.json()
 			if (exist !== null) {
 				setError('School already Exists!')
+				setsaloader(false)
 				return
 			}
 		} catch (error) {
@@ -104,6 +109,7 @@ function ManualAdder({ close }) {
 			})
 			if (res.ok) {
 				const form = await e.target;
+				setsaloader(false)
 				form.reset();
 				close(false)
 				return
@@ -153,7 +159,7 @@ function ManualAdder({ close }) {
 						<label className='text-xl' htmlFor="about">About</label>
 						<input onChange={(e) => { setAbout(e.target.value) }} className='w-[80%] text-sm text-gray-700 outline-none bg-gray-200 p-2 rounded-lg' type="text" required placeholder='eg. principal , correspondent.....' id='school' />
 					</div>
-					<button type='submit' className='w-full mt-2 py-2 bg-[--web-primary-color] rounded-lg text-white tracking-wide'>Add Organiser</button>
+					<button type='submit' className='w-full mt-2 py-2 bg-[--web-primary-color] rounded-lg text-white tracking-wide'>{saloader?"processing..":'Add Organiser'}</button>
 					<p className='text-[12px] font-light text-gray-700'>Note: By Default the password is set to "Admin@1234"</p>
 				</form>
 			</motion.div>
