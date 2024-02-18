@@ -23,7 +23,7 @@ function page() {
   })
   const [homemenu, setHomemenu] = useState(false)
   return (
-    <div className='w-screen h-fit'>
+    <div className='min-w-screen overflow-x-hidden h-fit'>
       <div className="nav w-screen flex justify-between">
         <Image src={'/mailimg.jpg'} height={240} hidden width={850} alt=''></Image>
       </div>
