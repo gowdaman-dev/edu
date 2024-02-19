@@ -85,9 +85,9 @@ const Requestform = () => {
   const roleColor = role === "" ? " text-gray-400" : "text-black";
   const gradeColor = grade === "" ? " text-gray-400" : "text-black";
 
-  const roleClass = `rounded-[3px] ${roleColor} capitalize pl-2 w-72 text-b h-12 border cursor-pointer outline-none focus:border-[3px] border-[--web-primary-color] bg-[--web-container]`;
-  const regualarClass = `rounded-[3px] capitalize pl-2 w-72 text-b h-12 border outline-none focus:border-[3px] border-[--web-primary-color] bg-[--web-container]`;
-  const gradeClass = ` rounded-[3px] cursor-pointer ${gradeColor} pl-2 h-12  mt-10 outline-none focus:border-[3px] w-72 md:w-[600px]  border border-[--web-primary-color] bg-[--web-container]`;
+  const roleClass = `rounded-lg ${roleColor} pl-2 w-72 text-b h-12 border cursor-pointer outline-none  bg-[--web-container]`;
+  const regualarClass = `rounded-lg  pl-2 w-72 text-b h-12 border outline-none  bg-[--web-container]`;
+  const gradeClass = ` rounded-lg cursor-pointer ${gradeColor} pl-2 h-12  mt-10 outline-none  w-72 md:w-[600px]  border bg-[--web-container]`;
 
   const Comment =
     "Tell us more about yourself and the purpose of using our product";
@@ -102,7 +102,7 @@ const Requestform = () => {
         </Link>{" "}
         instead.
       </p>
-      <div className=" md:border-[3px]  rounded-2xl border-[--web-primary-color] w-fit px-1 md:px-10 mx-auto flex-col justify-center">
+      <div className=" md:shadow-[0px_0px_2px_0px] rounded-lg py-2  w-fit px-1 md:px-10 mx-auto flex-col justify-center">
         <Image
           className="w-32 h-32 mx-auto mt-10"
           src={"logo.svg"}
@@ -138,7 +138,7 @@ const Requestform = () => {
                   placeholder="Your Email"
                   onChange={e => setData({ ...data, email: e.target.value })}
 
-                  className="rounded-[3px] h-12 pl-2 outline-none focus:border-[3px] border border-[--web-primary-color] bg-[--web-container]
+                  className="rounded-lg h-12 pl-2 outline-none  border bg-[--web-container]
                   "
                 />
                 <div className="relative ">
@@ -225,14 +225,12 @@ const Requestform = () => {
               placeholder={Comment}
               onChange={e => setData({ ...data, comment: e.target.value })}
 
-              className="rounded-[3px] pl-2 pt-1 min-h-56 outline-none focus:border-[3px] h-auto w-72 md:w-[600px] mx-auto  border border-[--web-primary-color] bg-[--web-container]"
+              className="rounded-lg resize-none pl-2 pt-1 min-h-56 outline-none  h-auto w-72 md:w-[600px] mx-auto  border bg-[--web-container]"
             />
             <input
               type="submit"
-              value={"Send"}
-              onClick={handleSubmit}
               onSubmit={"recommend"}
-              className="rounded-[5px] cursor-pointer text-white h-14 bg-[--web-primary-color] text-center w-72 md:w-[600px] mx-auto  border-2 border-[--web-primary-color]"
+              className="rounded-[5px] cursor-pointer text-white h-14 bg-[--web-primary-color] text-center w-72 md:w-[600px] mx-auto  border-2"
             />
           </div>
         </form>

@@ -41,6 +41,7 @@ const DropDown = (props) => {
 
   const handleBlur = (e) => {
     const value = e.target.value.toLowerCase();
+    setIsOpen(false)
     setCheck(value);
     setSelectedOption(value);
   };
