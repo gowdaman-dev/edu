@@ -81,19 +81,19 @@ const DropDown = (props) => {
               .filter((data) => {
                 return selectedOption === ""
                   ? true
-                  : data.school.toLowerCase().includes(selectedOption);
+                  : data.schoolname.toLowerCase().includes(selectedOption);
               })
               .map((option) => {
                 return (
                   <p
                     className="capitalize cursor-pointer p-1 w-[273px] rounded-lg hover:bg-gray-100"
                     onClick={() => {
-                      handleClick(option.school);
+                      handleClick(option.schoolname);
                     }}
-                    key={option.school}
+                    key={option.schoolname}
                   >
                     {" "}
-                    {option.school}
+                    {option.schoolname}
                   </p>
                 );
               })}

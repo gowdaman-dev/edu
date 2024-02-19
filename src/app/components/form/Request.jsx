@@ -8,15 +8,17 @@ import { grades } from "./grade";
 import { AnimatePresence, motion } from "framer-motion";
 
 const Requestform = () => {
-  const schoolname = [
-    {
-      school: "acet",
-    },
-    {
-      school: "achariya college of engineering technology",
-    },
-  ];
-
+  const [schoolname, setSchoolname] = useState([]);
+  useEffect(() => {
+    fetch("/api/schoolList", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => setSchoolname(data));
+  }, []);
   const [isRoleOpen, setIsRoleOpen] = useState(false);
   const [isGradeOpen, setIsGradeOpen] = useState(false);
   const [isStudent, setisStudent] = useState(false);
@@ -30,18 +32,18 @@ const Requestform = () => {
   });
   const { role } = data;
   const { grade } = data;
-  const {schoolName} = data;
+  const { schoolName } = data;
   const roleRef = useRef();
-  const  gradeRef = useRef();
+  const gradeRef = useRef();
 
   //close dropdown when click happended outside of the field
   useEffect(() => {
     const handleClose = (e) => {
       if (e.target != roleRef.current) {
         setIsRoleOpen(false);
-        
+
       }
-      if (e.target != gradeRef.current){
+      if (e.target != gradeRef.current) {
         setIsGradeOpen(false);
       }
     };
@@ -59,18 +61,18 @@ const Requestform = () => {
     setIsGradeOpen(true);
   };
   const handleRoleClick = value => {
-    
-       setData({ ...data, role: value });
-       
-     // setIsRoleOpen(false)
+
+    setData({ ...data, role: value });
+
+    // setIsRoleOpen(false)
   };
 
-  const handleGradeClick = value =>{
+  const handleGradeClick = value => {
     setData({ ...data, grade: value });
     //  setIsGradeOpen(false);
   }
-  const handleSchool = value =>{
-      setData({...data,schoolName : value})
+  const handleSchool = value => {
+    setData({ ...data, schoolName: value })
   }
   useEffect(() => {
     handleRole();
@@ -80,8 +82,8 @@ const Requestform = () => {
     role.trim() === "student" ? setisStudent(true) : setisStudent(false);
   };
 
-  const roleColor = role === "" ? " text-gray-400" : "text-black" ;
-  const gradeColor =  grade === "" ? " text-gray-400" : "text-black";
+  const roleColor = role === "" ? " text-gray-400" : "text-black";
+  const gradeColor = grade === "" ? " text-gray-400" : "text-black";
 
   const roleClass = `rounded-[3px] ${roleColor} capitalize pl-2 w-72 text-b h-12 border cursor-pointer outline-none focus:border-[3px] border-[--web-primary-color] bg-[--web-container]`;
   const regualarClass = `rounded-[3px] capitalize pl-2 w-72 text-b h-12 border outline-none focus:border-[3px] border-[--web-primary-color] bg-[--web-container]`;
@@ -89,7 +91,7 @@ const Requestform = () => {
 
   const Comment =
     "Tell us more about yourself and the purpose of using our product";
- 
+
   return (
     <div className="mt-16 w-screen z-30">
       <p className="text-center px-10 pb-8 text-lg">
@@ -118,14 +120,14 @@ const Requestform = () => {
                 <input
                   type="text"
                   placeholder="Your Name"
-                  onChange={e =>setData({...data,userName : e.target.value})}
+                  onChange={e => setData({ ...data, userName: e.target.value })}
                   required
                   className={regualarClass}
                 />
                 <DropDown
                   options={schoolname}
                   default={"School Name"}
-                  handleSchool = {handleSchool}
+                  handleSchool={handleSchool}
                   className={regualarClass}
                 />
               </div>
@@ -134,7 +136,7 @@ const Requestform = () => {
                   required
                   type="email"
                   placeholder="Your Email"
-                  onChange={e =>setData({...data,email : e.target.value})}
+                  onChange={e => setData({ ...data, email: e.target.value })}
 
                   className="rounded-[3px] h-12 pl-2 outline-none focus:border-[3px] border border-[--web-primary-color] bg-[--web-container]
                   "
@@ -148,8 +150,8 @@ const Requestform = () => {
                     readOnly
                     onClick={toggleRole}
                   />
-                    {" "}
-                  
+                  {" "}
+
                   <AnimatePresence mode="wait">
                     {isRoleOpen && (
                       <motion.div
@@ -161,16 +163,16 @@ const Requestform = () => {
                       >
                         {" "}
                         <p
-                        className="cursor-pointer"
+                          className="cursor-pointer"
                           onClick={() => {
-                            
+
                             handleRoleClick("student");
                           }}
                         >
                           Student
                         </p>
                         <p
-                        className="cursor-pointer"
+                          className="cursor-pointer"
                           onClick={() => {
                             handleRoleClick("teacher");
                           }}
@@ -193,7 +195,7 @@ const Requestform = () => {
                 className={gradeClass}
                 value={grade}
               />
-              
+
             )}{" "}
           </div>
           <AnimatePresence mode="wait">
@@ -206,22 +208,22 @@ const Requestform = () => {
                 className="absolute max-h-64 overflow-auto w-72 z-40 pl-2 py-2  rounded-lg grid gap-2 mt-2 bg-white round "
               >
                 {" "}
-               {
-                grades.map(item =>(
-                  <p key={item} className="cursor-pointer" onClick={()=>{
-                    handleGradeClick(item)
-                  }}>{ item }</p>
-                ))
-               }
+                {
+                  grades.map(item => (
+                    <p key={item} className="cursor-pointer" onClick={() => {
+                      handleGradeClick(item)
+                    }}>{item}</p>
+                  ))
+                }
               </motion.div>
             )}
           </AnimatePresence>
-         
+
           <div className="flex justify-center gap-10 flex-col py-10 ">
             <textarea
               type="text"
               placeholder={Comment}
-              onChange={e =>setData({...data,comment : e.target.value})}
+              onChange={e => setData({ ...data, comment: e.target.value })}
 
               className="rounded-[3px] pl-2 pt-1 min-h-56 outline-none focus:border-[3px] h-auto w-72 md:w-[600px] mx-auto  border border-[--web-primary-color] bg-[--web-container]"
             />
