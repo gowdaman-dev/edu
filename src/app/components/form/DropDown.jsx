@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import React, { useEffect, useState, useRef } from "react";
 
 const DropDown = (props) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isSchoolOpen, setIsSchoolOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState("");
   const [isNotValid, setIsNotValid] = useState(false);
   const dropdownRef = useRef();
@@ -12,17 +12,24 @@ const DropDown = (props) => {
   useEffect(() => {
     const handleClose = (e) => {
       if (e.target != dropdownRef.current) {
-        setIsOpen(false);
+        setIsSchoolOpen(false);
       }
     };
     window.addEventListener("click", handleClose);
   }, []);
   useEffect(() => {
     const validate = () => {
-      props.handleSchool(selectedOption);
+/*       props.handleSchool(selectedOption);
+ */
+      const optionExist = schoolname.find(
+        (item) =>{
+const val=item.schoolname
+const bool=val.toLowerCase()== selectedOption.toLowerCase()
+return bool
+         
 
-      const optionExist = props.options.find(
-        (item) => item.school === selectedOption
+        }
+        
       );
       optionExist || selectedOption == ""
         ? setIsNotValid(false)
@@ -30,48 +37,48 @@ const DropDown = (props) => {
     };
     validate();
   }, [selectedOption]);
-  const toggle = () => {
-    setIsOpen(true);
+  const toggleSchool = () => {
+    setIsSchoolOpen(true);
   };
 
-  const handleChange = (e) => {
-    setSelectedOption(e.target.value.toLowerCase());
+  const handleChangeSchool = (e) => {
+    setSelectedOption(e.target.value);
   };
 
-  const handleBlur = (e) => {
-    const value = e.target.value.toLowerCase();
-    setIsOpen(false)
+  const handleBlurSchool = (e) => {
+    const value = e.target.value;
+    setIsSchoolOpen(false)
     setSelectedOption(value);
   };
 
-  const handleClick = (label) => {
+  const handleClickSchool = (label) => {
     setSelectedOption(label);
 
     setIsNotValid(false);
-    setIsOpen(false);
+    setIsSchoolOpen(false);
   };
 
- const handleFocus = () =>{
-  setIsOpen(true);
- }
+  const handleFocusSchool = () => {
+    setIsSchoolOpen(true);
+  }
 
   return (
     <div className="relative ">
       {isNotValid && <p className="text-red-500 absolute -mt-6">please Choose give option</p>}
       <input
         ref={dropdownRef}
-        className={props.className}
-        placeholder={props.default}
-        onChange={handleChange}
-        onBlur={handleBlur}
-        onClick={toggle}
+        className={regularClass}
+        placeholder={"School Name"}
+        onChange={handleChangeSchool}
+        onBlur={handleBlurSchool}
+        onClick={toggleSchool}
         value={selectedOption}
-        onFocus={handleFocus}
+        onFocus={handleFocusSchool}
         required
       />
 
       <AnimatePresence mode="wait">
-        {isOpen && (
+        {isSchoolOpen && (
           <motion.div
             initial={{ y: 10, opacity: 0.6 }}
             animate={{ y: 0, opacity: 1 }}
@@ -80,7 +87,7 @@ const DropDown = (props) => {
             className="absolute max-h-64 overflow-auto w-72 mt-2 z-40 pl-2 py-2  rounded-lg grid gap-2 bg-white round"
           >
             {" "}
-            {props.options
+            {schoolname
               // filter the data according to input
               .filter((data) => {
                 return selectedOption === ""
@@ -92,7 +99,7 @@ const DropDown = (props) => {
                   <p
                     className="capitalize cursor-pointer p-1 w-[273px] rounded-lg hover:bg-gray-100"
                     onClick={() => {
-                      handleClick(option.schoolname);
+                      handleClickSchool(option.schoolname);
                     }}
                     key={option.schoolname}
                   >
