@@ -28,8 +28,8 @@ const Requestform = () => {
   const [isRoleOpen, setIsRoleOpen] = useState(false);
   const [isGradeOpen, setIsGradeOpen] = useState(false);
   const [isSchoolOpen, setIsSchoolOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState("");
   const [isNotValid, setIsNotValid] = useState(false);
+  const [check,setCheck] = useState('')
   const dropdownRef = useRef();
   const [data, setData] = useState({
     userName: "",
@@ -63,24 +63,23 @@ const Requestform = () => {
   }, []);
   useEffect(() => {
     const validate = () => {
-/*       props.handleSchool(selectedOption);
+/*       props.handleSchool(schoolName);
  */
       const optionExist = schoolname.find(
         (item) =>{
-const val=item.schoolname
-const bool=val.toLowerCase()== selectedOption.toLowerCase()
+const val=item.schoolname.toLowerCase()
+const bool=val== schoolName.toLowerCase().trim()
 return bool
-         
-
-        }
-        
-      );
-      optionExist || selectedOption == ""
+        });
+      optionExist || schoolName == ""
         ? setIsNotValid(false)
         : setIsNotValid(true);
     };
     validate();
-  }, [selectedOption]);
+
+    console.log(schoolName);
+
+  }, [check]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -103,36 +102,29 @@ return bool
     setData({ ...data, grade: value });
     //  setIsGradeOpen(false);
   }
-  const handleSchool = value => {
-    
-    setData({ ...data, schoolName: value })
-  }
 
 
 
-  const handleRoleFocus = () =>{
-    setIsRoleOpen(true);
-  }
 
-  const handleGradeFocus = () =>{
-    setIsGradeOpen(true);
-  }
+  
   const toggleSchool = () => {
     setIsSchoolOpen(true);
   };
 
   const handleChangeSchool = (e) => {
-    setSelectedOption(e.target.value);
+    const value = e.target.value;
+    setData({...data, schoolName :value});
   };
 
   const handleBlurSchool = (e) => {
     const value = e.target.value;
     setIsSchoolOpen(false)
-    setSelectedOption(value);
+    setData({...data, schoolName :value});
+    setCheck(value)
   };
 
-  const handleClickSchool = (label) => {
-    setSelectedOption(label);
+  const handleClickSchool = (value) => {
+    setData({...data, schoolName :value});
 
     setIsNotValid(false);
     setIsSchoolOpen(false);
@@ -194,7 +186,7 @@ return bool
         onChange={handleChangeSchool}
         onBlur={handleBlurSchool}
         onClick={toggleSchool}
-        value={selectedOption}
+        value={schoolName}
         onFocus={handleFocusSchool}
         required
       />
@@ -212,9 +204,9 @@ return bool
             {schoolname
               // filter the data according to input
               .filter((data) => {
-                return selectedOption === ""
+                return schoolName === ""
                   ? true
-                  : data.schoolname.toLowerCase().includes(selectedOption);
+                  : data.schoolname.toLowerCase().trim().includes(schoolName.toLowerCase().trim());
               })
               .map((option) => {
                 return (
