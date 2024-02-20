@@ -21,17 +21,9 @@ const Requestform = () => {
     })
       .then((response) => response.json())
       .then((data) => setSchoolname(data));
-  }, []); */
+  }, []); 
 
-  const schoolname = [
-    {
-      schoolname : "Acet",
-
-    },
-    {
-      schoolname : "Achariya"
-    }
-  ]
+ 
  
   const [isRoleOpen, setIsRoleOpen] = useState(false);
   const [isGradeOpen, setIsGradeOpen] = useState(false);
@@ -313,7 +305,7 @@ return bool
               />
 
             {" "}
-          </div>
+          
           <AnimatePresence mode="wait">
             {isGradeOpen && (
               <motion.div
