@@ -37,9 +37,8 @@ function page() {
         ></Image>
       </div>
       <div
-        className={` homenav fixed px-8 w-screen py-4 flex items-center justify-between transition-color ease-linear duration-500 ${
-          homemenusrl ? "bg-white text-gray-800 border-b" : ""
-        } `}
+        className={` homenav fixed px-8 w-screen py-4 flex items-center justify-between transition-color ease-linear duration-500 ${homemenusrl ? "bg-white text-gray-800 border-b" : ""
+          } `}
       >
         <div className="flex items-center justify-center gap-2">
           <Image src={"/logos/logo.svg"} height={40} width={40} alt="" />
@@ -49,9 +48,8 @@ function page() {
         </div>
         <div className="flex gap-4 items-center justify-center">
           <div
-            className={`md:flex hidden items-center justify-center gap-2 ${
-              homemenusrl ? "text-gray-800" : "text-white"
-            }`}
+            className={`md:flex hidden items-center justify-center gap-2 ${homemenusrl ? "text-gray-800" : "text-white"
+              }`}
           >
             <Link
               className="p-2 px-4 tracking-widest hover:text-gray-300 transition-color duration-5000 ease"
@@ -120,22 +118,20 @@ function page() {
           </AnimatePresence>
           {session ? (
             <Link
-              className={`p-2 ${
-                homemenusrl
+              className={`p-2 ${homemenusrl
                   ? "bg-[--web-primary-color] text-gray-800 border-none hover:bg-[--web-primary-color]"
                   : "border border-white"
-              } px-4 tracking-widest rounded-xl hover:text-[--web-primary-color] hover:bg-white transition-color duration-500 ease-in-out text-white`}
+                } px-4 tracking-widest rounded-xl hover:text-[--web-primary-color] hover:bg-white transition-color duration-500 ease-in-out text-white`}
               href={"/dasboard"}
             >
               Dashboard
             </Link>
           ) : (
             <Link
-              className={`p-2 ${
-                homemenusrl
+              className={`p-2 ${homemenusrl
                   ? "bg-[--web-primary-color] text-gray-800 border-none hover:bg-[--web-primary-color]"
                   : "border border-white"
-              } px-4 tracking-widest rounded-xl hover:text-[--web-primary-color] hover:bg-white transition-color duration-500 ease-in-out text-white`}
+                } px-4 tracking-widest rounded-xl hover:text-[--web-primary-color] hover:bg-white transition-color duration-500 ease-in-out text-white`}
               href={"/signin"}
             >
               SignIn
@@ -256,7 +252,7 @@ function page() {
       </section>
       <section
         id="services"
-        className="bg-fixed bg-contain bg-no-repeat bg-[url('/about03.jpeg')] text-gray-900"
+        className="bg-fixed bg-contain bg-no-repeat bg-[url('/about03.jpg')] text-gray-900"
       >
         <div className=" mx-auto text-center w-screen py-20 backdrop-blur-lg  px-8">
           <div className="container mx-auto">
