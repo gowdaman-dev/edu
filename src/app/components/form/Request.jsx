@@ -82,6 +82,14 @@ const Requestform = () => {
     role.trim() === "student" ? setisStudent(true) : setisStudent(false);
   };
 
+  const handleRoleFocus = () =>{
+    setIsRoleOpen(true);
+  }
+
+  const handleGradeFocus = () =>{
+    setIsGradeOpen(true);
+  }
+
   const roleColor = role === "" ? " text-gray-400" : "text-black";
   const gradeColor = grade === "" ? " text-gray-400" : "text-black";
 
@@ -147,6 +155,8 @@ const Requestform = () => {
                     className={roleClass}
                     placeholder="Select Your Role"
                     value={role}
+                    onFocus={()=>{setIsRoleOpen(true)}}
+                    onBlur={()=>{setIsRoleOpen(false)}}
                     readOnly
                     onClick={toggleRole}
                   />
@@ -191,6 +201,8 @@ const Requestform = () => {
               <input
                 ref={gradeRef}
                 onClick={toggleGrade}
+                onFocus={()=>{setIsGradeOpen(true)}}
+                onBlur={()=>{setIsGradeOpen(false)}}
                 placeholder="Select Your Grade"
                 className={gradeClass}
                 value={grade}
