@@ -17,17 +17,20 @@ const DropDown = (props) => {
       }
     };
     window.addEventListener("click", handleClose);
+
+    return () => {
+      window.removeEventListener("click", handleClose);
+    };
   }, []);
   useEffect(() => {
     const validate = () => {
       props.handleSchool(selectedOption);
+      console.log(selectedOption);
 
       const optionExist = props.options.find(
         (item) => item.school === selectedOption
       );
-      optionExist || selectedOption == ""
-        ? setIsNotValid(false)
-        : setIsNotValid(true);
+      optionExist || selectedOption === "" ? setIsNotValid(false) : setIsNotValid(true);
     };
     validate();
   }, [check]);
@@ -53,9 +56,9 @@ const DropDown = (props) => {
     setIsOpen(false);
   };
 
- const handleFocus = () =>{
-  setIsOpen(true);
- }
+  const handleFocus = () => {
+    setIsOpen(true);
+  }
 
   return (
     <div className="relative ">
