@@ -43,7 +43,7 @@ function page() {
         <div className="flex items-center justify-center gap-2">
           <Image src={"/logos/logo.svg"} height={40} width={40} alt="" />
           <h1 className="text-lg font-semibold text-[--web-primary-color] md:flex hidden">
-            EDULEARN
+            MiWay
           </h1>
         </div>
         <div className="flex gap-4 items-center justify-center">
@@ -200,7 +200,7 @@ function page() {
       <section id="service" className="py-20 px-8 bg-blue-50">
         <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 items-center">
           <div className="text-center md:text-left text-gray-800">
-            <h2 className="text-4xl font-bold mb-4">Edulearn LMS</h2>
+            <h2 className="text-4xl font-bold mb-4">MiWay LMS</h2>
             <p className="text-lg mb-4 font-light">
               This LMS webpage is developed to enable schools to provide online
               access to their students. There are three roles in this web
@@ -256,13 +256,13 @@ function page() {
       >
         <div className=" mx-auto text-center w-screen py-20 backdrop-blur-lg  px-8">
           <div className="container mx-auto">
-            <h2 className="text-4xl font-black mb-4">services EduLearn</h2>
+            <h2 className="text-4xl font-black mb-4">services MiWay</h2>
             <p className="mb-8">
-              EduLearn is a leading online learning platform that helps anyone
+              MiWay is a leading online learning platform that helps anyone
               learn business, software, technology, and creative skills to
               achieve personal and professional goals. Through individual,
               corporate, academic, and government subscriptions, members have
-              access to the EduLearn portfolio of course content.
+              access to the MiWay portfolio of course content.
             </p>
           </div>
         </div>
@@ -316,7 +316,7 @@ function page() {
         </div>
       </section>
       <footer className="bg-gray-800 text-white text-center p-4">
-        <p>&copy; 2023 EduLearn. All rights reserved.</p>
+        <p>&copy; 2023 MiWay. All rights reserved.</p>
       </footer>
     </div>
   );

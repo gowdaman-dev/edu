@@ -182,7 +182,7 @@ function UserProvider() {
         setRemoveConformer(true);
         setDetailpop(false)
     }
-    const [removeanime ,setRemoveanime] = useState(false)
+    const [removeanime, setRemoveanime] = useState(false)
     const removerbyadmin = async () => {
         await setRemoveanime(true)
         await fetch('/api/superadmin/remover', {
@@ -216,7 +216,7 @@ function UserProvider() {
         }
     }
     return (
-        <div className='md:w-full w-screen h-fit overflow-x-scroll'>
+        <div className='md:w-full w-screen h-fit'>
             {
                 detailpop && (
                     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ type: 'tween', duration: .5 }} className="top-0 left-0 fixed z-[9] h-screen w-screen bg-gray-500/[.5] backdrop-blur-sm grid place-items-center">
@@ -299,7 +299,7 @@ function UserProvider() {
                                     <p className='font-light text-sm text-gray-700 py-2'>Warning removing account <strong>{selecteddetailpop.email}</strong> will terminate <strong>user</strong> belong to {selecteddetailpop.school} school. click conform to remove</p>
                                 )
                             }
-                            <button onClick={removerbyadmin} className='w-full p-2 text-white rounded-lg bg-red-400' disabled={removeanime}>{removeanime?'deleting...':'Conform'}</button>
+                            <button onClick={removerbyadmin} className='w-full p-2 text-white rounded-lg bg-red-400' disabled={removeanime}>{removeanime ? 'deleting...' : 'Conform'}</button>
                         </motion.div>
                     </motion.div>
                 )

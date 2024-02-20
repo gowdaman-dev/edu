@@ -225,7 +225,7 @@ function SuperAdminMember() {
     console.log(filterdata);
   }, [navSearch, roleFilter, schoolfilter , schoolfiltertoggle])
   return (
-    <div className='md:w-full w-screen overflow-x-scroll'>
+    <div className='md:w-full w-screen'>
       <AnimatePresence mode='wait'>
         {
           userDetailpopup && (
