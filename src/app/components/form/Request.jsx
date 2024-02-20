@@ -21,7 +21,6 @@ const Requestform = () => {
   }, []);
   const [isRoleOpen, setIsRoleOpen] = useState(false);
   const [isGradeOpen, setIsGradeOpen] = useState(false);
-  const [isStudent, setisStudent] = useState(false);
   const [data, setData] = useState({
     userName: "",
     email: "",
@@ -74,13 +73,9 @@ const Requestform = () => {
   const handleSchool = value => {
     setData({ ...data, schoolName: value })
   }
-  useEffect(() => {
-    handleRole();
-  }, [role]);
 
-  const handleRole = () => {
-    role.trim() === "student" ? setisStudent(true) : setisStudent(false);
-  };
+
+
 
   const handleRoleFocus = () =>{
     setIsRoleOpen(true);
@@ -197,7 +192,7 @@ const Requestform = () => {
             </div>
           </div>
           <div>
-            {isStudent && (
+            
               <input
                 ref={gradeRef}
                 onClick={toggleGrade}
@@ -208,7 +203,7 @@ const Requestform = () => {
                 value={grade}
               />
 
-            )}{" "}
+            {" "}
           </div>
           <AnimatePresence mode="wait">
             {isGradeOpen && (
