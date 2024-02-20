@@ -1,10 +1,5 @@
-async function fetchFiles() {
-  const response = await fetch(`/api/files`,{
-    headers:{
-      'token' : 'ONLY_FILE_INFO'
-    },
-    cache:"no-cache"
-  });
+async function fetchFiles(session) {
+  const response = await fetch(`/api/files`);
 
   const data = await response.json();
   return data

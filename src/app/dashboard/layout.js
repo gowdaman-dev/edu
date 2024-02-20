@@ -18,14 +18,14 @@ function layout({ children }) {
             setnav(false)
         }
     }, [])
-    useEffect(()=>{
-        if(session?.user){
+    useEffect(() => {
+        if (session?.user) {
             try {
-                if(session?.user?.auth == false){
+                if (session?.user?.auth == false) {
                     signOut()
                 }
             } catch (error) {
-                
+
             }
         }
     })

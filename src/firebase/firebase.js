@@ -3,30 +3,23 @@
 import { initializeApp } from "firebase/app";
 import {getStorage} from "firebase/storage";
 
-// TODO: Add SDKs for Firebase products that you want to use
-
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-
-// Your web app's Firebase configuration
-
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 
 const firebaseConfig = {
 
-  apiKey: "AIzaSyDNhu9chXH7x0Xici71v5RJnP7UgAJdquA",
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
 
-  authDomain: "lmsedu-e5dbc.firebaseapp.com",
 
-  projectId: "lmsedu-e5dbc",
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
 
-  storageBucket: "lmsedu-e5dbc.appspot.com",
+  projectId:process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
 
-  messagingSenderId: "886180794492",
+  storageBucket:process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
 
-  appId: "1:886180794492:web:e386950c162120dd7939f9",
+  messagingSenderId:process.env.NEXT_PUBLIC_FIREBASE_MESSAGE_SENDER_ID,
 
-  measurementId: "G-DT60T07VG3"
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+
+  measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 
 };
 
