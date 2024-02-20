@@ -12,6 +12,7 @@ import Popper from './DeleteRename_Poppper'
 import { db } from '@/firebase/firebase'
 import { v4 as uuid } from 'uuid'
 import {ref,uploadBytesResumable, getDownloadURL} from "firebase/storage"
+import Alert from "./Alert";
 let filesShow = []
 function Files() {
   const SCHOOL="default"
@@ -25,6 +26,7 @@ function Files() {
   const [pop_DEl_Rename, setPop_Del_Rename] = useState(null)
   const [delete_id, setDelete_id] = useState(null)
 const[file_Name,setName]=useState(null)
+const [alert,setAlert]=useState(false)
   useEffect(() => {
     const fetchData = () => {
       try {
@@ -173,7 +175,6 @@ const renderData = (
 if(file){
   if(NAME.includes(".pdf")){
     setProgVisible(true)
-  
     const reference=ref(db,`files/${_uuid}`)
     const uploadTask = uploadBytesResumable(reference, file);
   
@@ -215,43 +216,12 @@ if(file){
      
         
       }
-      else if(NAME.includes(".doc")|| NAME.includes(".docx")) {
-      setProgVisible(true);
-console.log(file);
-
-      const formData = new FormData();
-      formData.append("file", file);
-      formData.append("name", NAME);
-      formData.append("_uuid", _uuid);
-      formData.append("fgrade", GRADE);
-      formData.append("fschool", SCHOOL);
-
-      axios.post(`/api/files/docs`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        },
-        onUploadProgress: progressEvent => {
-          let progress = Math.round((progressEvent.loaded * 100) / progressEvent.total);
-          setProgress(progress);
-        }
-      })
-      .then(response => {
-        if (response.status === 200) {
-          console.log(response.data);
-          sendData(response.data)
-          setProgVisible(false);
-          setProgress(0);
-        }
-      })
-      .catch(error => {
-        console.error("Error uploading file: ", error);
-        setProgVisible(false);
-      });
-      }
       else{
-        alert("Only pdf and docx files are allowed")
+       setAlert(true)
+        e.target.value=""
       }
-  }
+    }
+   
 }
 
   async function sendData(data) {
@@ -269,7 +239,7 @@ console.log(file);
       setNewFile(newFile + 1)
     }
   }
-
+console.log(alert);
   return (
     <div>
       <ul className='flex items-center justify-between h-16 border-b border-gray-100 w-screen md:w-full'>
@@ -289,7 +259,7 @@ console.log(file);
             htmlFor='fileUpload'
             className=' mr-4 border-2 flex cursor-pointer text-gray-500 justify-between items-center px-6 py-2  rounded-md active:scale-90 active:bg-gray-100'
           >
-            <span className='inline-block text-[--web-primary-color] pr-4 text-3xl '>
+            <span className='inline-block text-[--web-primary-color] pr-6 text-3xl '>
               <BiCloudUpload />
             </span>
             <span>Upload</span>
@@ -306,6 +276,7 @@ console.log(file);
         {isAnimate && <SkeletonAnimation />}
         {isAnimate && <SkeletonAnimation />}
         {isAnimate && <SkeletonAnimation />}
+        {alert && <Alert msg={"Important! Only PDFs are currently accepted. Please change your upload to a PDF file."} title={"ALERT"} click={setAlert}/>}
       </section>
     </div>
   )
