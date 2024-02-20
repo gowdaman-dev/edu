@@ -3,12 +3,12 @@ import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { webName } from "../globalDetails";
-import DropDown from "./DropDown";
 import { grades } from "./grade";
 import { AnimatePresence, motion } from "framer-motion";
 
 const Requestform = () => {
   const [schoolname, setSchoolname] = useState([]);
+
   useEffect(() => {
     fetch("/api/schoolList", {
       method: "PUT",
@@ -21,6 +21,10 @@ const Requestform = () => {
   }, []);
   const [isRoleOpen, setIsRoleOpen] = useState(false);
   const [isGradeOpen, setIsGradeOpen] = useState(false);
+  const [isSchoolOpen, setIsSchoolOpen] = useState(false);
+  const [selectedOption, setSelectedOption] = useState("");
+  const [isNotValid, setIsNotValid] = useState(false);
+  const dropdownRef = useRef();
   const [data, setData] = useState({
     userName: "",
     email: "",
@@ -45,13 +49,36 @@ const Requestform = () => {
       if (e.target != gradeRef.current) {
         setIsGradeOpen(false);
       }
+      if (e.target != dropdownRef.current) {
+        setIsSchoolOpen(false);
+      }
     };
     window.addEventListener("click", handleClose);
   }, []);
+  useEffect(() => {
+    const validate = () => {
+/*       props.handleSchool(selectedOption);
+ */
+      const optionExist = schoolname.find(
+        (item) =>{
+const val=item.schoolname
+const bool=val.toLowerCase()== selectedOption.toLowerCase()
+return bool
+         
+
+        }
+        
+      );
+      optionExist || selectedOption == ""
+        ? setIsNotValid(false)
+        : setIsNotValid(true);
+    };
+    validate();
+  }, [selectedOption]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(schoolName);
+    console.log(data);
   };
   const toggleRole = () => {
     setIsRoleOpen(true);
@@ -71,9 +98,9 @@ const Requestform = () => {
     //  setIsGradeOpen(false);
   }
   const handleSchool = value => {
+    
     setData({ ...data, schoolName: value })
   }
-
 
 
 
@@ -84,12 +111,37 @@ const Requestform = () => {
   const handleGradeFocus = () =>{
     setIsGradeOpen(true);
   }
+  const toggleSchool = () => {
+    setIsSchoolOpen(true);
+  };
+
+  const handleChangeSchool = (e) => {
+    setSelectedOption(e.target.value);
+  };
+
+  const handleBlurSchool = (e) => {
+    const value = e.target.value;
+    setIsSchoolOpen(false)
+    setSelectedOption(value);
+  };
+
+  const handleClickSchool = (label) => {
+    setSelectedOption(label);
+
+    setIsNotValid(false);
+    setIsSchoolOpen(false);
+  };
+
+  const handleFocusSchool = () => {
+    setIsSchoolOpen(true);
+  }
+
 
   const roleColor = role === "" ? " text-gray-400" : "text-black";
   const gradeColor = grade === "" ? " text-gray-400" : "text-black";
 
   const roleClass = `rounded-lg ${roleColor} pl-2 w-72 text-b h-12 border cursor-pointer outline-none  bg-[--web-container]`;
-  const regualarClass = `rounded-lg  pl-2 w-72 text-b h-12 border outline-none  bg-[--web-container]`;
+  const regularClass = `rounded-lg  pl-2 w-72 text-b h-12 border outline-none  bg-[--web-container]`;
   const gradeClass = ` rounded-lg cursor-pointer ${gradeColor} pl-2 h-12  mt-10 outline-none  w-72 md:w-[600px]  border bg-[--web-container]`;
   const dropdownClass = `cursor-pointer py-2 rounded-lg hover:bg-gray-100`
   const Comment =
@@ -116,7 +168,7 @@ const Requestform = () => {
         <h1 className="text-center font-bold text-2xl py-10">
           {webName} Memeber Request Form
         </h1>
-        <form action="">
+        <form action="" onSubmit={handleSubmit}>
           <div className="flex justify-center">
             <div className="flex md:flex-row flex-col justify-center gap-10 md:gap-6">
               <div className="flex flex-col  gap-10 w-72 ">
@@ -125,14 +177,57 @@ const Requestform = () => {
                   placeholder="Your Name"
                   onChange={e => setData({ ...data, userName: e.target.value })}
                   required
-                  className={regualarClass}
+                  className={regularClass}
                 />
-                <DropDown
-                  options={schoolname}
-                  default={"School Name"}
-                  handleSchool={handleSchool}
-                  className={regualarClass}
-                />
+                <div className="relative ">
+      {isNotValid && <p className="text-red-500 absolute -mt-6">please Choose give option</p>}
+      <input
+        ref={dropdownRef}
+        className={regularClass}
+        placeholder={"School Name"}
+        onChange={handleChangeSchool}
+        onBlur={handleBlurSchool}
+        onClick={toggleSchool}
+        value={selectedOption}
+        onFocus={handleFocusSchool}
+        required
+      />
+
+      <AnimatePresence mode="wait">
+        {isSchoolOpen && (
+          <motion.div
+            initial={{ y: 10, opacity: 0.6 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: 10, opacity: 0 }}
+            transition={{ duration: 0.5, type: "spring" }}
+            className="absolute max-h-64 overflow-auto w-72 mt-2 z-40 pl-2 py-2  rounded-lg grid gap-2 bg-white round"
+          >
+            {" "}
+            {schoolname
+              // filter the data according to input
+              .filter((data) => {
+                return selectedOption === ""
+                  ? true
+                  : data.schoolname.toLowerCase().includes(selectedOption);
+              })
+              .map((option) => {
+                return (
+                  <p
+                    className="capitalize cursor-pointer p-1 w-[273px] rounded-lg hover:bg-gray-100"
+                    onClick={() => {
+                      handleClickSchool(option.schoolname);
+                    }}
+                    key={option.schoolname}
+                  >
+                    {" "}
+                    {option.schoolname}
+                  </p>
+                );
+              })}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
               </div>
               <div className="flex flex-col gap-10 w-72 ">
                 <input
@@ -236,7 +331,6 @@ const Requestform = () => {
             />
             <input
               type="submit"
-              onSubmit={"recommend"}
               className="rounded-[5px] cursor-pointer text-white h-14 bg-[--web-primary-color] text-center w-72 md:w-[600px] mx-auto  border-2"
             />
           </div>
