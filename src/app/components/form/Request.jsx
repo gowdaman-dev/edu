@@ -21,7 +21,6 @@ const Requestform = () => {
   }, []);
   const [isRoleOpen, setIsRoleOpen] = useState(false);
   const [isGradeOpen, setIsGradeOpen] = useState(false);
-  const [isStudent, setisStudent] = useState(false);
   const [data, setData] = useState({
     userName: "",
     email: "",
@@ -74,13 +73,17 @@ const Requestform = () => {
   const handleSchool = value => {
     setData({ ...data, schoolName: value })
   }
-  useEffect(() => {
-    handleRole();
-  }, [role]);
 
-  const handleRole = () => {
-    role.trim() === "student" ? setisStudent(true) : setisStudent(false);
-  };
+
+
+
+  const handleRoleFocus = () =>{
+    setIsRoleOpen(true);
+  }
+
+  const handleGradeFocus = () =>{
+    setIsGradeOpen(true);
+  }
 
   const roleColor = role === "" ? " text-gray-400" : "text-black";
   const gradeColor = grade === "" ? " text-gray-400" : "text-black";
@@ -88,17 +91,17 @@ const Requestform = () => {
   const roleClass = `rounded-lg ${roleColor} pl-2 w-72 text-b h-12 border cursor-pointer outline-none  bg-[--web-container]`;
   const regualarClass = `rounded-lg  pl-2 w-72 text-b h-12 border outline-none  bg-[--web-container]`;
   const gradeClass = ` rounded-lg cursor-pointer ${gradeColor} pl-2 h-12  mt-10 outline-none  w-72 md:w-[600px]  border bg-[--web-container]`;
-
+  const dropdownClass = `cursor-pointer py-2 rounded-lg hover:bg-gray-100`
   const Comment =
     "Tell us more about yourself and the purpose of using our product";
 
   return (
     <div className="mt-16 w-screen z-30">
       <p className="text-center px-10 pb-8 text-lg">
-        Note: this form is designed for MEMBERS OF REGISTERED SCHOOL  only. If your ,
+        Note : This form is designed for MEMBERS OF REGISTERED SCHOOL  only. If you are the SCHOOL ORGANIZER ,
         please{" "}
         <Link className="text-[--web-primary-color]" href={"recommend"}>
-          recommend it to your school
+          Register your School
         </Link>{" "}
         instead.
       </p>
@@ -111,7 +114,7 @@ const Requestform = () => {
           alt="logo"
         />
         <h1 className="text-center font-bold text-2xl py-10">
-          {webName} Request Form
+          {webName} Memeber Request Form
         </h1>
         <form action="">
           <div className="flex justify-center">
@@ -147,6 +150,8 @@ const Requestform = () => {
                     className={roleClass}
                     placeholder="Select Your Role"
                     value={role}
+                    onFocus={()=>{setIsRoleOpen(true)}}
+                    onBlur={()=>{setIsRoleOpen(false)}}
                     readOnly
                     onClick={toggleRole}
                   />
@@ -159,11 +164,11 @@ const Requestform = () => {
                         animate={{ y: 0, opacity: 1 }}
                         exit={{ y: 10, opacity: 0 }}
                         transition={{ duration: 0.5, type: "spring" }}
-                        className="absolute max-h-64 overflow-auto w-72 mt-2 z-40 pl-2 py-2  rounded-lg grid gap-2 bg-white round "
+                        className="absolute  max-h-64 overflow-auto w-72 mt-2 z-40 pl-2 py-2  rounded-lg grid gap-2 bg-white round "
                       >
                         {" "}
                         <p
-                          className="cursor-pointer"
+                          className={dropdownClass}
                           onClick={() => {
 
                             handleRoleClick("student");
@@ -172,7 +177,7 @@ const Requestform = () => {
                           Student
                         </p>
                         <p
-                          className="cursor-pointer"
+                          className={dropdownClass}
                           onClick={() => {
                             handleRoleClick("teacher");
                           }}
@@ -187,16 +192,18 @@ const Requestform = () => {
             </div>
           </div>
           <div>
-            {isStudent && (
+            
               <input
                 ref={gradeRef}
                 onClick={toggleGrade}
+                onFocus={()=>{setIsGradeOpen(true)}}
+                onBlur={()=>{setIsGradeOpen(false)}}
                 placeholder="Select Your Grade"
                 className={gradeClass}
                 value={grade}
               />
 
-            )}{" "}
+            {" "}
           </div>
           <AnimatePresence mode="wait">
             {isGradeOpen && (
@@ -210,7 +217,7 @@ const Requestform = () => {
                 {" "}
                 {
                   grades.map(item => (
-                    <p key={item} className="cursor-pointer" onClick={() => {
+                    <p key={item} className="cursor-pointer py-1 w-64 rounded-lg hover:bg-gray-100" onClick={() => {
                       handleGradeClick(item)
                     }}>{item}</p>
                   ))
@@ -240,8 +247,8 @@ const Requestform = () => {
           <h2 className="md:-ml-8 -ml-4  font-bold ">Instructions: </h2>
           <div className=" py-5 leading-6">
             <p className="pb-3 text-justify">
-              1. Only school personnel (not students) may register for an EDU
-              account, such as teachers or school administrators
+              1. Only Registered School's members  may register for an EDU
+              account, such as teachers or students ...
             </p>
             <p className="pb-3 text-justify">
               2. Once a School is set up under your account, you as the account

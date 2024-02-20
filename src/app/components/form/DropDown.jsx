@@ -53,6 +53,10 @@ const DropDown = (props) => {
     setIsOpen(false);
   };
 
+ const handleFocus = () =>{
+  setIsOpen(true);
+ }
+
   return (
     <div className="relative ">
       {isNotValid && <p className="text-red-500 absolute -mt-6">please Choose give option</p>}
@@ -64,6 +68,7 @@ const DropDown = (props) => {
         onBlur={handleBlur}
         onClick={toggle}
         value={selectedOption}
+        onFocus={handleFocus}
         required
       />
 
