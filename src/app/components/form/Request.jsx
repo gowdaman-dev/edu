@@ -1,4 +1,7 @@
 "use client";
+import { AiFillCaretDown } from "react-icons/ai"; 
+import { AiFillCamera } from "react-icons/ai"; 
+
 import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -8,7 +11,7 @@ import { grades } from "./grade";
 import { AnimatePresence, motion } from "framer-motion";
 
 const Requestform = () => {
-  const [schoolname, setSchoolname] = useState([]);
+ /*  const [schoolname, setSchoolname] = useState([]);
   useEffect(() => {
     fetch("/api/schoolList", {
       method: "PUT",
@@ -18,7 +21,18 @@ const Requestform = () => {
     })
       .then((response) => response.json())
       .then((data) => setSchoolname(data));
-  }, []);
+  }, []); */
+
+  const schoolname = [
+    {
+      schoolname : "Acet",
+
+    },
+    {
+      schoolname : "Achariya"
+    }
+  ]
+ 
   const [isRoleOpen, setIsRoleOpen] = useState(false);
   const [isGradeOpen, setIsGradeOpen] = useState(false);
   const [isStudent, setisStudent] = useState(false);
@@ -52,7 +66,7 @@ const Requestform = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(schoolName);
+    console.log(data);
   };
   const toggleRole = () => {
     setIsRoleOpen(true);
@@ -89,12 +103,15 @@ const Requestform = () => {
   const handleGradeFocus = () =>{
     setIsGradeOpen(true);
   }
+  const handleForm = (e) =>{
+    e.preventDefault();
+  }
 
   const roleColor = role === "" ? " text-gray-400" : "text-black";
   const gradeColor = grade === "" ? " text-gray-400" : "text-black";
 
   const roleClass = `rounded-lg ${roleColor} pl-2 w-72 text-b h-12 border cursor-pointer outline-none  bg-[--web-container]`;
-  const regualarClass = `rounded-lg  pl-2 w-72 text-b h-12 border outline-none  bg-[--web-container]`;
+  const regularClass = `rounded-lg  pl-2 w-72 text-b h-12 border outline-none  bg-[--web-container]`;
   const gradeClass = ` rounded-lg cursor-pointer ${gradeColor} pl-2 h-12  mt-10 outline-none  w-72 md:w-[600px]  border bg-[--web-container]`;
   const dropdownClass = `cursor-pointer py-2 rounded-lg hover:bg-gray-100`
   const Comment =
@@ -121,7 +138,7 @@ const Requestform = () => {
         <h1 className="text-center font-bold text-2xl py-10">
           {webName} Memeber Request Form
         </h1>
-        <form action="">
+        <form action="" onSubmit={handleForm}>
           <div className="flex justify-center">
             <div className="flex md:flex-row flex-col justify-center gap-10 md:gap-6">
               <div className="flex flex-col  gap-10 w-72 ">
@@ -130,13 +147,13 @@ const Requestform = () => {
                   placeholder="Your Name"
                   onChange={e => setData({ ...data, userName: e.target.value })}
                   required
-                  className={regualarClass}
+                  className={regularClass}
                 />
                 <DropDown
                   options={schoolname}
                   default={"School Name"}
                   handleSchool={handleSchool}
-                  className={regualarClass}
+                  className={regularClass}
                 />
               </div>
               <div className="flex flex-col gap-10 w-72 ">
@@ -209,7 +226,7 @@ const Requestform = () => {
               />
 
             )}{" "}
-          </div>
+          
           <AnimatePresence mode="wait">
             {isGradeOpen && (
               <motion.div
@@ -230,6 +247,7 @@ const Requestform = () => {
               </motion.div>
             )}
           </AnimatePresence>
+          </div>
 
           <div className="flex justify-center gap-10 flex-col py-10 ">
             <textarea
@@ -241,7 +259,7 @@ const Requestform = () => {
             />
             <input
               type="submit"
-              onSubmit={"recommend"}
+              onSubmit={handleSubmit}
               className="rounded-[5px] cursor-pointer text-white h-14 bg-[--web-primary-color] text-center w-72 md:w-[600px] mx-auto  border-2"
             />
           </div>

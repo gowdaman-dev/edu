@@ -6,7 +6,6 @@ const DropDown = (props) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState("");
   const [isNotValid, setIsNotValid] = useState(false);
-  const [check, setCheck] = useState("");
   const dropdownRef = useRef();
 
   //close dropdown when click happended outside of the field
@@ -30,7 +29,7 @@ const DropDown = (props) => {
         : setIsNotValid(true);
     };
     validate();
-  }, [check]);
+  }, [selectedOption]);
   const toggle = () => {
     setIsOpen(true);
   };
@@ -42,7 +41,6 @@ const DropDown = (props) => {
   const handleBlur = (e) => {
     const value = e.target.value.toLowerCase();
     setIsOpen(false)
-    setCheck(value);
     setSelectedOption(value);
   };
 
