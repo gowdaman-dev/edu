@@ -17,7 +17,7 @@ const PdfViewer = () => {
     async function fetchBytes() {
       try {
         const data = await PdfFetch(url);
-        console.log(url);
+        console.log(data);
         setBuffer(data);
         setLoading(false); 
       } catch (error) {
