@@ -73,7 +73,7 @@ function page() {
               className="p-2 px-4 tracking-widest hover:text-gray-300 transition-color duration-5000 ease"
               href={"#contact"}
             >
-              Content
+              Contact
             </Link>
           </div>
           <AnimatePresence mode="wait">
