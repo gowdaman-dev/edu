@@ -90,6 +90,10 @@ const Requestform = () => {
     e.preventDefault();
     setError('')
     setSuccess('')
+    if (data.userName == '' || data.email == '' || data.role == '' || data.comment == '' || data.grade == '' || data.schoolName == '') {
+      setError('Please fill all the fields')
+      return
+    }
     try {
       const response = await fetch('/api/memberRequest', {
         method: 'POST',
@@ -218,7 +222,6 @@ const Requestform = () => {
                   type="text"
                   placeholder="Your Name"
                   onChange={e => setData({ ...data, userName: e.target.value })}
-                  required
                   className={regularClass}
                 />
                 <div className="relative ">
@@ -232,7 +235,7 @@ const Requestform = () => {
                     onClick={toggleSchool}
                     value={schoolName}
                     onFocus={handleFocusSchool}
-                    required
+
                   />
 
                   <AnimatePresence mode="wait">
@@ -242,7 +245,7 @@ const Requestform = () => {
                         animate={{ y: 0, opacity: 1 }}
                         exit={{ y: 10, opacity: 0 }}
                         transition={{ duration: 0.5, type: "spring" }}
-                        className="absolute max-h-64 overflow-auto w-72 mt-2 z-40 pl-2 py-2  rounded-lg grid gap-2 bg-white round"
+                        className="absolute shadow max-h-64 overflow-auto w-72 mt-2 z-40 pl-2 py-2  rounded-lg grid gap-2 bg-white round"
                       >
                         {" "}
                         {schoolname
@@ -273,7 +276,6 @@ const Requestform = () => {
               </div>
               <div className="flex flex-col gap-10 w-72 ">
                 <input
-                  required
                   type="email"
                   placeholder="Your Email"
                   onChange={e => setData({ ...data, email: e.target.value })}
@@ -301,7 +303,7 @@ const Requestform = () => {
                         animate={{ y: 0, opacity: 1 }}
                         exit={{ y: 10, opacity: 0 }}
                         transition={{ duration: 0.5, type: "spring" }}
-                        className="absolute  max-h-64 overflow-auto w-72 mt-2 z-40 pl-2 py-2  rounded-lg grid gap-2 bg-white round "
+                        className="absolute border max-h-64 overflow-auto w-72 mt-2 z-40 pl-2 py-2  rounded-lg grid gap-2 bg-white round "
                       >
                         {" "}
                         <p
@@ -349,7 +351,7 @@ const Requestform = () => {
                   animate={{ y: 0, opacity: 1 }}
                   exit={{ y: 10, opacity: 0 }}
                   transition={{ duration: 0.5, type: "spring" }}
-                  className="absolute max-h-64 overflow-auto w-full z-40 pl-2 py-2 px-2  rounded-lg grid gap-2 top-[100%] bg-white round "
+                  className="absolute max-h-64 overflow-auto md:w-full w-72 z-40 pl-2 py-2 px-2 shadow-lg rounded-lg grid gap-2 top-[100%] bg-white round "
                 >
                   {" "}
                   {

@@ -76,9 +76,8 @@ function SideNavStudent() {
         }
         window.addEventListener('click', handler)
     })
-    const { data: session, loading } = useSession();
     return (
-        <motion.div animate={nav ? 'enter' : 'exit'} exit={"exit"} variants={navvarient} className='h-screen w-[250px] flex relative z-[10] justify-start bg-[--web-container]'>
+        <motion.div initial={'exit'} animate={nav ? 'enter' : 'exit'} exit={"exit"} variants={navvarient} className='h-screen w-[250px] flex relative z-[10] justify-start bg-[--web-container]'>
             {nav ? <AiFillLeftCircle onClick={() => setnav(false)} className='absolute -right-3 top-4 z-[10] text-xl text-gray-400' /> : <AiFillRightCircle onClick={() => setnav(true)} className='absolute -right-3 top-4 z-[8] text-xl text-gray-400' />}
             <div className="flex flex-col justify-left items-start w-full h-full border-r border-gray-200/[.4] overflow-hidden">
                 <div className="flex w-full items-center justify-start gap-4 py-2 px-4 h-[60px] border-b">

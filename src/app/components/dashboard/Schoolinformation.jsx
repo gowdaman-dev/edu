@@ -100,8 +100,8 @@ const schoolInformation = () => {
               sklstudentgradecount && (
                 sklstudentgradecount.map((grade, index) => (
                   <div key={index} className="flex w-[90%] justify-between items-center">
-                    <div className="flex w-[70%] p-[10px] justify- ml-5">
-                      <dd className="w-[70%]">
+                    <div className="flex p-[10px] justify- ml-5">
+                      <dd className="">
                         Grade {index + 1} : ({grade} members)
                       </dd>
                     </div>

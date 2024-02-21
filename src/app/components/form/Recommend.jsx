@@ -25,7 +25,10 @@ const Requestform = () => {
     setError('')
     setSuccess('')
     e.preventDefault();
-    console.log(formData);
+    if (data.name === '' || data.schoolname === '' || data.email === '' || data.role === '' || data.description === '') {
+      setError('Please fill all the fields')
+      return
+    }
     try {
       const response = await fetch("/api/organizerRequest", {
         method: "POST",
@@ -98,7 +101,6 @@ const Requestform = () => {
                 <input
                   id="name"
                   name="name"
-                  required
                   type="text"
                   placeholder="Your Name"
                   value={formData.name}
@@ -108,7 +110,6 @@ const Requestform = () => {
                 <input
                   id="schoolname"
                   name="schoolname"
-                  required
                   type="text"
                   placeholder="School Name"
                   value={formData.schoolname}
@@ -120,7 +121,6 @@ const Requestform = () => {
                 <input
                   id="email"
                   name="email"
-                  required
                   type="text"
                   placeholder="Your Email"
                   value={formData.email}
@@ -130,7 +130,6 @@ const Requestform = () => {
                 <input
                   id="role"
                   name="role"
-                  required
                   type="text"
                   placeholder="Role You Play"
                   value={formData.role}
