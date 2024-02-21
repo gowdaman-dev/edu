@@ -5,6 +5,8 @@ export async function PdfFetch(url) {
         const bytes = await axios.get(url,{
             responseType:'arraybuffer'
         })
+        const api= await fetch(url)
+        return api
         const data = new Uint8Array(bytes.data)
         return data
     } catch (error) {
