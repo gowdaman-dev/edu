@@ -1,9 +1,19 @@
-async function fetchFiles(session) {
-  const response = await fetch(`/api/files`);
+import axios from "axios";
+async function fetchFiles(session,contextGrade) {
+  const { user } = session
+  const SCHOOL=user.school
+  
+  const GRADE = "grade" in user ? user.grade : contextGrade;
+  const response = await axios.get(`/api/files`, {
+    params: {
+      grade: GRADE,
+      school: SCHOOL,
 
-  const data = await response.json();
-  return data
- 
+    }
+  });
+
+  return response.data
+
 }
 
 export default fetchFiles

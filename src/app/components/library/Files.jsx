@@ -20,8 +20,8 @@ function Files() {
 
 
   const { data: session, loading } = useSession()
-  const [isDataLoading, setIsDataLoading] = useState(loading);
   const { school: SCHOOL } = session.user
+  const [isStudent,setStudent]=useState(session.user.role==="student")
   const { navGrade: GRADE } = useContext(UserContext)
   const [data, setData] = useState([])
   const [isAnimate, setIsAnimate] = useState(true)
@@ -32,14 +32,13 @@ function Files() {
   const [delete_id, setDelete_id] = useState(null)
   const [file_Name, setName] = useState(null)
   const [alert, setAlert] = useState(false)
-
-
+  console.log("student" +isStudent);
   useEffect(() => {
     const fetchData = () => {
 
 
       try {
-        fetchFiles(session).then(res => {
+        fetchFiles(session,GRADE).then(res => {
           if (res) {
             setIsAnimate(false)
 
@@ -53,7 +52,7 @@ function Files() {
 
     fetchData()
 
-  }, [newFile, isDataLoading])
+  }, [newFile,GRADE,loading])
   useEffect(() => {
     // Define the event listener function
     function clickEvent(e) {
@@ -148,10 +147,12 @@ function Files() {
           >
             {name}
           </p>
-
+{
+  !isStudent &&
           <span className='grid col-span-1 row-span-3 text-xl place-content-center rounded-full active:bg-gray-100' key={index} onClick={() => { handlePopClick(index, id, trimName) }} >
             <BsThreeDotsVertical />
           </span>
+}
 
           {pop_DEl_Rename === index &&
 
@@ -219,6 +220,8 @@ function Files() {
             sendData(fileData)
             setProgVisible(false)
             setProgress(0)
+        e.target.value = ""
+
           })
 
         })
@@ -252,10 +255,14 @@ function Files() {
   return (
     <div>
       <ul className='flex items-center justify-between h-16 border-b border-gray-100 w-screen md:w-full'>
-        <li className="px-4 text-gray-600">
-          <b>Shared Files ({data.length || 0})</b>
-        </li>
-        <li>
+        {isStudent?
+        <li className="px-4 text-gray-600 flex justify-center  w-full">
+        <b>Shared Library ({data.length || 0})</b>
+      </li>:
+      <li className="px-4 text-gray-600 text-center">
+      <b>Shared Library ({data.length || 0})</b>
+    </li>}
+       {!isStudent &&  <li>
           <input
             type='file'
             accept='.pdf,.doc,.docx'
@@ -273,7 +280,7 @@ function Files() {
             </span>
             <span>Upload</span>
           </label>
-        </li>
+        </li>}
       </ul>
       <section className='relative flex flex-col items-center w-full  z-[1] '>
         {progVisible && (

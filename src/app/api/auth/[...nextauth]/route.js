@@ -37,14 +37,14 @@ const authOptions = {
                         role: user.role,
                         acId: user._id,
                     }
-                } 
-                if(user.role == 'student'){
+                }
+                if (user.role == 'student') {
                     return {
                         ...token,
                         role: user.role,
                         school: user.school,
                         acId: user._id,
-                        grade:user.standard
+                        grade: user.standard
                     }
                 }
                 else {
@@ -67,18 +67,19 @@ const authOptions = {
                     user: {
                         ...session.user,
                         role: token.role,
-                        acId:token.acId,
+                        acId: token.acId,
                     }
                 }
-            } 
+            }
             if (token.role == "student") {
                 return {
                     ...session,
                     user: {
                         ...session.user,
                         role: token.role,
-                        acId:token.acId,
-                        grade:token.grade
+                        acId: token.acId,
+                        school: token.school,
+                        grade: token.grade
                     }
                 }
             } else {
@@ -89,7 +90,7 @@ const authOptions = {
                         role: token.role,
                         school: token.school,
                         auth: userdata ? true : false,
-                        acId:token.acId
+                        acId: token.acId
                     }
                 }
             }

@@ -18,7 +18,7 @@ const libSchema=new Schema({
         required:true
     },
     file_grade:{
-        type:String,
+        type:Number,
         required:true
         
     },
