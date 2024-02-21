@@ -62,23 +62,32 @@ const Requestform = () => {
           height={100}
           alt=""
         />
-        {error && (
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-            <span className="block sm:inline">{error}</span>
-          </div>
-        )}
-        {success && (
-          <motion.div
-            initial={{ opacity: 0, y: -50 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -50 }}
-            transition={{ duration: 0.5 }}
-            className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative"
-            role="alert"
-          >
-            <span className="block sm:inline">{success}</span>
-          </motion.div>
-        )}
+        <AnimatePresence mode="wait">
+          {error && (
+            <motion.div
+              initial={{ y: 10, opacity: 0.6 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: 10, opacity: 0 }}
+              transition={{ duration: 0.5, type: "spring" }}
+              className="my-4 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-4 rounded-lg shadow-lg z-50"
+            >
+              <p className="text-red-500 text-center">{error}</p>
+            </motion.div>
+          )}
+        </AnimatePresence>
+        <AnimatePresence mode="wait">
+          {success && (
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0 }}
+              transition={{ duration: 0.5 }}
+              className="my-4 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-4 rounded-lg shadow-lg z-50"
+            >
+              <p className="text-green-500 text-center">Request submitted successfully!</p>
+            </motion.div>
+          )}
+        </AnimatePresence>
         <h1 className="text-center  font-bold text-2xl py-10">
           Recommend {webName} to your School
         </h1>

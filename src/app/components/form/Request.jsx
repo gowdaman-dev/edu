@@ -88,14 +88,8 @@ const Requestform = () => {
   const [success, setSuccess] = useState('');
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(data);
-    await fetch('/api/memberRequest', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    })
+    setError('')
+    setSuccess('')
     try {
       const response = await fetch('/api/memberRequest', {
         method: 'POST',
@@ -104,16 +98,16 @@ const Requestform = () => {
         },
         body: JSON.stringify(data),
       });
-      const data = await response.json();
+      const res = await response.json();
       if (response.status === 400) {
-        await setError(data.message);
+        setError(res.message);
         return
       } else {
-        await setSuccess(data.message)
+        setSuccess(res.message)
         return
       }
     } catch (error) {
-      setError('Something went wrong')
+      console.log(error);
     }
   };
   const toggleRole = () => {
@@ -162,12 +156,9 @@ const Requestform = () => {
   }
 
 
-  const roleColor = role === "" ? " text-gray-400" : "text-black";
-  const gradeColor = grade === "" ? " text-gray-400" : "text-black";
-
-  const roleClass = `rounded-lg ${roleColor} pl-2 w-72 text-b h-12 border cursor-pointer outline-none  bg-[--web-container]`;
+  const roleClass = `rounded-lg  pl-2 w-72 text-b h-12 border cursor-pointer outline-none  bg-[--web-container]`;
   const regularClass = `rounded-lg  pl-2 w-72 text-b h-12 border outline-none  bg-[--web-container]`;
-  const gradeClass = ` rounded-lg cursor-pointer ${gradeColor} pl-2 h-12  mt-10 outline-none  w-72 md:w-[600px]  border bg-[--web-container]`;
+  const gradeClass = ` rounded-lg cursor-pointer pl-2 h-12  mt-10 outline-none  w-72 md:w-[600px]  border bg-[--web-container]`;
   const dropdownClass = `cursor-pointer py-2 rounded-lg hover:bg-gray-100`
   const Comment =
     "Tell us more about yourself and the purpose of using our product";
@@ -193,28 +184,32 @@ const Requestform = () => {
         <h1 className="text-center font-bold text-2xl py-10">
           {webName} Memeber Request Form
         </h1>
-        {error && (
-          <motion.div
-            initial={{ y: 10, opacity: 0.6 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: 10, opacity: 0 }}
-            transition={{ duration: 0.5, type: "spring" }}
-            className="my-4 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-4 rounded-lg shadow-lg z-50"
-          >
-            <p className="text-red-500 text-center">{error}</p>
-          </motion.div>
-        )}
-        {success && (
-          <motion.div
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            exit={{ scale: 0 }}
-            transition={{ duration: 0.5 }}
-            className="my-4 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-4 rounded-lg shadow-lg z-50"
-          >
-            <p className="text-green-500 text-center">Request submitted successfully!</p>
-          </motion.div>
-        )}
+        <AnimatePresence mode="wait">
+          {error && (
+            <motion.div
+              initial={{ y: 10, opacity: 0.6 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: 10, opacity: 0 }}
+              transition={{ duration: 0.5, type: "spring" }}
+              className="my-4 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-4 rounded-lg shadow-lg z-50"
+            >
+              <p className="text-red-500 text-center">{error}</p>
+            </motion.div>
+          )}
+        </AnimatePresence>
+        <AnimatePresence mode="wait">
+          {success && (
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0 }}
+              transition={{ duration: 0.5 }}
+              className="my-4 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-4 rounded-lg shadow-lg z-50"
+            >
+              <p className="text-green-500 text-center">Request submitted successfully!</p>
+            </motion.div>
+          )}
+        </AnimatePresence>
         <form action="" onSubmit={handleSubmit}>
           <div className="flex justify-center">
             <div className="flex md:flex-row flex-col justify-center gap-10 md:gap-6">
@@ -333,7 +328,7 @@ const Requestform = () => {
               </div>
             </div>
           </div>
-          <div className="flex justify-center">
+          <div className="flex justify-center relative">
 
             <input
               ref={gradeRef}
@@ -354,12 +349,12 @@ const Requestform = () => {
                   animate={{ y: 0, opacity: 1 }}
                   exit={{ y: 10, opacity: 0 }}
                   transition={{ duration: 0.5, type: "spring" }}
-                  className="absolute max-h-64 overflow-auto w-72 z-40 pl-2 py-2  rounded-lg grid gap-2 mt-2 bg-white round "
+                  className="absolute max-h-64 overflow-auto w-full z-40 pl-2 py-2 px-2  rounded-lg grid gap-2 top-[100%] bg-white round "
                 >
                   {" "}
                   {
                     grades.map(item => (
-                      <p key={item} className="cursor-pointer py-1 w-64 rounded-lg hover:bg-gray-100" onClick={() => {
+                      <p key={item} className="cursor-pointer py-1 w-full px-2 rounded-lg hover:bg-gray-100" onClick={() => {
                         handleGradeClick(item)
                       }}>{item}</p>
                     ))
