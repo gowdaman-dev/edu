@@ -39,6 +39,9 @@ const Requestform = () => {
     grade: "",
     comment: "",
   });
+
+
+
   const { role } = data;
   const { grade } = data;
   const { schoolName } = data;
@@ -81,9 +84,37 @@ const Requestform = () => {
 
   }, [check]);
 
-  const handleSubmit = (e) => {
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(data);
+    await fetch('/api/memberRequest', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    })
+    try {
+      const response = await fetch('/api/memberRequest', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+      const data = await response.json();
+      if (response.status === 400) {
+        await setError(data.message);
+        return
+      } else {
+        await setSuccess(data.message)
+        return
+      }
+    } catch (error) {
+      setError('Something went wrong')
+    }
   };
   const toggleRole = () => {
     setIsRoleOpen(true);
@@ -102,10 +133,6 @@ const Requestform = () => {
     setData({ ...data, grade: value });
     //  setIsGradeOpen(false);
   }
-
-
-
-
 
   const toggleSchool = () => {
     setIsSchoolOpen(true);
@@ -166,6 +193,28 @@ const Requestform = () => {
         <h1 className="text-center font-bold text-2xl py-10">
           {webName} Memeber Request Form
         </h1>
+        {error && (
+          <motion.div
+            initial={{ y: 10, opacity: 0.6 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: 10, opacity: 0 }}
+            transition={{ duration: 0.5, type: "spring" }}
+            className="my-4 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-4 rounded-lg shadow-lg z-50"
+          >
+            <p className="text-red-500 text-center">{error}</p>
+          </motion.div>
+        )}
+        {success && (
+          <motion.div
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            exit={{ scale: 0 }}
+            transition={{ duration: 0.5 }}
+            className="my-4 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-4 rounded-lg shadow-lg z-50"
+          >
+            <p className="text-green-500 text-center">Request submitted successfully!</p>
+          </motion.div>
+        )}
         <form action="" onSubmit={handleSubmit}>
           <div className="flex justify-center">
             <div className="flex md:flex-row flex-col justify-center gap-10 md:gap-6">

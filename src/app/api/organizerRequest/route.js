@@ -4,7 +4,6 @@ import { NextResponse } from "next/server";
 
 export async function POST(req) {
     const { name, email, schoolname, role, description } = await req.json();
-    console.log({ name, email, schoolname, role, description });
     try {
         const user = await User.findOne({ email });
         const existingEmailRequest = await OrganizerRequest.findOne({ email });
