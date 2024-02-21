@@ -1,6 +1,5 @@
 "use client";
-import { AiFillCaretDown } from "react-icons/ai"; 
-import { AiFillCamera } from "react-icons/ai"; 
+
 
 import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
@@ -10,20 +9,23 @@ import { grades } from "./grade";
 import { AnimatePresence, motion } from "framer-motion";
 
 const Requestform = () => {
-  const [schoolname, setSchoolname] = useState([]);
+  // const [schoolname, setSchoolname] = useState([]);
 
-  useEffect(() => {
-    fetch("/api/schoolList", {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => setSchoolname(data));
-  }, []); 
+  // useEffect(() => {
+  //   fetch("/api/schoolList", {
+  //     method: "PUT",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //   })
+  //     .then((response) => response.json())
+  //     .then((data) => setSchoolname(data));
+  // }, []); 
 
- 
+  const schoolname = [
+    {schoolname : "acet"},
+    {schoolname : "achariya"},
+  ]
  
   const [isRoleOpen, setIsRoleOpen] = useState(false);
   const [isGradeOpen, setIsGradeOpen] = useState(false);
