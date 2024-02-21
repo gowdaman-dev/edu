@@ -6,8 +6,7 @@ import { UserContext } from "@/ContextUser";
 import { defaultLayoutPlugin } from "@react-pdf-viewer/default-layout";
 import "@react-pdf-viewer/default-layout/lib/styles/index.css";
 import LoaderPage from "../loader/LoadingPage";
-
-import { PdfFetch } from "@/utils/FetchBuffer";
+import axios from "axios";
 const PdfViewer = () => {
   const { url } = useContext(UserContext);
   const [buffer, setBuffer] = useState([]);
@@ -16,10 +15,11 @@ const PdfViewer = () => {
   useEffect(() => {
     async function fetchBytes() {
       try {
-        const data = await PdfFetch(url);
-        console.log(data);
-        setBuffer(data);
-        setLoading(false); 
+     
+const data1=await axios.get("/api/files/pdf",{params:{url:url}})
+const dataArray= Object.values(data1.data)
+setBuffer(dataArray);
+setLoading(false);
       } catch (error) {
         console.log(error.message);
       }
@@ -33,13 +33,15 @@ console.log(loading);
   return (
     <>
       {loading && <LoaderPage />}
-      {buffer.length > 0 && (
+     {buffer && (
+
         <div className="h-screen w-screen">
           <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js">
             <Viewer fileUrl={buffer} />
           </Worker>
         </div>
-      )}
+      
+     )}
      
     </>
   );
