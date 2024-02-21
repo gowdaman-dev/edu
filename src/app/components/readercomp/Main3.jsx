@@ -1,18 +1,16 @@
 "use server"
-import axios from 'axios'
-export async function PdfFetch(url) {
-    try {
-        const bytes = await axios.get(url,{
-            responseType:'arraybuffer'
-        })
-        const api= await fetch(url)
-        return api
-        const data = new Uint8Array(bytes.data)
-        return data
-    } catch (error) {
+import axios from 'axios';
+
+export default function PdfFetch(url) {
+    return axios.get(url, {
+        responseType: 'arraybuffer'
+    })
+    .then(response => {
+        const data = new Uint8Array(response.data);
+        return data;
+    })
+    .catch(error => {
         console.log(error.message);
-    }
-    return (
-        { error: "on getting buffer problem" }
-    )
+        return { error: "on getting buffer problem" };
+    });
 }
