@@ -31,15 +31,15 @@ const PdfViewer = () => {
 console.log(loading);
   return (
     <>
-      {/* {loading && <LoaderPage />}
+      {loading && <LoaderPage />}
       {buffer.length > 0 && (
         <div className="h-screen w-screen">
           <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js">
             <Viewer fileUrl={buffer} />
           </Worker>
         </div>
-      )} */}
-      sample
+      )}
+     
     </>
   );
 };
