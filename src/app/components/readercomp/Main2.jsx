@@ -27,6 +27,7 @@ const PdfViewer = () => {
     fetchBytes();
   }, [url]);
 
+  
   const defaultLayoutPluginInstance = defaultLayoutPlugin();
 console.log(loading);
   return (
