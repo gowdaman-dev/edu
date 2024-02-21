@@ -2,7 +2,7 @@
 import { createContext, useState } from 'react';
 export const UserContext = createContext();
 function ContextUserData({ children }) {
-    const [nav, setnav] = useState(true)
+    const [nav, setnav] = useState(false)
     const [navmob, setnavmob] = useState(false)
     const [exporter, setExporter] = useState("false")
     const [fetchrole, setFetchrole] = useState('')
@@ -14,6 +14,7 @@ function ContextUserData({ children }) {
     const [requestedpop, setRequestedpop] = useState(false)
     const [showAccInfo, setShowAccInfo] = useState(false)
     const [showsklinfo, setShowSklInfo] = useState(false)
+    const [url, setUrl] = useState(null)
 
     return (
         <UserContext.Provider value={{
@@ -40,7 +41,9 @@ function ContextUserData({ children }) {
             showAccInfo,
             setShowAccInfo,
             showsklinfo,
-            setShowSklInfo
+            setShowSklInfo,
+            url,
+            setUrl
         }}>
             {children}
         </UserContext.Provider>

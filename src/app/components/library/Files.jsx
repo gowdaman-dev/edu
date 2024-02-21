@@ -11,18 +11,20 @@ import ProgressComp from './ProgressComponent'
 import Popper from './DeleteRename_Poppper'
 import { db } from '@/firebase/firebase'
 import { v4 as uuid } from 'uuid'
+import { useRouter } from "next/navigation";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage"
 import { useSession } from "next-auth/react";
 import { UserContext } from "@/ContextUser";
 import Alert from "./Alert";
 let filesShow = []
 function Files() {
+  const router=useRouter()
 
 
   const { data: session, loading } = useSession()
   const { school: SCHOOL } = session.user
-  const [isStudent,setStudent]=useState(session.user.role==="student")
-  const { navGrade: GRADE } = useContext(UserContext)
+  const [isStudent, setStudent] = useState(session.user.role === "student")
+  const { navGrade: GRADE,setUrl } = useContext(UserContext)
   const [data, setData] = useState([])
   const [isAnimate, setIsAnimate] = useState(true)
   const [newFile, setNewFile] = useState(0)
@@ -32,13 +34,12 @@ function Files() {
   const [delete_id, setDelete_id] = useState(null)
   const [file_Name, setName] = useState(null)
   const [alert, setAlert] = useState(false)
-  console.log("student" +isStudent);
   useEffect(() => {
     const fetchData = () => {
 
 
       try {
-        fetchFiles(session,GRADE).then(res => {
+        fetchFiles(session, GRADE).then(res => {
           if (res) {
             setIsAnimate(false)
 
@@ -52,7 +53,7 @@ function Files() {
 
     fetchData()
 
-  }, [newFile,GRADE,loading])
+  }, [newFile, GRADE, loading])
   useEffect(() => {
     // Define the event listener function
     function clickEvent(e) {
@@ -113,12 +114,21 @@ function Files() {
       setName(name)
     }
   }
+  const pdfClick = (e,URL) => {
+const threeDotParent=e.target.classList.contains("three_dot")
+const threeDotSvg=e.target.parentElement.classList.contains("three_dot")
+    if((!threeDotParent && !threeDotSvg) && pop_DEl_Rename===null){
+      setUrl(URL)
+      router.push("/reader")
+    }
+
+  }
   if (!data.message && data) {
     filesShow = data.map((item, index) => {
       let name = item.fname
       let size = item.fsize
-      let date = item.fdate
       let id = item.fid
+      const URL=item.furl
       //work done on items
       //for file name
       let trimName = item.fname
@@ -134,9 +144,9 @@ function Files() {
           : Math.floor(size) + ' KB/s'
 
       return (
-        <div
+        <div onClick={(e)=>pdfClick(e,URL)}
           key={'file' + index}
-          className='grid grid-flow-col grid-rows-3   grid-cols-8   text-balance  border-b-[1px]  text-gray-500 w-full border-gray-200 relative md:text-xl sm:text-md text-sm py-3'
+          className='grid grid-flow-col grid-rows-3   grid-cols-8 cursor-pointer  text-balance  border-b-[1px]  text-gray-500 w-full border-gray-200 relative md:text-xl sm:text-md text-sm py-3'
         >
           <span className='grid col-span-1 row-span-3 text-3xl text-gray-500 sm:text-4xl place-content-center'>
             <MdPictureAsPdf />
@@ -147,12 +157,12 @@ function Files() {
           >
             {name}
           </p>
-{
-  !isStudent &&
-          <span className='grid col-span-1 row-span-3 text-xl place-content-center rounded-full active:bg-gray-100' key={index} onClick={() => { handlePopClick(index, id, trimName) }} >
-            <BsThreeDotsVertical />
-          </span>
-}
+          {
+            !isStudent &&
+            <span className='grid col-span-1 row-span-3 text-xl place-content-center   three_dot ' key={index} onClick={() => { handlePopClick(index, id, trimName) }} >
+              <BsThreeDotsVertical />
+            </span>
+          }
 
           {pop_DEl_Rename === index &&
 
@@ -220,7 +230,7 @@ function Files() {
             sendData(fileData)
             setProgVisible(false)
             setProgress(0)
-        e.target.value = ""
+            e.target.value = ""
 
           })
 
@@ -255,14 +265,14 @@ function Files() {
   return (
     <div>
       <ul className='flex items-center justify-between h-16 border-b border-gray-100 w-screen md:w-full'>
-        {isStudent?
-        <li className="px-4 text-gray-600 flex justify-center  w-full">
-        <b>Shared Library ({data.length || 0})</b>
-      </li>:
-      <li className="px-4 text-gray-600 text-center">
-      <b>Shared Library ({data.length || 0})</b>
-    </li>}
-       {!isStudent &&  <li>
+        {isStudent ?
+          <li className="px-4 text-gray-600 flex justify-center  w-full">
+            <b>Shared Library ({data.length || 0})</b>
+          </li> :
+          <li className="px-4 text-gray-600 text-center">
+            <b>Shared Library ({data.length || 0})</b>
+          </li>}
+        {!isStudent && <li>
           <input
             type='file'
             accept='.pdf,.doc,.docx'

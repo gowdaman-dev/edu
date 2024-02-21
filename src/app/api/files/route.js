@@ -18,11 +18,12 @@ if(query){
 
     
     if (data.length > 0) {
-      const fileData = data.map(({ file_name, file_size, file_date, file_id }) => ({
+      const fileData = data.map(({ file_name, file_size, file_date, file_id,file_url }) => ({
         fname: file_name,
        fsize: file_size,
         fdate: file_date,
         fid: file_id,
+        furl:file_url
       }));
       
       return NextResponse.json(fileData);
