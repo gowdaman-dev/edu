@@ -62,9 +62,9 @@ function LoginForm() {
       {
         loading ? <LoaderPage /> : ''
       }
-      <div className="flex items-center justify-center min-w-[100vw] h-[100vh] overflow-x-hidden ">
+      <div className="flex items-center bg-[url(/bg.png)] bg-left bg-cover bg-no-repeat justify-center min-w-[100vw] h-[100vh] overflow-x-hidden ">
         <div className="absolute top-0 left-0 z-[1] w-full h-full flex items-center justify-center">
-          <div className="w-[60%] h-screen bg-[url(/bg.png)] bg-contain bg-right bg-no-repeat hidden lg:flex flex-col items-start justify-center">
+          <div className="w-[60%] h-screen  bg-contain bg-right bg-no-repeat hidden lg:flex flex-col items-start justify-center">
             <div className="px-10 w-[80%] grid place-items-center">
               <Image src={'/loginlogo.svg'} height={500} width={500} className="" alt="" />
             </div>
