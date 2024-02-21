@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { webName } from "../globalDetails";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 const Requestform = () => {
   const [formData, setFormData] = useState({
     name: "",
