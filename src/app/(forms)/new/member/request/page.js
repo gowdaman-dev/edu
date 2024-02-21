@@ -1,12 +1,11 @@
 import React from "react";
-import Recommend from "@/app/components/form/Recommend"
+import Request from "@/app/components/form/Request";
 
 const page = () => {
  
   return (
     <div>
-      <Recommend />
-      
+      <Request />
     </div>
   );
 };

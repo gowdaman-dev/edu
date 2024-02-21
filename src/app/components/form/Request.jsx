@@ -1,7 +1,7 @@
 "use client";
 
 
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect,useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { webName } from "../globalDetails";
@@ -9,7 +9,7 @@ import { grades } from "./grade";
 import { AnimatePresence, motion } from "framer-motion";
 
 const Requestform = () => {
-  // const [schoolname, setSchoolname] = useState([]);
+  //  const [schoolname, setSchoolname] = useState([]);
 
   // useEffect(() => {
   //   fetch("/api/schoolList", {
@@ -20,18 +20,23 @@ const Requestform = () => {
   //   })
   //     .then((response) => response.json())
   //     .then((data) => setSchoolname(data));
-  // }, []); 
+  // }, []);
 
   const schoolname = [
-    {schoolname : "acet"},
-    {schoolname : "achariya"},
+    {
+      schoolname : "Acet",
+    },
+    {
+      schoolname : "Achariya"
+    }
   ]
- 
+
+  
   const [isRoleOpen, setIsRoleOpen] = useState(false);
   const [isGradeOpen, setIsGradeOpen] = useState(false);
   const [isSchoolOpen, setIsSchoolOpen] = useState(false);
   const [isNotValid, setIsNotValid] = useState(false);
-  const [check,setCheck] = useState('')
+  const [check, setCheck] = useState('')
   const dropdownRef = useRef();
   const [data, setData] = useState({
     userName: "",
@@ -41,6 +46,9 @@ const Requestform = () => {
     grade: "",
     comment: "",
   });
+
+
+
   const { role } = data;
   const { grade } = data;
   const { schoolName } = data;
@@ -65,13 +73,13 @@ const Requestform = () => {
   }, []);
   useEffect(() => {
     const validate = () => {
-/*       props.handleSchool(schoolName);
- */
+      /*       props.handleSchool(schoolName);
+       */
       const optionExist = schoolname.find(
-        (item) =>{
-const val=item.schoolname.toLowerCase()
-const bool=val== schoolName.toLowerCase().trim()
-return bool
+        (item) => {
+          const val = item.schoolname.toLowerCase()
+          const bool = val == schoolName.toLowerCase().trim()
+          return bool
         });
       optionExist || schoolName == ""
         ? setIsNotValid(false)
@@ -83,9 +91,37 @@ return bool
 
   }, [check]);
 
-  const handleSubmit = (e) => {
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(data);
+    await fetch('/api/memberRequest', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    })
+    try {
+      const response = await fetch('/api/memberRequest', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+      const data = await response.json();
+      if (response.status === 400) {
+         setError(data.message);
+        return
+      } else {
+         setSuccess(data.message)
+        return
+      }
+    } catch (error) {
+      setError('Something went wrong')
+    }
   };
   const toggleRole = () => {
     setIsRoleOpen(true);
@@ -97,36 +133,31 @@ return bool
 
     setData({ ...data, role: value });
 
-    // setIsRoleOpen(false)
   };
 
   const handleGradeClick = value => {
     setData({ ...data, grade: value });
-    //  setIsGradeOpen(false);
   }
 
-
-
-
-  
   const toggleSchool = () => {
     setIsSchoolOpen(true);
   };
 
   const handleChangeSchool = (e) => {
     const value = e.target.value;
-    setData({...data, schoolName :value});
+    setIsSchoolOpen(true)
+    setData({ ...data, schoolName: value });
   };
 
   const handleBlurSchool = (e) => {
     const value = e.target.value;
     setIsSchoolOpen(false)
-    setData({...data, schoolName :value});
+    setData({ ...data, schoolName: value });
     setCheck(value)
   };
 
   const handleClickSchool = (value) => {
-    setData({...data, schoolName :value});
+    setData({ ...data, schoolName: value });
 
     setIsNotValid(false);
     setIsSchoolOpen(false);
@@ -136,13 +167,54 @@ return bool
     setIsSchoolOpen(true);
   }
 
+ const [focusedIndex,setFocusedIndex] = useState(-1);
+ const schoolDropRef = useRef(null)
 
-  const roleColor = role === "" ? " text-gray-400" : "text-black";
-  const gradeColor = grade === "" ? " text-gray-400" : "text-black";
+useEffect(()=>{
+  if (isSchoolOpen) {
+    setFocusedIndex(0)
+    schoolDropRef.current.children[0]?.focus();
+  }
+},[isSchoolOpen])
 
-  const roleClass = `rounded-lg ${roleColor} pl-2 w-72 text-b h-12 border cursor-pointer outline-none  bg-[--web-container]`;
+
+
+
+const handleKeyDown = useCallback((e) => {
+  if (isSchoolOpen) {
+    if (e.key === 'ArrowDown') {
+      e.preventDefault(); 
+      const nextIndex =
+        focusedIndex < schoolDropRef.current.children.length - 1 ? focusedIndex + 1 : 0;
+      setFocusedIndex(nextIndex);
+    }
+    else if (e.key == 'ArrowUp') {
+      e.preventDefault();
+      const previousIndex = focusedIndex == 0 ? schoolDropRef.current.children.length - 1 : focusedIndex-1;
+      setFocusedIndex(previousIndex);
+    }
+    else if (e.key === 'Enter') {
+      e.preventDefault(); 
+      if (focusedIndex !== -1) {
+  
+        const selectedSchool =
+          schoolname[focusedIndex] && schoolname[focusedIndex].schoolname;
+        if (selectedSchool) {
+          setData({...data,schoolName: selectedSchool});
+          setIsSchoolOpen(false);
+        }
+      }
+    }
+  }
+}, [isSchoolOpen, focusedIndex]);
+
+
+
+
+
+  const roleClass = `rounded-lg  pl-2 w-72 text-b h-12 border cursor-pointer outline-none  bg-[--web-container]`;
   const regularClass = `rounded-lg  pl-2 w-72 text-b h-12 border outline-none  bg-[--web-container]`;
-  const gradeClass = ` rounded-lg cursor-pointer ${gradeColor} pl-2 h-12  mt-10 outline-none  w-72 md:w-[600px]  border bg-[--web-container]`;
+  const gradeClass = ` rounded-lg cursor-pointer  pl-2 h-12  mt-10 outline-none  w-72 md:w-[600px]  border bg-[--web-container]`;
   const dropdownClass = `cursor-pointer py-2 rounded-lg hover:bg-gray-100`
   const Comment =
     "Tell us more about yourself and the purpose of using our product";
@@ -160,14 +232,36 @@ return bool
       <div className=" md:shadow-[0px_0px_2px_0px] rounded-lg py-2  w-fit px-1 md:px-10 mx-auto flex-col justify-center">
         <Image
           className="w-32 h-32 mx-auto mt-10"
-          src={"logo.svg"}
+          src={"/logo.svg"}
           width={100}
           height={100}
           alt="logo"
         />
         <h1 className="text-center font-bold text-2xl py-10">
-          {webName} Memeber Request Form
+          {webName} Member Request Form
         </h1>
+        {error && (
+          <motion.div
+            initial={{ y: 10, opacity: 0.6 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: 10, opacity: 0 }}
+            transition={{ duration: 0.5, type: "spring" }}
+            className="my-4 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-4 rounded-lg shadow-lg z-50"
+          >
+            <p className="text-red-500 text-center">{error}</p>
+          </motion.div>
+        )}
+        {success && (
+          <motion.div
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            exit={{ scale: 0 }}
+            transition={{ duration: 0.5 }}
+            className="my-4 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-4 rounded-lg shadow-lg z-50"
+          >
+            <p className="text-green-500 text-center">Request submitted successfully!</p>
+          </motion.div>
+        )}
         <form action="" onSubmit={handleSubmit}>
           <div className="flex justify-center">
             <div className="flex md:flex-row flex-col justify-center gap-10 md:gap-6">
@@ -180,54 +274,61 @@ return bool
                   className={regularClass}
                 />
                 <div className="relative ">
-      {isNotValid && <p className="text-red-500 absolute -mt-6">please Choose give option</p>}
-      <input
-        ref={dropdownRef}
-        className={regularClass}
-        placeholder={"School Name"}
-        onChange={handleChangeSchool}
-        onBlur={handleBlurSchool}
-        onClick={toggleSchool}
-        value={schoolName}
-        onFocus={handleFocusSchool}
-        required
-      />
+                  {isNotValid && <p className="text-red-500 absolute -mt-6">Please select a valid option
+</p>}
+                  <input
+                    ref={dropdownRef}
+                    className={regularClass}
+                    placeholder={"School Name"}
+                    onChange={handleChangeSchool}
+                    onBlur={handleBlurSchool}
+                    onClick={toggleSchool}
+                    value={schoolName}
+                    onFocus={handleFocusSchool}
+                    onKeyDown={handleKeyDown}
+                    required
+                  />
 
-      <AnimatePresence mode="wait">
-        {isSchoolOpen && (
-          <motion.div
-            initial={{ y: 10, opacity: 0.6 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: 10, opacity: 0 }}
-            transition={{ duration: 0.5, type: "spring" }}
-            className="absolute max-h-64 overflow-auto w-72 mt-2 z-40 pl-2 py-2  rounded-lg grid gap-2 bg-white round"
-          >
-            {" "}
-            {schoolname
-              // filter the data according to input
-              .filter((data) => {
-                return schoolName === ""
-                  ? true
-                  : data.schoolname.toLowerCase().trim().includes(schoolName.toLowerCase().trim());
-              })
-              .map((option) => {
-                return (
-                  <p
-                    className="capitalize cursor-pointer p-1 w-[273px] rounded-lg hover:bg-gray-100"
-                    onClick={() => {
-                      handleClickSchool(option.schoolname);
-                    }}
-                    key={option.schoolname}
-                  >
-                    {" "}
-                    {option.schoolname}
-                  </p>
-                );
-              })}
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
+                  <AnimatePresence mode="wait">
+                    {isSchoolOpen && (
+                      <motion.div
+                        initial={{ y: 10, opacity: 0.6 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        exit={{ y: 10, opacity: 0 }}
+                        transition={{ duration: 0.5, type: "spring" }}
+                        className="absolute max-h-64 overflow-auto w-72 mt-2 z-40 pl-2 py-2  rounded-lg grid gap-2 bg-white round"
+                        ref={schoolDropRef}
+                      >
+                        {" "}
+                        {schoolname
+                          // filter the data according to input
+                          .filter((data) => {
+                            return schoolName === ""
+                              ? true
+                              : data.schoolname.toLowerCase().trim().includes(schoolName.toLowerCase().trim());
+                          })
+                          .map((option,index) => {
+                            return (
+                              <p
+                              className={`capitalize cursor-pointer p-1 w-[273px] rounded-lg hover:bg-gray-100 ${
+                                index === focusedIndex ? 'bg-gray-100' : ''
+                              }`}
+
+
+                                onClick={() => {
+                                  handleClickSchool(option.schoolname);
+                                }}
+                                key={option.schoolname}
+                              >
+                                {" "}
+                                {option.schoolname}
+                              </p>
+                            );
+                          })}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
               </div>
               <div className="flex flex-col gap-10 w-72 ">
                 <input
@@ -245,8 +346,8 @@ return bool
                     className={roleClass}
                     placeholder="Select Your Role"
                     value={role}
-                    onFocus={()=>{setIsRoleOpen(true)}}
-                    onBlur={()=>{setIsRoleOpen(false)}}
+                    onFocus={() => { setIsRoleOpen(true) }}
+                    onBlur={() => { setIsRoleOpen(false) }}
                     readOnly
                     onClick={toggleRole}
                   />
@@ -266,7 +367,7 @@ return bool
                           className={dropdownClass}
                           onClick={() => {
 
-                            handleRoleClick("student");
+                            handleRoleClick("Student");
                           }}
                         >
                           Student
@@ -274,7 +375,7 @@ return bool
                         <p
                           className={dropdownClass}
                           onClick={() => {
-                            handleRoleClick("teacher");
+                            handleRoleClick("Teacher");
                           }}
                         >
                           Teacher
@@ -286,40 +387,40 @@ return bool
               </div>
             </div>
           </div>
-          <div>
-            
-              <input
-                ref={gradeRef}
-                onClick={toggleGrade}
-                onFocus={()=>{setIsGradeOpen(true)}}
-                onBlur={()=>{setIsGradeOpen(false)}}
-                placeholder="Select Your Grade"
-                className={gradeClass}
-                value={grade}
-              />
+          <div className="flex justify-center">
+
+            <input
+              ref={gradeRef}
+              onClick={toggleGrade}
+              onFocus={() => { setIsGradeOpen(true) }}
+              onBlur={() => { setIsGradeOpen(false) }}
+              placeholder="Select Your Grade"
+              className={gradeClass}
+              value={grade}
+            />
 
             {" "}
-          
-          <AnimatePresence mode="wait">
-            {isGradeOpen && (
-              <motion.div
-                initial={{ y: 10, opacity: 0.6 }}
-                animate={{ y: 0, opacity: 1 }}
-                exit={{ y: 10, opacity: 0 }}
-                transition={{ duration: 0.5, type: "spring" }}
-                className="absolute max-h-64 overflow-auto w-72 z-40 pl-2 py-2  rounded-lg grid gap-2 mt-2 bg-white round "
-              >
-                {" "}
-                {
-                  grades.map(item => (
-                    <p key={item} className="cursor-pointer py-1 w-64 rounded-lg hover:bg-gray-100" onClick={() => {
-                      handleGradeClick(item)
-                    }}>{item}</p>
-                  ))
-                }
-              </motion.div>
-            )}
-          </AnimatePresence>
+
+            <AnimatePresence mode="wait">
+              {isGradeOpen && (
+                <motion.div
+                  initial={{ y: 10, opacity: 0.6 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  exit={{ y: 10, opacity: 0 }}
+                  transition={{ duration: 0.5, type: "spring" }}
+                  className="absolute max-h-64 overflow-auto w-72 z-40 pl-2 py-2  rounded-lg grid gap-2 mt-2 bg-white round "
+                >
+                  {" "}
+                  {
+                    grades.map(item => (
+                      <p key={item} className="cursor-pointer py-1 w-64 rounded-lg hover:bg-gray-100" onClick={() => {
+                        handleGradeClick(item)
+                      }}>{item}</p>
+                    ))
+                  }
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
 
           <div className="flex justify-center gap-10 flex-col py-10 ">

@@ -16,6 +16,10 @@ const DropDown = (props) => {
       }
     };
     window.addEventListener("click", handleClose);
+
+    return () => {
+      window.removeEventListener("click", handleClose);
+    };
   }, []);
   useEffect(() => {
     const validate = () => {
@@ -31,9 +35,7 @@ return bool
         }
         
       );
-      optionExist || selectedOption == ""
-        ? setIsNotValid(false)
-        : setIsNotValid(true);
+      optionExist || selectedOption === "" ? setIsNotValid(false) : setIsNotValid(true);
     };
     validate();
   }, [selectedOption]);

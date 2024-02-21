@@ -10,6 +10,7 @@ const schoolInformation = () => {
   const [SchoolName, setSchoolName] = useState("Default School");
   const [OwnerName, setOwnerName] = useState("JGDHL");
   const [skldata, setskldata] = useState({});
+  const [skldataloader, setskldataloader] = useState({});
   const [sklstudentdata, setsklstudentdata] = useState({});
   const [sklstudentgradecount, setsklstudentgradecount] = useState([]);
   const { data: session } = useSession();
@@ -31,6 +32,7 @@ const schoolInformation = () => {
     }
   };
   useEffect(() => {
+    setskldataloader(true)
     const handler = async () => {
       const res = await fetch('/api/sklinfo', {
         method: 'PUT',
@@ -50,6 +52,7 @@ const schoolInformation = () => {
       await setsklstudentdata(studentdata)
       const data = await res.json();
       await setskldata(data)
+      await setskldataloader(false)
     }
     handler();
   }, [])
@@ -64,7 +67,7 @@ const schoolInformation = () => {
     }
   }, [sklstudentdata]);
   return (
-    <div className=" fixed top-0 left-0 h-screen w-screen grid place-items-center bg-white/[.2] backdrop-blur-sm">
+    <div className={`fixed top-0 left-0 h-screen w-screen grid place-items-center bg-white/[.2] backdrop-blur-sm ${skldataloader?"animate-pulse":''}` }>
       <div className=" flex flex-col items-center relative h-fit bg-white border rounded-lg md:w-[600px] w-[90%]  ">
         <h1 className=" font-bold text-xl p-3 border-b-2 w-[90%]">School School</h1>
         <dl className="flex flex-col w-[90%]">
@@ -104,6 +107,11 @@ const schoolInformation = () => {
                     </div>
                   </div>
                 ))
+              )
+            }
+            {
+              sklstudentgradecount == [] &&(
+                <p>No class data in server</p>
               )
             }
           </div>
