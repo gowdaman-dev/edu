@@ -5,9 +5,9 @@ import { useEffect, useState, useContext } from "react";
 import { UserContext } from "@/ContextUser";
 import { defaultLayoutPlugin } from "@react-pdf-viewer/default-layout";
 import "@react-pdf-viewer/default-layout/lib/styles/index.css";
-import { PdfFetch } from "../../../utils/FetchBuffer";
 import LoaderPage from "../loader/LoadingPage";
 
+import { PdfFetch } from "@/utils/FetchBuffer";
 const PdfViewer = () => {
   const { url } = useContext(UserContext);
   const [buffer, setBuffer] = useState([]);
