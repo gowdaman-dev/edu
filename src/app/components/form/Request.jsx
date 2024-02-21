@@ -90,6 +90,7 @@ const Requestform = () => {
     e.preventDefault();
     setError('')
     setSuccess('')
+    console.log(data);
     if (data.userName == '' || data.email == '' || data.role == '' || data.comment == '' || data.grade == '' || data.schoolName == '') {
       setError('Please fill all the fields')
       return
@@ -339,7 +340,7 @@ const Requestform = () => {
               onBlur={() => { setIsGradeOpen(false) }}
               placeholder="Select Your Grade"
               className={gradeClass}
-              value={grade}
+              value={"Grade "+grade}
             />
 
             {" "}
@@ -358,7 +359,7 @@ const Requestform = () => {
                     grades.map(item => (
                       <p key={item} className="cursor-pointer py-1 w-full px-2 rounded-lg hover:bg-gray-100" onClick={() => {
                         handleGradeClick(item)
-                      }}>{item}</p>
+                      }}>Grade {item}</p>
                     ))
                   }
                 </motion.div>
