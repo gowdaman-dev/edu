@@ -17,6 +17,7 @@ const PdfViewer = () => {
     async function fetchBytes() {
       try {
         const data = await PdfFetch(url);
+        console.log(data);
         setBuffer(data);
         setLoading(false); 
       } catch (error) {
@@ -27,7 +28,7 @@ const PdfViewer = () => {
   }, [url]);
 
   const defaultLayoutPluginInstance = defaultLayoutPlugin();
-
+console.log(loading);
   return (
     <>
       {loading && <LoaderPage />}
