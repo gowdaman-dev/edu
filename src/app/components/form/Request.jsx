@@ -1,6 +1,6 @@
 "use client";
-import { AiFillCaretDown } from "react-icons/ai"; 
-import { AiFillCamera } from "react-icons/ai"; 
+import { AiFillCaretDown } from "react-icons/ai";
+import { AiFillCamera } from "react-icons/ai";
 
 import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
@@ -21,15 +21,15 @@ const Requestform = () => {
     })
       .then((response) => response.json())
       .then((data) => setSchoolname(data));
-  }, []); 
+  }, []);
 
- 
- 
+
+
   const [isRoleOpen, setIsRoleOpen] = useState(false);
   const [isGradeOpen, setIsGradeOpen] = useState(false);
   const [isSchoolOpen, setIsSchoolOpen] = useState(false);
   const [isNotValid, setIsNotValid] = useState(false);
-  const [check,setCheck] = useState('')
+  const [check, setCheck] = useState('')
   const dropdownRef = useRef();
   const [data, setData] = useState({
     userName: "",
@@ -39,10 +39,13 @@ const Requestform = () => {
     grade: "",
     comment: "",
   });
-  const { role, grade } = data;
+  const { role } = data;
+  const { grade } = data;
+  const { schoolName } = data;
   const roleRef = useRef();
   const gradeRef = useRef();
 
+  //close dropdown when click happended outside of the field
   useEffect(() => {
     const handleClose = (e) => {
       if (e.target != roleRef.current) {
@@ -60,13 +63,13 @@ const Requestform = () => {
   }, []);
   useEffect(() => {
     const validate = () => {
-/*       props.handleSchool(schoolName);
- */
+      /*       props.handleSchool(schoolName);
+       */
       const optionExist = schoolname.find(
-        (item) =>{
-const val=item.schoolname.toLowerCase()
-const bool=val== schoolName.toLowerCase().trim()
-return bool
+        (item) => {
+          const val = item.schoolname.toLowerCase()
+          const bool = val == schoolName.toLowerCase().trim()
+          return bool
         });
       optionExist || schoolName == ""
         ? setIsNotValid(false)
@@ -78,46 +81,50 @@ return bool
 
   }, [check]);
 
-  const requestEvent = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     console.log(data);
   };
-
   const toggleRole = () => {
-    setIsRoleOpen(!isRoleOpen);
+    setIsRoleOpen(true);
   };
-
   const toggleGrade = () => {
-    setIsGradeOpen(!isGradeOpen);
+    setIsGradeOpen(true);
   };
+  const handleRoleClick = value => {
 
-  const handleRoleClick = (value) => {
     setData({ ...data, role: value });
+
+    // setIsRoleOpen(false)
   };
 
-  const handleGradeClick = (value) => {
+  const handleGradeClick = value => {
     setData({ ...data, grade: value });
     //  setIsGradeOpen(false);
   }
-  
+
+
+
+
+
   const toggleSchool = () => {
     setIsSchoolOpen(true);
   };
 
   const handleChangeSchool = (e) => {
     const value = e.target.value;
-    setData({...data, schoolName :value});
+    setData({ ...data, schoolName: value });
   };
 
   const handleBlurSchool = (e) => {
     const value = e.target.value;
     setIsSchoolOpen(false)
-    setData({...data, schoolName :value});
+    setData({ ...data, schoolName: value });
     setCheck(value)
   };
 
   const handleClickSchool = (value) => {
-    setData({...data, schoolName :value});
+    setData({ ...data, schoolName: value });
 
     setIsNotValid(false);
     setIsSchoolOpen(false);
@@ -127,9 +134,6 @@ return bool
     setIsSchoolOpen(true);
   }
 
-  const handleSchool = (value) => {
-    setData({ ...data, schoolName: value });
-  };
 
   const roleColor = role === "" ? " text-gray-400" : "text-black";
   const gradeColor = grade === "" ? " text-gray-400" : "text-black";
@@ -154,7 +158,7 @@ return bool
       <div className=" md:shadow-[0px_0px_2px_0px] rounded-lg py-2  w-fit px-1 md:px-10 mx-auto flex-col justify-center">
         <Image
           className="w-32 h-32 mx-auto mt-10"
-          src={"logo.svg"}
+          src={"/logo.svg"}
           width={100}
           height={100}
           alt="logo"
@@ -174,54 +178,54 @@ return bool
                   className={regularClass}
                 />
                 <div className="relative ">
-      {isNotValid && <p className="text-red-500 absolute -mt-6">please Choose give option</p>}
-      <input
-        ref={dropdownRef}
-        className={regularClass}
-        placeholder={"School Name"}
-        onChange={handleChangeSchool}
-        onBlur={handleBlurSchool}
-        onClick={toggleSchool}
-        value={schoolName}
-        onFocus={handleFocusSchool}
-        required
-      />
+                  {isNotValid && <p className="text-red-500 absolute -mt-6">please Choose give option</p>}
+                  <input
+                    ref={dropdownRef}
+                    className={regularClass}
+                    placeholder={"School Name"}
+                    onChange={handleChangeSchool}
+                    onBlur={handleBlurSchool}
+                    onClick={toggleSchool}
+                    value={schoolName}
+                    onFocus={handleFocusSchool}
+                    required
+                  />
 
-      <AnimatePresence mode="wait">
-        {isSchoolOpen && (
-          <motion.div
-            initial={{ y: 10, opacity: 0.6 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: 10, opacity: 0 }}
-            transition={{ duration: 0.5, type: "spring" }}
-            className="absolute max-h-64 overflow-auto w-72 mt-2 z-40 pl-2 py-2  rounded-lg grid gap-2 bg-white round"
-          >
-            {" "}
-            {schoolname
-              // filter the data according to input
-              .filter((data) => {
-                return schoolName === ""
-                  ? true
-                  : data.schoolname.toLowerCase().trim().includes(schoolName.toLowerCase().trim());
-              })
-              .map((option) => {
-                return (
-                  <p
-                    className="capitalize cursor-pointer p-1 w-[273px] rounded-lg hover:bg-gray-100"
-                    onClick={() => {
-                      handleClickSchool(option.schoolname);
-                    }}
-                    key={option.schoolname}
-                  >
-                    {" "}
-                    {option.schoolname}
-                  </p>
-                );
-              })}
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
+                  <AnimatePresence mode="wait">
+                    {isSchoolOpen && (
+                      <motion.div
+                        initial={{ y: 10, opacity: 0.6 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        exit={{ y: 10, opacity: 0 }}
+                        transition={{ duration: 0.5, type: "spring" }}
+                        className="absolute max-h-64 overflow-auto w-72 mt-2 z-40 pl-2 py-2  rounded-lg grid gap-2 bg-white round"
+                      >
+                        {" "}
+                        {schoolname
+                          // filter the data according to input
+                          .filter((data) => {
+                            return schoolName === ""
+                              ? true
+                              : data.schoolname.toLowerCase().trim().includes(schoolName.toLowerCase().trim());
+                          })
+                          .map((option) => {
+                            return (
+                              <p
+                                className="capitalize cursor-pointer p-1 w-[273px] rounded-lg hover:bg-gray-100"
+                                onClick={() => {
+                                  handleClickSchool(option.schoolname);
+                                }}
+                                key={option.schoolname}
+                              >
+                                {" "}
+                                {option.schoolname}
+                              </p>
+                            );
+                          })}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
               </div>
               <div className="flex flex-col gap-10 w-72 ">
                 <input
@@ -239,8 +243,8 @@ return bool
                     className={roleClass}
                     placeholder="Select Your Role"
                     value={role}
-                    onFocus={()=>{setIsRoleOpen(true)}}
-                    onBlur={()=>{setIsRoleOpen(false)}}
+                    onFocus={() => { setIsRoleOpen(true) }}
+                    onBlur={() => { setIsRoleOpen(false) }}
                     readOnly
                     onClick={toggleRole}
                   />
@@ -280,40 +284,40 @@ return bool
               </div>
             </div>
           </div>
-          <div>
-            
-              <input
-                ref={gradeRef}
-                onClick={toggleGrade}
-                onFocus={()=>{setIsGradeOpen(true)}}
-                onBlur={()=>{setIsGradeOpen(false)}}
-                placeholder="Select Your Grade"
-                className={gradeClass}
-                value={grade}
-              />
+          <div className="flex justify-center">
+
+            <input
+              ref={gradeRef}
+              onClick={toggleGrade}
+              onFocus={() => { setIsGradeOpen(true) }}
+              onBlur={() => { setIsGradeOpen(false) }}
+              placeholder="Select Your Grade"
+              className={gradeClass}
+              value={grade}
+            />
 
             {" "}
-          
-          <AnimatePresence mode="wait">
-            {isGradeOpen && (
-              <motion.div
-                initial={{ y: 10, opacity: 0.6 }}
-                animate={{ y: 0, opacity: 1 }}
-                exit={{ y: 10, opacity: 0 }}
-                transition={{ duration: 0.5, type: "spring" }}
-                className="absolute max-h-64 overflow-auto w-72 z-40 pl-2 py-2  rounded-lg grid gap-2 mt-2 bg-white round "
-              >
-                {" "}
-                {
-                  grades.map(item => (
-                    <p key={item} className="cursor-pointer py-1 w-64 rounded-lg hover:bg-gray-100" onClick={() => {
-                      handleGradeClick(item)
-                    }}>{item}</p>
-                  ))
-                }
-              </motion.div>
-            )}
-          </AnimatePresence>
+
+            <AnimatePresence mode="wait">
+              {isGradeOpen && (
+                <motion.div
+                  initial={{ y: 10, opacity: 0.6 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  exit={{ y: 10, opacity: 0 }}
+                  transition={{ duration: 0.5, type: "spring" }}
+                  className="absolute max-h-64 overflow-auto w-72 z-40 pl-2 py-2  rounded-lg grid gap-2 mt-2 bg-white round "
+                >
+                  {" "}
+                  {
+                    grades.map(item => (
+                      <p key={item} className="cursor-pointer py-1 w-64 rounded-lg hover:bg-gray-100" onClick={() => {
+                        handleGradeClick(item)
+                      }}>{item}</p>
+                    ))
+                  }
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
 
           <div className="flex justify-center gap-10 flex-col py-10 ">
@@ -362,4 +366,4 @@ return bool
   );
 };
 
-export default RequestForm;
+export default Requestform;
