@@ -37,7 +37,17 @@ const authOptions = {
                         role: user.role,
                         acId: user._id,
                     }
-                } else {
+                } 
+                if(user.role == 'student'){
+                    return {
+                        ...token,
+                        role: user.role,
+                        school: user.school,
+                        acId: user._id,
+                        grade:user.standard
+                    }
+                }
+                else {
                     return {
                         ...token,
                         role: user.role,
@@ -58,6 +68,17 @@ const authOptions = {
                         ...session.user,
                         role: token.role,
                         acId:token.acId,
+                    }
+                }
+            } 
+            if (token.role == "student") {
+                return {
+                    ...session,
+                    user: {
+                        ...session.user,
+                        role: token.role,
+                        acId:token.acId,
+                        grade:token.grade
                     }
                 }
             } else {

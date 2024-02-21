@@ -1,6 +1,5 @@
 'use client'
-import { signOut, useSession } from 'next-auth/react';
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useState } from 'react';
 export const UserContext = createContext();
 function ContextUserData({ children }) {
     const [nav, setnav] = useState(true)
@@ -13,7 +12,8 @@ function ContextUserData({ children }) {
     const [addmanually, setAddmanually] = useState(false)
     const [userDetailpopup, setUserDetailpopup] = useState(false)
     const [requestedpop, setRequestedpop] = useState(false)
-    const [showAccInfo , setShowAccInfo] = useState(false)
+    const [showAccInfo, setShowAccInfo] = useState(false)
+    const [showsklinfo, setShowSklInfo] = useState(false)
 
     return (
         <UserContext.Provider value={{
@@ -35,10 +35,12 @@ function ContextUserData({ children }) {
             setNavGrade,
             userDetailpopup,
             setUserDetailpopup,
-            requestedpop, 
+            requestedpop,
             setRequestedpop,
-            showAccInfo , 
-            setShowAccInfo
+            showAccInfo,
+            setShowAccInfo,
+            showsklinfo,
+            setShowSklInfo
         }}>
             {children}
         </UserContext.Provider>

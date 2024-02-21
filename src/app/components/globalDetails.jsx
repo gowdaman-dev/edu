@@ -1,3 +1,3 @@
-const webName='Edu learn'
+const webName='MiWay'
 
 export {webName}
