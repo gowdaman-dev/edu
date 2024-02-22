@@ -334,7 +334,9 @@ function SuperAdminMember() {
                       usereditable ? (
                         <div className='w-[80%] relative'>
                           <input type="text" value={outSchoolName} placeholder='school' id='school' name='school' onClick={toggleSchool} onBlur={handleBlurSchool} onFocus={handleFocusSchool} onChange={handleChangeSchool} className='capitalize bg-gray-200 w-full  rounded-lg px-2 py-1' />
+                          {(selectedrecord.role !== "admin") &&
 
+                          
                           <AnimatePresence mode="wait">
                             {isSchoolOpen && (
                               <motion.div
@@ -371,7 +373,7 @@ function SuperAdminMember() {
                               </motion.div>
                             )}
                           </AnimatePresence>
-
+}
                         </div>
                       ) :
                         <p className='bg-gray-50 rounded-lg px-2 py-1 w-[80%]' > {selectedrecord.school} </p>
