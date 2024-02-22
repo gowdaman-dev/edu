@@ -146,9 +146,9 @@ const threeDotSvg=e.target.parentElement.classList.contains("three_dot")
       return (
         <div onClick={(e)=>pdfClick(e,URLID)}
           key={'file' + index}
-          className='grid grid-flow-col grid-rows-3   grid-cols-8 cursor-pointer  text-balance  border-b-[1px]  text-gray-500 w-full border-gray-200 relative md:text-xl sm:text-md text-sm py-3'
+          className='grid grid-flow-col grid-rows-3   grid-cols-8 cursor-pointer  text-balance  border-b-[1px]  text-gray-500 w-full border-gray-200 relative md:text-[16px] sm:text-md text-sm py-3'
         >
-          <span className='grid col-span-1 row-span-3 text-3xl text-gray-500 sm:text-4xl place-content-center'>
+          <span className='grid col-span-1 row-span-3 text-3xl text-gray-500 sm:text-2xl place-content-center'>
             <MdPictureAsPdf />
           </span>
           <p
