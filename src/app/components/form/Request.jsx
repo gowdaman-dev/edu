@@ -5,7 +5,7 @@ import React, { useState, useRef, useEffect,useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { webName } from "../globalDetails";
-import { grades } from "./grade";
+import { grades, roles } from "./grade";
 import { AnimatePresence, motion } from "framer-motion";
 
 const Requestform = () => {
@@ -170,9 +170,9 @@ const Requestform = () => {
 
 
 
-  const roleClass = `rounded-lg  pl-2 w-72 text-b h-12 border cursor-pointer outline-none  bg-[--web-container]`;
-  const regularClass = `rounded-lg  pl-2 w-72 text-b h-12 border outline-none  bg-[--web-container]`;
-  const gradeClass = ` rounded-lg cursor-pointer pl-2 h-12  mt-10 outline-none  w-72 md:w-[600px]  border bg-[--web-container]`;
+  const roleClass = `rounded-lg  pl-2 w-72 text-b h-12 border cursor-pointer   bg-[--web-container]`;
+  const regularClass = `rounded-lg  pl-2 w-72 text-b h-12 border   bg-[--web-container]`;
+  const gradeClass = ` rounded-lg cursor-pointer pl-2 h-12  mt-10   w-72 md:w-[600px]  border bg-[--web-container]`;
   const dropdownClass = `cursor-pointer py-2 rounded-lg hover:bg-gray-100`
   const Comment =
     "Tell us more about yourself and the purpose of using our product";
@@ -248,7 +248,10 @@ const Requestform = () => {
                     onFocus={handleFocusSchool}
 
                   />
-
+                  {
+                   isSchoolOpen && schoolname.filter((data) => {
+                    return schoolName === "" ? true : data.schoolname.toLowerCase().trim().includes(schoolName.toLowerCase().trim());
+                }).length > 0 && (
                   <AnimatePresence mode="wait">
                     {isSchoolOpen && (
                       <motion.div
@@ -256,7 +259,7 @@ const Requestform = () => {
                         animate={{ y: 0, opacity: 1 }}
                         exit={{ y: 10, opacity: 0 }}
                         transition={{ duration: 0.5, type: "spring" }}
-                        className="absolute shadow max-h-64 overflow-auto w-72 mt-2 z-40 pl-2 py-2  rounded-lg grid gap-2 bg-white round"
+                        className="absolute border max-h-64 overflow-auto w-72 mt-2 z-40 pl-2 py-2 shadow-lg rounded-lg grid gap-2 bg-white round "
                       >
                         {" "}
                         {schoolname
@@ -285,6 +288,7 @@ const Requestform = () => {
                       </motion.div>
                     )}
                   </AnimatePresence>
+)}
                 </div>
               </div>
               <div className="flex flex-col gap-10 w-72 ">
@@ -293,7 +297,7 @@ const Requestform = () => {
                   placeholder="Your Email"
                   onChange={e => setData({ ...data, email: e.target.value })}
 
-                  className="rounded-lg h-12 pl-2 outline-none  border bg-[--web-container]
+                  className="rounded-lg h-12 pl-2  border bg-[--web-container]
                   "
                 />
                 <div className="relative ">
@@ -354,7 +358,7 @@ const Requestform = () => {
               placeholder="Select Your Grade"
 
               className={gradeClass}
-              value={"Grade "+grade}
+              value={grade && "Grade "+grade}
               readOnly
             />
 
@@ -367,8 +371,8 @@ const Requestform = () => {
                   animate={{ y: 0, opacity: 1 }}
                   exit={{ y: 10, opacity: 0 }}
                   transition={{ duration: 0.5, type: "spring" }}
-                  className="absolute max-h-64 overflow-auto md:w-full w-72 z-40 pl-2 py-2 px-2 shadow-lg rounded-lg grid gap-2 top-[100%] bg-white round "
-                >
+                  className="absolute border max-h-64 top-full overflow-auto w-72 md:w-[600px] mt-2 z-40 pl-2 py-2 shadow-lg rounded-lg grid gap-2 bg-white round "
+                  >
                   {" "}
                   {
                     grades.map(item => (
@@ -388,7 +392,7 @@ const Requestform = () => {
               placeholder={Comment}
               onChange={e => setData({ ...data, comment: e.target.value })}
 
-              className="rounded-lg resize-none pl-2 pt-1 min-h-56 outline-none  h-auto w-72 md:w-[600px] mx-auto  border bg-[--web-container]"
+              className="rounded-lg resize-none pl-2 pt-1 min-h-56   h-auto w-72 md:w-[600px] mx-auto  border bg-[--web-container]"
             />
             <input
               type="submit"
