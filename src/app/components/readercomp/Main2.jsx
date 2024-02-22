@@ -16,8 +16,9 @@ const PdfViewer = () => {
     async function fetchBytes() {
       try {
      
-const data1=await axios.get("/api/files/pdf",{params:{url:url}})
-const dataArray= Object.values(data1.data)
+const data1=await axios.get(url,{responseType:"arraybuffer"})
+const dataArray=new Uint8Array(data1.data)
+console.log(dataArray);
 setBuffer(dataArray);
 setLoading(false);
       } catch (error) {
