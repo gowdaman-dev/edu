@@ -2,7 +2,7 @@
 import { createContext, useState } from 'react';
 export const UserContext = createContext();
 function ContextUserData({ children }) {
-    const [nav, setnav] = useState(true)
+    const [nav, setnav] = useState(false)
     const [navmob, setnavmob] = useState(false)
     const [exporter, setExporter] = useState("false")
     const [fetchrole, setFetchrole] = useState('')

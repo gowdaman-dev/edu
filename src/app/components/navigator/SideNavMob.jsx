@@ -14,12 +14,13 @@ import Requestform from './Request'
 import { IoSchoolOutline } from 'react-icons/io5'
 import { MdOutlineManageAccounts } from 'react-icons/md'
 import Accountinformation from '../dashboard/AccountInformation'
+import SchoolInformation from '../dashboard/Schoolinformation'
 function SideNav() {
     const [addmember, setAddmember] = useState(false)
     const menuref = useRef();
     const menulistref = useRef();
     const path = usePathname();
-    const { nav, setnav, addmanually, setAddmanually, requestedpop, setRequestedpop, showAccInfo, setShowAccInfo } = useContext(UserContext)
+    const { nav, setnav, addmanually, setAddmanually, requestedpop, setRequestedpop, showAccInfo, setShowAccInfo , showsklinfo ,setShowSklInfo  } = useContext(UserContext)
     const [addorganisermanually, setaddorganisermanually] = useState(false)
     const anime = (variants) => {
         return {
@@ -81,7 +82,7 @@ function SideNav() {
     })
     const { data: session, loading } = useSession();
     return (
-        <motion.div animate={nav ? 'enter' : 'exit'} exit={"exit"} variants={navvarient} className='h-full flex z-[8] absolute left-0 justify-end bg-[--web-container]'>
+        <motion.div initial={'exit'} animate={nav ? 'enter' : 'exit'} exit={"exit"} variants={navvarient} className='h-full flex z-[8] absolute left-0 justify-end bg-[--web-container]'>
             <div className="flex min-w-[250px] h-full border-r border-gray-200/[.4]">
                 <div className="relative flex flex-col items-center w-full gap-4 px-2 py-2">
                     <button ref={menuref} onClick={() => setAddmember(!addmember)} className='flex items-center justify-center bg-white  text-gray-800 shadow-sm shadow-[--web-primary-color] py-2 rounded w-full'>
@@ -158,9 +159,18 @@ function SideNav() {
                             }
                         })
                     }
-                    <button className='text-md hover:bg-gray-200/[.5] flex items-center justify-start gap-2 px-4 text-gray-800 w-full py-2 text-center rounded'>
-                        <IoSchoolOutline className='text-xl' /><p>School Information</p>
-                    </button>
+                    {
+                        (session?.user?.role == "admin" || session?.user?.role == "teacher") && (
+                            <button onClick={()=>setShowSklInfo(true)} className='text-md hover:bg-gray-200/[.5] flex items-center justify-start gap-2 px-4 text-gray-800 w-full py-2 text-center rounded'>
+                                <IoSchoolOutline className='text-xl' /><p>School Information</p>
+                            </button>
+                        )
+                    }
+                    {
+                        showsklinfo && (
+                            <SchoolInformation />
+                        )
+                    }
                     <button onClick={() => { setShowAccInfo(true); setnav(false) }} className='text-md hover:bg-gray-200/[.5] flex items-center justify-start gap-2 px-4 text-gray-800 w-full py-2 text-center rounded'>
                         <MdOutlineManageAccounts className='text-xl' /><p>Account Information</p>
                     </button>

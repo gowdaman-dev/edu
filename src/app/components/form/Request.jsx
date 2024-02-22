@@ -98,6 +98,11 @@ const Requestform = () => {
     e.preventDefault();
     setError('')
     setSuccess('')
+    console.log(data);
+    if (data.userName == '' || data.email == '' || data.role == '' || data.comment == '' || data.grade == '' || data.schoolName == '') {
+      setError('Please fill all the fields')
+      return
+    }
     try {
       const response = await fetch('/api/memberRequest', {
         method: 'POST',
@@ -269,7 +274,6 @@ const handleKeyDown = useCallback((e) => {
                   type="text"
                   placeholder="Your Name"
                   onChange={e => setData({ ...data, userName: e.target.value })}
-                  required
                   className={regularClass}
                 />
                 <div className="relative ">
@@ -284,8 +288,7 @@ const handleKeyDown = useCallback((e) => {
                     onClick={toggleSchool}
                     value={schoolName}
                     onFocus={handleFocusSchool}
-                    onKeyDown={handleKeyDown}
-                    required
+
                   />
 
                   <AnimatePresence mode="wait">
@@ -295,8 +298,7 @@ const handleKeyDown = useCallback((e) => {
                         animate={{ y: 0, opacity: 1 }}
                         exit={{ y: 10, opacity: 0 }}
                         transition={{ duration: 0.5, type: "spring" }}
-                        className="absolute shadow-lg max-h-64 overflow-auto w-72 mt-2 z-40 pl-2 py-2  rounded-lg grid gap-2 bg-white round"
-                        ref={schoolDropRef}
+                        className="absolute shadow max-h-64 overflow-auto w-72 mt-2 z-40 pl-2 py-2  rounded-lg grid gap-2 bg-white round"
                       >
                         {" "}
                         {schoolname
@@ -331,7 +333,6 @@ const handleKeyDown = useCallback((e) => {
               </div>
               <div className="flex flex-col gap-10 w-72 ">
                 <input
-                  required
                   type="email"
                   placeholder="Your Email"
                   onChange={e => setData({ ...data, email: e.target.value })}
@@ -359,7 +360,7 @@ const handleKeyDown = useCallback((e) => {
                         animate={{ y: 0, opacity: 1 }}
                         exit={{ y: 10, opacity: 0 }}
                         transition={{ duration: 0.5, type: "spring" }}
-                        className="absolute shadow-lg max-h-64 overflow-auto w-72 mt-2 z-40 pl-2 py-2  rounded-lg grid gap-2 bg-white round "
+                        className="absolute border max-h-64 overflow-auto w-72 mt-2 z-40 pl-2 py-2  rounded-lg grid gap-2 bg-white round "
                       >
                         {" "}
                         <p
@@ -395,7 +396,7 @@ const handleKeyDown = useCallback((e) => {
               onBlur={() => { setIsGradeOpen(false) }}
               placeholder="Select Your Grade"
               className={gradeClass}
-              value={grade}
+              value={"Grade "+grade}
             />
 
             {" "}
@@ -407,14 +408,14 @@ const handleKeyDown = useCallback((e) => {
                   animate={{ y: 0, opacity: 1 }}
                   exit={{ y: 10, opacity: 0 }}
                   transition={{ duration: 0.5, type: "spring" }}
-                  className="absolute shadow-lg max-h-64 overflow-auto w-full z-40 pl-2 py-2 px-2  rounded-lg grid gap-2 top-[100%] bg-white round "
+                  className="absolute max-h-64 overflow-auto md:w-full w-72 z-40 pl-2 py-2 px-2 shadow-lg rounded-lg grid gap-2 top-[100%] bg-white round "
                 >
                   {" "}
                   {
                     grades.map(item => (
                       <p key={item} className="cursor-pointer py-1 w-full px-2 rounded-lg hover:bg-gray-100" onClick={() => {
                         handleGradeClick(item)
-                      }}>{item}</p>
+                      }}>Grade {item}</p>
                     ))
                   }
                 </motion.div>
