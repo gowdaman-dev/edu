@@ -305,7 +305,7 @@ const Requestform = () => {
                     onFocus={() => { setIsRoleOpen(true) }}
                     onBlur={() => { setIsRoleOpen(false) }}
                     readOnly
-                    onChange={()=>setData({ ...data, role: role})}
+               
                     onClick={toggleRole}
                   />
                   {" "}
@@ -352,9 +352,10 @@ const Requestform = () => {
               onFocus={() => { setIsGradeOpen(true) }}
               onBlur={() => { setIsGradeOpen(false) }}
               placeholder="Select Your Grade"
-              onChange={()=>setData({...data, grade:role})}
+
               className={gradeClass}
               value={"Grade "+grade}
+              readOnly
             />
 
             {" "}
