@@ -243,28 +243,28 @@ function SuperAdminMember() {
   const [outSchoolName, setOutSchoolName] = useState('')
   const [isSchoolOpen, setIsSchoolOpen] = useState(false);
   const [isNotValid, setIsNotValid] = useState(false);
- /*  const [check, setCheck] = useState('') */
+  /*  const [check, setCheck] = useState('') */
 
 
-/*   useEffect(() => {
-    const validate = () => {
-            props.handleSchool(schoolName);
-       
-      const optionExist = inSchoolName.find(
-        (item) => (
-          item.inSchoolName?.toLowerCase() == outSchoolName.toLowerCase().trim()
+  /*   useEffect(() => {
+      const validate = () => {
+              props.handleSchool(schoolName);
          
-      ));
-      optionExist || outSchoolName == ""
-        ? setIsNotValid(false)
-        : setIsNotValid(true);
-    };
-    validate();
-
-
-  }, [check]);
-
-  */
+        const optionExist = inSchoolName.find(
+          (item) => (
+            item.inSchoolName?.toLowerCase() == outSchoolName.toLowerCase().trim()
+           
+        ));
+        optionExist || outSchoolName == ""
+          ? setIsNotValid(false)
+          : setIsNotValid(true);
+      };
+      validate();
+  
+  
+    }, [check]);
+  
+    */
 
   const toggleSchool = () => {
     setIsSchoolOpen(true);
@@ -294,10 +294,10 @@ function SuperAdminMember() {
   const handleFocusSchool = () => {
     setIsSchoolOpen(true);
   }
-const handleEdit = () => {
-  setUsereditable(!usereditable)
-  setOutSchoolName(selectedrecord.school)
-}
+  const handleEdit = () => {
+    setUsereditable(!usereditable)
+    setOutSchoolName(selectedrecord.school)
+  }
   return (
     <div className='md:w-full w-screen'>
       <AnimatePresence mode='wait'>
@@ -332,7 +332,7 @@ const handleEdit = () => {
                     {
                       usereditable ? (
                         <div className='w-[80%] relative'>
-                          <input type="text" value={outSchoolName}   placeholder='school' id='school' name='school' onClick={toggleSchool} onBlur={handleBlurSchool} onFocus={handleFocusSchool} onChange={handleChangeSchool} className='capitalize bg-gray-200 w-full  rounded-lg px-2 py-1' />
+                          <input type="text" value={outSchoolName} placeholder='school' id='school' name='school' onClick={toggleSchool} onBlur={handleBlurSchool} onFocus={handleFocusSchool} onChange={handleChangeSchool} className='capitalize bg-gray-200 w-full  rounded-lg px-2 py-1' />
 
                           <AnimatePresence mode="wait">
                             {isSchoolOpen && (
