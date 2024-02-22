@@ -1,5 +1,5 @@
 'use client'
-import React, { useContext, useEffect, useState,useRef } from 'react'
+import React, { useContext, useEffect, useState, useRef } from 'react'
 import { UserContext } from '@/ContextUser'
 import DataTable, { createTheme } from 'react-data-table-component';
 import { json2csv } from 'json-2-csv';
@@ -168,7 +168,7 @@ function SuperAdminMember() {
       setdeleteuser(false)
     }
   }
-  const [ schoolfilterdata , setSchoolFilterData] = useState({})
+  const [schoolfilterdata, setSchoolFilterData] = useState({})
   const [memberdata, setMemberdata] = useState();
   useEffect(() => {
     setMemberdata(undefined)
@@ -187,15 +187,15 @@ function SuperAdminMember() {
   const [roleFilterToggle, setRoleFilterToggle] = useState(false)
   const [filterdata, setFilterdata] = useState(memberdata)
   const rolejson = ['admin', 'teacher', 'student']
-  useEffect(()=>{
+  useEffect(() => {
     fetch('/api/schoolList', {
       method: "PUT",
       headers: {
         "Content-Type": 'application/json'
       },
       cache: 'no-store', next: { revalidate: 0 }
-    }).then((data)=>data.json()).then((values)=>setSchoolFilterData(values)).catch((err)=>console.log("fetching data"))
-  },[schoolfilter , schoolfiltertoggle])
+    }).then((data) => data.json()).then((values) => setSchoolFilterData(values)).catch((err) => console.log("fetching data"))
+  }, [schoolfilter, schoolfiltertoggle])
   useEffect(() => {
     let filter = async () => {
       try {
@@ -223,12 +223,12 @@ function SuperAdminMember() {
     }
     filter()
     console.log(filterdata);
-  }, [navSearch, roleFilter, schoolfilter , schoolfiltertoggle])
- 
+  }, [navSearch, roleFilter, schoolfilter, schoolfiltertoggle])
+
   const [inSchoolName, setInSchoolName] = useState([]);
 
- 
-  
+
+
   useEffect(() => {
     fetch("/api/schoolList", {
       method: "PUT",
@@ -241,7 +241,7 @@ function SuperAdminMember() {
   }, []);
 
 
-  const [outSchoolName,setOutSchoolName] = useState('')
+  const [outSchoolName, setOutSchoolName] = useState('')
   const [isSchoolOpen, setIsSchoolOpen] = useState(false);
   const [isNotValid, setIsNotValid] = useState(false);
   const [check, setCheck] = useState('')
@@ -268,10 +268,10 @@ function SuperAdminMember() {
   }, [check]);
 
 
-  
+
   const toggleSchool = () => {
     setIsSchoolOpen(true);
-    
+
   };
 
   const handleChangeSchool = (e) => {
@@ -297,7 +297,7 @@ function SuperAdminMember() {
   const handleFocusSchool = () => {
     setIsSchoolOpen(true);
   }
- 
+
   return (
     <div className='md:w-full w-screen'>
       <AnimatePresence mode='wait'>
@@ -316,7 +316,7 @@ function SuperAdminMember() {
                     {
                       usereditable ?
                         <input type="text" placeholder='name' id='name' name='name' className='bg-gray-200 rounded-lg px-2 py-1 w-[80%]' /> :
-                        <input type="text" placeholder='name' id='name' name='name' value={selectedrecord.name} disabled={!usereditable} className='w-[80%] rounded-lg px-2 py-1 w-[80%]' />
+                        <input type="text" placeholder='name' id='name' name='name' defaultValue={selectedrecord.name} disabled={!usereditable} className=' rounded-lg px-2 py-1 w-[80%]' />
                     }
                   </div>
                   <div className="flex w-full justify-between">
@@ -324,7 +324,7 @@ function SuperAdminMember() {
                     {
                       usereditable ?
                         <input type="email" placeholder='email' id='email' name="email" className='bg-gray-200 rounded-lg px-2 py-1 w-[80%]' /> :
-                        <input type="email" placeholder='email' id='email' name="email" value={selectedrecord.email} disabled={!usereditable} className=' rounded-lg px-2 py-1 w-[80%]' />
+                        <input type="email" placeholder='email' id='email' name="email" defaultValue={selectedrecord.email} disabled={!usereditable} className=' rounded-lg px-2 py-1 w-[80%]' />
                     }
                   </div>
                   <div className="flex w-full justify-between">
@@ -332,48 +332,48 @@ function SuperAdminMember() {
                     {
                       usereditable ? (
                         <div className='w-[80%] relative'>
-                        <input type="text" value={outSchoolName} placeholder='school' id='school' name='school' onClick={toggleSchool} onBlur={handleBlurSchool} onFocus={handleFocusSchool} onChange={handleChangeSchool} className='capitalize bg-gray-200 w-full  rounded-lg px-2 py-1' /> 
-                       
-                        <AnimatePresence mode="wait">
-                    {isSchoolOpen && (
-                      <motion.div
-                        initial={{ y: 10, opacity: 0.6 }}
-                        animate={{ y: 0, opacity: 1 }}
-                        exit={{ y: 10, opacity: 0 }}
-                        transition={{ duration: 0.5, type: "spring" }}
-                        className="absolute shadow max-h-64 overflow-auto w-full mt-2 z-40 pl-2 py-2 px-2 rounded-lg grid gap-2 bg-white round"
-                      >
-                        {" "}
-                        {inSchoolName
-                          // filter the data according to input
-                          .filter((data) => {
-                            return outSchoolName === ""
-                              ? true
-                              : data.schoolname.toLowerCase().trim().includes(outSchoolName.toLowerCase().trim());
-                          })
-                          .map((option,index) => {
-                            return (
-                              <p
-                              className="capitalize cursor-pointer p-1 w-full rounded-lg hover:bg-gray-100"
+                          <input type="text" value={outSchoolName} placeholder='school' id='school' name='school' onClick={toggleSchool} onBlur={handleBlurSchool} onFocus={handleFocusSchool} onChange={handleChangeSchool} className='capitalize bg-gray-200 w-full  rounded-lg px-2 py-1' />
 
-
-                                onClick={() => {
-                                  handleClickSchool(option.schoolname);
-                                }}
-                                key={option.schoolname}
+                          <AnimatePresence mode="wait">
+                            {isSchoolOpen && (
+                              <motion.div
+                                initial={{ y: 10, opacity: 0.6 }}
+                                animate={{ y: 0, opacity: 1 }}
+                                exit={{ y: 10, opacity: 0 }}
+                                transition={{ duration: 0.5, type: "spring" }}
+                                className="absolute shadow max-h-64 overflow-auto w-full mt-2 z-40 pl-2 py-2 px-2 rounded-lg grid gap-2 bg-white round"
                               >
                                 {" "}
-                                {option.schoolname}
-                              </p>
-                            );
-                          })}
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                       
+                                {inSchoolName
+                                  // filter the data according to input
+                                  .filter((data) => {
+                                    return outSchoolName === ""
+                                      ? true
+                                      : data.schoolname.toLowerCase().trim().includes(outSchoolName.toLowerCase().trim());
+                                  })
+                                  .map((option, index) => {
+                                    return (
+                                      <p
+                                        className="capitalize cursor-pointer p-1 w-full rounded-lg hover:bg-gray-100"
+
+
+                                        onClick={() => {
+                                          handleClickSchool(option.schoolname);
+                                        }}
+                                        key={option.schoolname}
+                                      >
+                                        {" "}
+                                        {option.schoolname}
+                                      </p>
+                                    );
+                                  })}
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+
                         </div>
-                       ) :
-                        <input type="text" placeholder='school' id='school' name='school' value={selectedrecord.school} disabled={!usereditable} className='w-[80%] rounded-lg px-2 py-1 w-[80%]' />
+                      ) :
+                        <input type="text" placeholder='school' id='school' name='school' defaultValue={selectedrecord.school} disabled={!usereditable} className='w-[80%] rounded-lg px-2 py-1 w-[80%]' />
                     }
                   </div>
                   {
@@ -447,17 +447,17 @@ function SuperAdminMember() {
                     </button>
                   )
                 }
-                  {
-                    schoolfiltertoggle && (
-                      <div className="absolute right-0 top-full z-[8] mt-2 min-w-[180px] flex flex-col px-2 py-2 bg-white rounded-lg border">
-                        {
-                          schoolfilterdata.map((item) => {
-                            return <button key={item._id} onClick={() => { setSchoolFilter(item.schoolname);setSchoolFilterToggle(false);}} className='text-sm text-gray-800 rounded-lg py-1 px-2 text-left px-2 hover:bg-gray-100'>{item.schoolname}</button>
-                          })
-                        }
-                      </div>
-                    )
-                  }
+                {
+                  schoolfiltertoggle && (
+                    <div className="absolute right-0 top-full z-[8] mt-2 min-w-[180px] flex flex-col px-2 py-2 bg-white rounded-lg border">
+                      {
+                        schoolfilterdata.map((item) => {
+                          return <button key={item._id} onClick={() => { setSchoolFilter(item.schoolname); setSchoolFilterToggle(false); }} className='text-sm text-gray-800 rounded-lg py-1 px-2 text-left px-2 hover:bg-gray-100'>{item.schoolname}</button>
+                        })
+                      }
+                    </div>
+                  )
+                }
               </div>
             </div>
             <div className="flex items-center justify-center">
@@ -535,5 +535,5 @@ const Pulsecomponent = () => {
       <div className="row px-2 py-5 bg-gray-200 w-full rounded-lg"></div>
       <div className="row px-2 py-5 bg-gray-200 w-full rounded-lg"></div>
     </div>
-  )
+  );
 }
