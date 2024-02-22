@@ -140,6 +140,7 @@ function SuperAdminMember() {
     const formdata = new FormData(e.target)
     await formdata.append('id', selectedrecord.id)
     await formdata.append('oldschool', selectedrecord.school)
+    await formdata.append('role', selectedrecord.role)
     const res = await fetch('/api/register', {
       method: 'PUT',
       body: formdata

@@ -25,12 +25,17 @@ export async function PUT(req) {
     const email = await data.get('email')
     const school = await data.get('school')
     const oldschool = await data.get('oldschool')
+    const role = await data.get('role')
     console.log(id, name, email, school, oldschool)
     await connectMongoBD();
-    await User.updateMany({ school: oldschool }, { school: email });
-    await School.updateMany({ schoolname: oldschool }, { schoolname: school });
+    if(role == 'admin') {
+      await User.updateMany({ school: oldschool }, { school: school });
+      await School.updateMany({ schoolname: oldschool }, { schoolname: school });
+      return NextResponse.json({ message: "transmition complete" }, { status: 200 });
+    }
     await User.findByIdAndUpdate(id, { name, email, school });
     return NextResponse.json({ message: "transmition complete" }, { status: 200 });
+
   } catch (error) {
     console.log(error);
     return NextResponse.json(

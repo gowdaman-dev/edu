@@ -122,7 +122,7 @@ function page() {
                   ? "bg-[--web-primary-color] text-gray-800 border-none hover:bg-[--web-primary-color]"
                   : "border border-white"
                 } px-4 tracking-widest rounded-xl hover:text-[--web-primary-color] hover:bg-white transition-color duration-500 ease-in-out text-white`}
-              href={"/dasboard"}
+              href={"/dashboard"}
             >
               Dashboard
             </Link>
