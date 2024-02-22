@@ -25,7 +25,7 @@ const Requestform = () => {
     setError('')
     setSuccess('')
     e.preventDefault();
-    if (data.name === '' || data.schoolname === '' || data.email === '' || data.role === '' || data.description === '') {
+    if (formData.name === '' || formData.schoolname === '' || formData.email === '' || formData.role === '' || formData.description === '') {
       setError('Please fill all the fields')
       return
     }

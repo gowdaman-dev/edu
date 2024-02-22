@@ -1,9 +1,11 @@
 import User from "../../models/user";
 import OrganizerRequest from "../../models/OrganizerRequest";
 import { NextResponse } from "next/server";
+import { connectMongoBD } from "@/app/lib/mongodb";
 
 export async function POST(req) {
     const { name, email, schoolname, role, description } = await req.json();
+    await connectMongoBD()
     try {
         const user = await User.findOne({ email });
         const existingEmailRequest = await OrganizerRequest.findOne({ email });
@@ -28,4 +30,15 @@ export async function POST(req) {
         return NextResponse.json({ message: "Internal server error" }, { status: 500 });
     }
     return NextResponse.json({ message: "Internal server error" }, { status: 500 });
+}
+
+export async function PUT() {
+    try {
+        await connectMongoBD();
+        const allOrganizerRequests = await OrganizerRequest.find()
+        return NextResponse.json(allOrganizerRequests, { status: 200 });
+    } catch (error) {
+        console.log(error);
+        return NextResponse.json({}, { status: 500 });
+    }
 }
