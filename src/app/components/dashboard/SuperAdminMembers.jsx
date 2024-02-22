@@ -1,5 +1,5 @@
 'use client'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState,useRef } from 'react'
 import { UserContext } from '@/ContextUser'
 import DataTable, { createTheme } from 'react-data-table-component';
 import { json2csv } from 'json-2-csv';
@@ -224,6 +224,75 @@ function SuperAdminMember() {
     filter()
     console.log(filterdata);
   }, [navSearch, roleFilter, schoolfilter , schoolfiltertoggle])
+ 
+  const [inSchoolName, setInSchoolName] = useState([]);
+
+  useEffect(() => {
+    fetch("/api/schoollist", {
+      method: "put",
+      headers: {
+        "content-type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => setInSchoolName(data));
+  }, []);
+  const [outSchoolName,setOutSchoolName] = useState('')
+  const [isSchoolOpen, setIsSchoolOpen] = useState(false);
+  const [isNotValid, setIsNotValid] = useState(false);
+  const [check, setCheck] = useState('')
+  const dropdownRef = useRef();
+
+  useEffect(() => {
+    const validate = () => {
+      /*       props.handleSchool(schoolName);
+       */
+      const optionExist = inSchoolName.find(
+        (item) => {
+          const val = item.schoolname.toLowerCase()
+          const bool = val == schoolName.toLowerCase().trim()
+          return bool
+        });
+      optionExist || outSchoolName == ""
+        ? setIsNotValid(false)
+        : setIsNotValid(true);
+    };
+    validate();
+
+    console.log(outSchoolName);
+
+  }, [check]);
+
+
+  
+  const toggleSchool = () => {
+    setIsSchoolOpen(true);
+  };
+
+  const handleChangeSchool = (e) => {
+    const value = e.target.value;
+    setIsSchoolOpen(true)
+    setOutSchoolName(value)
+  };
+
+  const handleBlurSchool = (e) => {
+    const value = e.target.value;
+    setIsSchoolOpen(false)
+    setOutSchoolName(value)
+    setCheck(value)
+  };
+
+  const handleClickSchool = (value) => {
+    setOutSchoolName(value)
+
+    setIsNotValid(false);
+    setIsSchoolOpen(false);
+  };
+
+  const handleFocusSchool = () => {
+    setIsSchoolOpen(true);
+  }
+ 
   return (
     <div className='md:w-full w-screen'>
       <AnimatePresence mode='wait'>
@@ -250,14 +319,57 @@ function SuperAdminMember() {
                     {
                       usereditable ?
                         <input type="email" placeholder='email' id='email' name="email" className='bg-gray-200 rounded-lg px-2 py-1 w-[80%]' /> :
-                        <input type="eamil" placeholder='email' id='email' name="email" value={selectedrecord.email} disabled={!usereditable} className='w-[80%] rounded-lg px-2 py-1 w-[80%]' />
+                        <input type="email" placeholder='email' id='email' name="email" value={selectedrecord.email} disabled={!usereditable} className='w-[80%] rounded-lg px-2 py-1 w-[80%]' />
                     }
                   </div>
                   <div className="flex w-full justify-between">
                     <label htmlFor="school">school</label>
                     {
-                      usereditable ?
-                        <input type="text" placeholder='school' id='school' name='school' className='bg-gray-200 rounded-lg px-2 py-1 w-[80%]' /> :
+                      usereditable ? (
+                        <div>
+                        <input type="text" value={outSchoolName} placeholder='school' id='school' name='school' onClick={toggleSchool} onBlur={handleBlurSchool} onFocus={handleBlurSchool} onChange={handleChangeSchool} className='bg-gray-200 rounded-lg px-2 py-1 w-[80%]' /> 
+                       
+                        <AnimatePresence mode="wait">
+                    {isSchoolOpen && (
+                      <motion.div
+                        initial={{ y: 10, opacity: 0.6 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        exit={{ y: 10, opacity: 0 }}
+                        transition={{ duration: 0.5, type: "spring" }}
+                        className="absolute shadow max-h-64 overflow-auto w-72 mt-2 z-40 pl-2 py-2  rounded-lg grid gap-2 bg-white round"
+                      >
+                        {" "}
+                        {inSchoolName
+                          // filter the data according to input
+                          .filter((data) => {
+                            return schoolName === ""
+                              ? true
+                              : data.schoolname.toLowerCase().trim().includes(schoolName.toLowerCase().trim());
+                          })
+                          .map((option,index) => {
+                            return (
+                              <p
+                              className={`capitalize cursor-pointer p-1 w-[273px] rounded-lg hover:bg-gray-100 ${
+                                index === focusedIndex ? 'bg-gray-100' : ''
+                              }`}
+
+
+                                onClick={() => {
+                                  handleClickSchool(option.schoolname);
+                                }}
+                                key={option.schoolname}
+                              >
+                                {" "}
+                                {option.schoolname}
+                              </p>
+                            );
+                          })}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                       
+                        </div>
+                       ) :
                         <input type="text" placeholder='school' id='school' name='school' value={selectedrecord.school} disabled={!usereditable} className='w-[80%] rounded-lg px-2 py-1 w-[80%]' />
                     }
                   </div>

@@ -5,31 +5,24 @@ import React, { useState, useRef, useEffect,useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { webName } from "../globalDetails";
-import { grades } from "./data";
+import { grades } from "./grade";
 import { AnimatePresence, motion } from "framer-motion";
 
 const Requestform = () => {
-  //  const [schoolname, setSchoolname] = useState([]);
+    const [schoolname, setschoolname] = useState([]);
 
-  // useEffect(() => {
-  //   fetch("/api/schoolList", {
-  //     method: "PUT",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //   })
-  //     .then((response) => response.json())
-  //     .then((data) => setSchoolname(data));
-  // }, []);
+   useEffect(() => {
+     fetch("/api/schoollist", {
+       method: "put",
+       headers: {
+         "content-type": "application/json",
+       },
+     })
+       .then((response) => response.json())
+       .then((data) => setschoolname(data));
+   }, []);
 
-  const schoolname = [
-    {
-      schoolname : "Acet",
-    },
-    {
-      schoolname : "Achariya"
-    }
-  ]
+  
   
   
   
@@ -167,46 +160,10 @@ const Requestform = () => {
     setIsSchoolOpen(true);
   }
 
- const [focusedIndex,setFocusedIndex] = useState(-1);
- const schoolDropRef = useRef(null)
-
-useEffect(()=>{
-  if (isSchoolOpen) {
-    setFocusedIndex(0)
-    schoolDropRef.current.children[0]?.focus();
-  }
-},[isSchoolOpen])
 
 
 
 
-const handleKeyDown = useCallback((e) => {
-  if (isSchoolOpen) {
-    if (e.key === 'ArrowDown') {
-      e.preventDefault(); 
-      const nextIndex =
-        focusedIndex < schoolDropRef.current.children.length - 1 ? focusedIndex + 1 : 0;
-      setFocusedIndex(nextIndex);
-    }
-    else if (e.key == 'ArrowUp') {
-      e.preventDefault();
-      const previousIndex = focusedIndex == 0 ? schoolDropRef.current.children.length - 1 : focusedIndex-1;
-      setFocusedIndex(previousIndex);
-    }
-    else if (e.key === 'Enter') {
-      e.preventDefault(); 
-      if (focusedIndex !== -1) {
-  
-        const selectedSchool =
-          schoolname[focusedIndex] && schoolname[focusedIndex].schoolname;
-        if (selectedSchool) {
-          setData({...data,schoolName: selectedSchool});
-          setIsSchoolOpen(false);
-        }
-      }
-    }
-  }
-}, [isSchoolOpen, focusedIndex]);
 
 
 
