@@ -9,19 +9,20 @@ import { grades } from "./grade";
 import { AnimatePresence, motion } from "framer-motion";
 
 const Requestform = () => {
-    const [schoolname, setschoolname] = useState([]);
-
-   useEffect(() => {
-     fetch("/api/schoollist", {
-       method: "put",
-       headers: {
-         "content-type": "application/json",
-       },
-     })
-       .then((response) => response.json())
-       .then((data) => setschoolname(data));
-   }, []);
-
+  
+    const [schoolname, setSchoolname] = useState([]);
+  
+    useEffect(() => {
+      fetch("/api/schoolList", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => setSchoolname(data));
+    }, []);
+  
   
   
   

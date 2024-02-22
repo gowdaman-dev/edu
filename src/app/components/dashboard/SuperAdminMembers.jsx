@@ -237,11 +237,13 @@ function SuperAdminMember() {
       .then((response) => response.json())
       .then((data) => setInSchoolName(data));
   }, []);
+
+
   const [outSchoolName,setOutSchoolName] = useState('')
   const [isSchoolOpen, setIsSchoolOpen] = useState(false);
   const [isNotValid, setIsNotValid] = useState(false);
   const [check, setCheck] = useState('')
-  const dropdownRef = useRef();
+  // const dropdownRef = useRef();
 
   useEffect(() => {
     const validate = () => {
@@ -250,7 +252,7 @@ function SuperAdminMember() {
       const optionExist = inSchoolName.find(
         (item) => {
           const val = item.schoolname.toLowerCase()
-          const bool = val == schoolName.toLowerCase().trim()
+          const bool = val == outSchoolName.toLowerCase().trim()
           return bool
         });
       optionExist || outSchoolName == ""
@@ -267,6 +269,7 @@ function SuperAdminMember() {
   
   const toggleSchool = () => {
     setIsSchoolOpen(true);
+    console.log(inSchoolName);
   };
 
   const handleChangeSchool = (e) => {
