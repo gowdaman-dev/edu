@@ -193,9 +193,9 @@ function UserProvider() {
             body: JSON.stringify({ role: selecteddetailpop.role, school: selecteddetailpop.school, id: selecteddetailpop.id })
         }).then((data) => {
             if (data.ok) {
-                setRemoveanime(FaSlideshare)
-                setCount(count + 1)
                 setRemoveConformer(false)
+                setRemoveanime(false)
+                setCount(count + 1)
             }
         })
     }

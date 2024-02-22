@@ -10,17 +10,18 @@ import { UserContext } from '@/ContextUser'
 import ManualAdder from '../adduser/ManualAdder'
 import OrganiserManualAdder from '../adduser/OrganiserManualAdder'
 import { signOut, useSession } from 'next-auth/react'
-import Requestform from './Request'
 import { IoSchoolOutline } from 'react-icons/io5'
 import { MdOutlineManageAccounts } from 'react-icons/md'
 import Accountinformation from '../dashboard/AccountInformation'
 import SchoolInformation from '../dashboard/Schoolinformation'
+import MemberRequestPage from '../dashboard/MemberRequestCom'
 function SideNav() {
     const [addmember, setAddmember] = useState(false)
     const menuref = useRef();
     const menulistref = useRef();
     const path = usePathname();
-    const { nav, setnav, addmanually, setAddmanually, requestedpop, setRequestedpop, showAccInfo, setShowAccInfo , showsklinfo ,setShowSklInfo  } = useContext(UserContext)
+    const { nav, setnav, addmanually, setAddmanually, requestedpop, setRequestedpop, showAccInfo, setShowAccInfo, showsklinfo, setShowSklInfo, showRequest,
+        setShowRequest, } = useContext(UserContext)
     const [addorganisermanually, setaddorganisermanually] = useState(false)
     const anime = (variants) => {
         return {
@@ -100,10 +101,10 @@ function SideNav() {
                                                 session?.user?.role == "superadmin" ? addmanually && (<OrganiserManualAdder close={setAddmanually} />) : addmanually && (<ManualAdder close={setAddmanually} />)
                                             }
                                         </AnimatePresence>
-                                        <button onClick={() => setRequestedpop(true)}>Request</button>
+                                        <button onClick={() => setShowRequest(true)}>Request</button>
                                         <AnimatePresence mode='wait'>
                                             {
-                                                requestedpop && (<Requestform close={setRequestedpop} />)
+                                                showRequest && (<MemberRequestPage close={setRequestedpop} />)
                                             }
                                         </AnimatePresence>
 
@@ -161,7 +162,7 @@ function SideNav() {
                     }
                     {
                         (session?.user?.role == "admin" || session?.user?.role == "teacher") && (
-                            <button onClick={()=>setShowSklInfo(true)} className='text-md hover:bg-gray-200/[.5] flex items-center justify-start gap-2 px-4 text-gray-800 w-full py-2 text-center rounded'>
+                            <button onClick={() => setShowSklInfo(true)} className='text-md hover:bg-gray-200/[.5] flex items-center justify-start gap-2 px-4 text-gray-800 w-full py-2 text-center rounded'>
                                 <IoSchoolOutline className='text-xl' /><p>School Information</p>
                             </button>
                         )
