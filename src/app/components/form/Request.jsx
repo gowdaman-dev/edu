@@ -5,7 +5,7 @@ import React, { useState, useRef, useEffect,useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { webName } from "../globalDetails";
-import { grades, roles } from "./grade";
+import { grades, roles } from "./data";
 import { AnimatePresence, motion } from "framer-motion";
 
 const Requestform = () => {
@@ -324,23 +324,13 @@ const Requestform = () => {
                         className="absolute border max-h-64 overflow-auto w-72 mt-2 z-40 pl-2 py-2 shadow-lg rounded-lg grid gap-2 bg-white round "
                       >
                         {" "}
-                        <p
-                          className={dropdownClass}
-                          onClick={() => {
-
-                            handleRoleClick("Student");
-                          }}
-                        >
-                          Student
-                        </p>
-                        <p
-                          className={dropdownClass}
-                          onClick={() => {
-                            handleRoleClick("Teacher");
-                          }}
-                        >
-                          Teacher
-                        </p>
+                        {
+                    roles.map(item => (
+                      <p key={item} className="cursor-pointer capitalize py-1 w-full px-2 rounded-lg hover:bg-gray-100" onClick={() => {
+                        handleRoleClick(item)
+                      }}> {item}</p>
+                    ))
+                  }
                       </motion.div>
                     )}
                   </AnimatePresence>
