@@ -269,9 +269,7 @@ const Requestform = () => {
                           .map((option,index) => {
                             return (
                               <p
-                              className={`capitalize cursor-pointer p-1 w-[273px] rounded-lg hover:bg-gray-100 ${
-                                index === focusedIndex ? 'bg-gray-100' : ''
-                              }`}
+                              className="capitalize cursor-pointer p-1 w-[273px] rounded-lg hover:bg-gray-100"
 
 
                                 onClick={() => {

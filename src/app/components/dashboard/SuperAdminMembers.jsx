@@ -227,11 +227,13 @@ function SuperAdminMember() {
  
   const [inSchoolName, setInSchoolName] = useState([]);
 
+ 
+  
   useEffect(() => {
-    fetch("/api/schoollist", {
-      method: "put",
+    fetch("/api/schoolList", {
+      method: "PUT",
       headers: {
-        "content-type": "application/json",
+        "Content-Type": "application/json",
       },
     })
       .then((response) => response.json())
@@ -251,7 +253,7 @@ function SuperAdminMember() {
        */
       const optionExist = inSchoolName.find(
         (item) => {
-          const val = item.schoolname.toLowerCase()
+          const val = item.inSchoolName.toLowerCase()
           const bool = val == outSchoolName.toLowerCase().trim()
           return bool
         });
@@ -269,7 +271,7 @@ function SuperAdminMember() {
   
   const toggleSchool = () => {
     setIsSchoolOpen(true);
-    console.log(inSchoolName);
+    
   };
 
   const handleChangeSchool = (e) => {
@@ -322,15 +324,15 @@ function SuperAdminMember() {
                     {
                       usereditable ?
                         <input type="email" placeholder='email' id='email' name="email" className='bg-gray-200 rounded-lg px-2 py-1 w-[80%]' /> :
-                        <input type="email" placeholder='email' id='email' name="email" value={selectedrecord.email} disabled={!usereditable} className='w-[80%] rounded-lg px-2 py-1 w-[80%]' />
+                        <input type="email" placeholder='email' id='email' name="email" value={selectedrecord.email} disabled={!usereditable} className=' rounded-lg px-2 py-1 w-[80%]' />
                     }
                   </div>
                   <div className="flex w-full justify-between">
                     <label htmlFor="school">school</label>
                     {
                       usereditable ? (
-                        <div>
-                        <input type="text" value={outSchoolName} placeholder='school' id='school' name='school' onClick={toggleSchool} onBlur={handleBlurSchool} onFocus={handleBlurSchool} onChange={handleChangeSchool} className='bg-gray-200 rounded-lg px-2 py-1 w-[80%]' /> 
+                        <div className='w-[80%] relative'>
+                        <input type="text" value={outSchoolName} placeholder='school' id='school' name='school' onClick={toggleSchool} onBlur={handleBlurSchool} onFocus={handleFocusSchool} onChange={handleChangeSchool} className='capitalize bg-gray-200 w-full  rounded-lg px-2 py-1' /> 
                        
                         <AnimatePresence mode="wait">
                     {isSchoolOpen && (
@@ -339,22 +341,20 @@ function SuperAdminMember() {
                         animate={{ y: 0, opacity: 1 }}
                         exit={{ y: 10, opacity: 0 }}
                         transition={{ duration: 0.5, type: "spring" }}
-                        className="absolute shadow max-h-64 overflow-auto w-72 mt-2 z-40 pl-2 py-2  rounded-lg grid gap-2 bg-white round"
+                        className="absolute shadow max-h-64 overflow-auto w-full mt-2 z-40 pl-2 py-2 px-2 rounded-lg grid gap-2 bg-white round"
                       >
                         {" "}
                         {inSchoolName
                           // filter the data according to input
                           .filter((data) => {
-                            return schoolName === ""
+                            return outSchoolName === ""
                               ? true
-                              : data.schoolname.toLowerCase().trim().includes(schoolName.toLowerCase().trim());
+                              : data.schoolname.toLowerCase().trim().includes(outSchoolName.toLowerCase().trim());
                           })
                           .map((option,index) => {
                             return (
                               <p
-                              className={`capitalize cursor-pointer p-1 w-[273px] rounded-lg hover:bg-gray-100 ${
-                                index === focusedIndex ? 'bg-gray-100' : ''
-                              }`}
+                              className="capitalize cursor-pointer p-1 w-full rounded-lg hover:bg-gray-100"
 
 
                                 onClick={() => {
