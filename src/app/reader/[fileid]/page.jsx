@@ -1,6 +1,6 @@
-import Navbar from '../components/readercomp/Navbar'
-import HeadBar from '../components/readercomp/HeadBar'
-import Main  from '../components/readercomp/Main'
+import Navbar from '../../components/readercomp/Navbar'
+import HeadBar from '../../components/readercomp/HeadBar'
+import Main  from '../../components/readercomp/Main'
 function Page () {
  
   return (

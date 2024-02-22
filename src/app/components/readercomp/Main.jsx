@@ -1,6 +1,5 @@
 "use client"
-import Main2 from './Main2'
-
+import PdfViewer from "./Renderpdf"
 function Main() {
    
 
@@ -8,7 +7,7 @@ function Main() {
   return (
     <div className='w-[80%]  flex '>
 
-    <Main2/>
+    <PdfViewer/>
     </div>
 
   )

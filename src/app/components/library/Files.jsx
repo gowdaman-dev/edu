@@ -118,8 +118,8 @@ function Files() {
 const threeDotParent=e.target.classList.contains("three_dot")
 const threeDotSvg=e.target.parentElement.classList.contains("three_dot")
     if((!threeDotParent && !threeDotSvg) && pop_DEl_Rename===null){
-      setUrl(URL)
-      router.push("/reader")
+     
+      router.push("/reader/"+URL)
     }
 
   }
@@ -128,7 +128,7 @@ const threeDotSvg=e.target.parentElement.classList.contains("three_dot")
       let name = item.fname
       let size = item.fsize
       let id = item.fid
-      const URL=item.furl
+      const URLID=id
       //work done on items
       //for file name
       let trimName = item.fname
@@ -144,7 +144,7 @@ const threeDotSvg=e.target.parentElement.classList.contains("three_dot")
           : Math.floor(size) + ' KB/s'
 
       return (
-        <div onClick={(e)=>pdfClick(e,URL)}
+        <div onClick={(e)=>pdfClick(e,URLID)}
           key={'file' + index}
           className='grid grid-flow-col grid-rows-3   grid-cols-8 cursor-pointer  text-balance  border-b-[1px]  text-gray-500 w-full border-gray-200 relative md:text-xl sm:text-md text-sm py-3'
         >
