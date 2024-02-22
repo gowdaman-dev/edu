@@ -138,9 +138,9 @@ function SuperAdminMember() {
     setupdatinguser(true);
     e.preventDefault();
     const formdata = new FormData(e.target)
-    await formdata.append('id', selectedrecord.id)
-    await formdata.append('oldschool', selectedrecord.school)
-    await formdata.append('role', selectedrecord.role)
+    formdata.append('id', selectedrecord.id)
+    formdata.append('oldschool', selectedrecord.school)
+    formdata.append('role', selectedrecord.role)
     const res = await fetch('/api/register', {
       method: 'PUT',
       body: formdata
@@ -316,16 +316,16 @@ function SuperAdminMember() {
                     <label htmlFor="name">Name</label>
                     {
                       usereditable ?
-                        <input type="text" placeholder='name' id='name' name='name' className='bg-gray-200 rounded-lg px-2 py-1 w-[80%]' /> :
-                        <input type="text" placeholder='name' id='name' name='name' value={selectedrecord.name} disabled={!usereditable} className=' rounded-lg px-2 py-1 w-[80%]' />
+                        <input type="text" placeholder='name' id='name' defaultValue={selectedrecord.name} name='name' className='bg-gray-200 rounded-lg px-2 py-1 w-[80%]' /> :
+                        <p className='bg-gray-50 rounded-lg px-2 py-1 w-[80%]' > {selectedrecord.name} </p>
                     }
                   </div>
                   <div className="flex w-full justify-between">
                     <label htmlFor="email">Email</label>
                     {
                       usereditable ?
-                        <input type="email" placeholder='email' id='email' name="email" className='bg-gray-200 rounded-lg px-2 py-1 w-[80%]' /> :
-                        <input type="email" placeholder='email' id='email' name="email" value={selectedrecord.email} disabled={!usereditable} className=' rounded-lg px-2 py-1 w-[80%]' />
+                        <input type="email" placeholder='email' id='email' defaultValue={selectedrecord.email} name="email" className='bg-gray-200 rounded-lg px-2 py-1 w-[80%]' /> :
+                        <p className='bg-gray-50 rounded-lg px-2 py-1 w-[80%]' >{selectedrecord.email}</p>
                     }
                   </div>
                   <div className="flex w-full justify-between">
@@ -374,7 +374,7 @@ function SuperAdminMember() {
 
                         </div>
                       ) :
-                        <input type="text" placeholder='school' id='school' name='school' value={selectedrecord.school} disabled={!usereditable} className='w-[80%] rounded-lg px-2 py-1 w-[80%]' />
+                        <p className='bg-gray-50 rounded-lg px-2 py-1 w-[80%]' > {selectedrecord.school} </p>
                     }
                   </div>
                   {
