@@ -240,34 +240,31 @@ function SuperAdminMember() {
       .then((data) => setInSchoolName(data));
   }, []);
 
-
   const [outSchoolName, setOutSchoolName] = useState('')
   const [isSchoolOpen, setIsSchoolOpen] = useState(false);
   const [isNotValid, setIsNotValid] = useState(false);
-  const [check, setCheck] = useState('')
-  // const dropdownRef = useRef();
+ /*  const [check, setCheck] = useState('') */
 
-  useEffect(() => {
+
+/*   useEffect(() => {
     const validate = () => {
-      /*       props.handleSchool(schoolName);
-       */
+            props.handleSchool(schoolName);
+       
       const optionExist = inSchoolName.find(
-        (item) => {
-          const val = item.inSchoolName.toLowerCase()
-          const bool = val == outSchoolName.toLowerCase().trim()
-          return bool
-        });
+        (item) => (
+          item.inSchoolName?.toLowerCase() == outSchoolName.toLowerCase().trim()
+         
+      ));
       optionExist || outSchoolName == ""
         ? setIsNotValid(false)
         : setIsNotValid(true);
     };
     validate();
 
-    console.log(outSchoolName);
 
   }, [check]);
 
-
+  */
 
   const toggleSchool = () => {
     setIsSchoolOpen(true);
@@ -284,7 +281,7 @@ function SuperAdminMember() {
     const value = e.target.value;
     setIsSchoolOpen(false)
     setOutSchoolName(value)
-    setCheck(value)
+    /* setCheck(value) */
   };
 
   const handleClickSchool = (value) => {
@@ -297,7 +294,10 @@ function SuperAdminMember() {
   const handleFocusSchool = () => {
     setIsSchoolOpen(true);
   }
-
+const handleEdit = () => {
+  setUsereditable(!usereditable)
+  setOutSchoolName(selectedrecord.school)
+}
   return (
     <div className='md:w-full w-screen'>
       <AnimatePresence mode='wait'>
@@ -308,7 +308,7 @@ function SuperAdminMember() {
                 <div className="flex justify-between py-2 border-b text-xl">
                   <button className="" onClick={() => { setUserDetailpopup(false); setUsereditable(false) }}><AiOutlineClose /></button>
                   <h1 className='text-center font-medium text-gray-800'>Account detail ({selectedrecord.role})</h1>
-                  <button className="" onClick={() => setUsereditable(!usereditable)}><FaRegEdit /></button>
+                  <button className="" onClick={handleEdit}><FaRegEdit /></button>
                 </div>
                 <form onSubmit={usereditable ? UpdateUserEvent : RemoveUserEvent} className='w-full flex flex-col gap-4 py-2 pt-4' action="" method="post">
                   <div className="flex w-full justify-between">
@@ -316,7 +316,7 @@ function SuperAdminMember() {
                     {
                       usereditable ?
                         <input type="text" placeholder='name' id='name' name='name' className='bg-gray-200 rounded-lg px-2 py-1 w-[80%]' /> :
-                        <input type="text" placeholder='name' id='name' name='name' defaultValue={selectedrecord.name} disabled={!usereditable} className=' rounded-lg px-2 py-1 w-[80%]' />
+                        <input type="text" placeholder='name' id='name' name='name' value={selectedrecord.name} disabled={!usereditable} className=' rounded-lg px-2 py-1 w-[80%]' />
                     }
                   </div>
                   <div className="flex w-full justify-between">
@@ -324,7 +324,7 @@ function SuperAdminMember() {
                     {
                       usereditable ?
                         <input type="email" placeholder='email' id='email' name="email" className='bg-gray-200 rounded-lg px-2 py-1 w-[80%]' /> :
-                        <input type="email" placeholder='email' id='email' name="email" defaultValue={selectedrecord.email} disabled={!usereditable} className=' rounded-lg px-2 py-1 w-[80%]' />
+                        <input type="email" placeholder='email' id='email' name="email" value={selectedrecord.email} disabled={!usereditable} className=' rounded-lg px-2 py-1 w-[80%]' />
                     }
                   </div>
                   <div className="flex w-full justify-between">
@@ -332,7 +332,7 @@ function SuperAdminMember() {
                     {
                       usereditable ? (
                         <div className='w-[80%] relative'>
-                          <input type="text" value={outSchoolName} placeholder='school' id='school' name='school' onClick={toggleSchool} onBlur={handleBlurSchool} onFocus={handleFocusSchool} onChange={handleChangeSchool} className='capitalize bg-gray-200 w-full  rounded-lg px-2 py-1' />
+                          <input type="text" value={outSchoolName}   placeholder='school' id='school' name='school' onClick={toggleSchool} onBlur={handleBlurSchool} onFocus={handleFocusSchool} onChange={handleChangeSchool} className='capitalize bg-gray-200 w-full  rounded-lg px-2 py-1' />
 
                           <AnimatePresence mode="wait">
                             {isSchoolOpen && (
@@ -349,7 +349,7 @@ function SuperAdminMember() {
                                   .filter((data) => {
                                     return outSchoolName === ""
                                       ? true
-                                      : data.schoolname.toLowerCase().trim().includes(outSchoolName.toLowerCase().trim());
+                                      : data.schoolname.toLowerCase().trim().includes(outSchoolName?.toLowerCase().trim());
                                   })
                                   .map((option, index) => {
                                     return (
@@ -373,7 +373,7 @@ function SuperAdminMember() {
 
                         </div>
                       ) :
-                        <input type="text" placeholder='school' id='school' name='school' defaultValue={selectedrecord.school} disabled={!usereditable} className='w-[80%] rounded-lg px-2 py-1 w-[80%]' />
+                        <input type="text" placeholder='school' id='school' name='school' value={selectedrecord.school} disabled={!usereditable} className='w-[80%] rounded-lg px-2 py-1 w-[80%]' />
                     }
                   </div>
                   {
@@ -535,5 +535,5 @@ const Pulsecomponent = () => {
       <div className="row px-2 py-5 bg-gray-200 w-full rounded-lg"></div>
       <div className="row px-2 py-5 bg-gray-200 w-full rounded-lg"></div>
     </div>
-  );
+  )
 }

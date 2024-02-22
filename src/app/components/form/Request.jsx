@@ -305,6 +305,7 @@ const Requestform = () => {
                     onFocus={() => { setIsRoleOpen(true) }}
                     onBlur={() => { setIsRoleOpen(false) }}
                     readOnly
+                    onChange={()=>setData({ ...data, role: role})}
                     onClick={toggleRole}
                   />
                   {" "}
@@ -316,7 +317,7 @@ const Requestform = () => {
                         animate={{ y: 0, opacity: 1 }}
                         exit={{ y: 10, opacity: 0 }}
                         transition={{ duration: 0.5, type: "spring" }}
-                        className="absolute border max-h-64 overflow-auto w-72 mt-2 z-40 pl-2 py-2  rounded-lg grid gap-2 bg-white round "
+                        className="absolute border max-h-64 overflow-auto w-72 mt-2 z-40 pl-2 py-2 shadow-lg rounded-lg grid gap-2 bg-white round "
                       >
                         {" "}
                         <p
@@ -351,6 +352,7 @@ const Requestform = () => {
               onFocus={() => { setIsGradeOpen(true) }}
               onBlur={() => { setIsGradeOpen(false) }}
               placeholder="Select Your Grade"
+              onChange={()=>setData({...data, grade:role})}
               className={gradeClass}
               value={"Grade "+grade}
             />
