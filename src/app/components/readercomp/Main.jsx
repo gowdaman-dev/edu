@@ -5,7 +5,7 @@ function Main() {
 
 
   return (
-    <div className='w-[80%]  flex '>
+    <div className='w-[100%] md:w-[80%]  flex '>
 
     <PdfViewer/>
     </div>

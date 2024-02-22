@@ -1,9 +1,8 @@
 "use client"
-import { Viewer, Worker } from "@react-pdf-viewer/core";
+import { Viewer, Worker,createTheme } from "@react-pdf-viewer/core";
 import "@react-pdf-viewer/core/lib/styles/index.css";
 import { useEffect, useState, useRef } from "react";
 import { useParams } from 'next/navigation'
-import { defaultLayoutPlugin } from "@react-pdf-viewer/default-layout";
 import "@react-pdf-viewer/default-layout/lib/styles/index.css";
 import LoaderPage from "../loader/LoadingPage";
 import axios from "axios";
@@ -32,12 +31,22 @@ const PdfViewer = () => {
   }, []);
 
   useEffect(() => {
-    try {
-      const data2 = viewerRef.current.querySelector(".rpv-core__inner-pages--vertical").classList.add('scrollbar-hide')
-      console.log(viewerRef.current.querySelectors('span'));
-    } catch (error) {
-      
-    }
+ let interval=   setInterval(()=>{
+const dataPresent= viewerRef.current
+if(dataPresent.querySelector(".rpv-core__inner-pages--vertical")){
+
+ const mainClass= dataPresent.querySelector(".rpv-core__inner-pages--vertical")
+//hide side bar 
+mainClass.classList.add('scrollbar-hide')
+const updatingPages=mainClass.children[0]
+
+
+
+  clearInterval(interval)
+}
+  },1000)
+return ()=>clearInterval(interval)
+  
   });
   return (
     <>
