@@ -144,22 +144,23 @@ const threeDotSvg=e.target.parentElement.classList.contains("three_dot")
           : Math.floor(size) + ' KB/s'
 
       return (
-        <div onClick={(e)=>pdfClick(e,URLID)}
+        <div 
           key={'file' + index}
-          className='grid grid-flow-col grid-rows-3   grid-cols-8 cursor-pointer  text-balance   text-gray-500 w-full border-gray-200 relative md:text-[16px] sm:text-md text-sm '
+          className='grid grid-flow-col grid-rows-3   grid-cols-8 cursor-pointer  text-balance   text-gray-500 w-full border-gray-200 relative md:text-[16px] sm:text-md text-sm border-b-[1px]
+          '
         >
-          <span className='grid col-span-1 row-span-3 text-3xl text-gray-500 sm:text-2xl border-b-[1px] place-content-center py-3'>
+          <span className='grid col-span-1 row-span-3 text-3xl text-gray-500 sm:text-2xl  place-content-center py-3 ' onClick={(e)=>pdfClick(e,URLID)}>
             <MdPictureAsPdf />
           </span>
           <p
-            className='col-span-5 sm:col-span-6 row-span-3 font-light border-b-[1px]    flex items-center'
+            className='col-span-5 sm:col-span-6 row-span-3 font-light     flex  items-center' onClick={(e)=>pdfClick(e,URLID)}
             key={'filename' + index}
           >
             {name}
           </p>
           {
             !isStudent &&
-            <span className='grid col-span-2 sm:col-span-1 row-span-3 text-xl bg-gray-100 py-0 place-content-center   three_dot ' key={index} onClick={() => { handlePopClick(index, id, trimName) }} >
+            <span className='grid col-span-2 sm:col-span-1 row-span-3 text-xl bg-gray-100 py-0 place-content-center   three_dot  ' key={index} onClick={() => { handlePopClick(index, id, trimName) }} >
               <BsThreeDotsVertical />
             </span>
           }
