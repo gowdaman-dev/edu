@@ -173,7 +173,7 @@ const Requestform = () => {
       <p className="text-center px-10 pb-8 text-lg">
         Note : This form is designed for MEMBERS OF REGISTERED SCHOOL  only. If you are the SCHOOL ORGANIZER ,
         please{" "}
-        <Link className="text-[--web-primary-color]" href={"recommend"}>
+        <Link className="text-[--web-primary-color]" href={"/new/organizer/request"}>
           Register your School
         </Link>{" "}
         instead.
