@@ -8,6 +8,10 @@ export async function POST(req) {
         const { name, email, password, role, school, about } = await req.json();
         const hashedPassword = await bcrypt.hash(password, 10)
         await connectMongoBD();
+        const existskl = await School.findOne({ schoolname: `${schoolname}`.toLowerCase() });
+        if (`${existskl}`.toLowerCase() === `${school}`.toLowerCase()) {
+            return NextResponse.json({ message: "School already exists" }, { status: 400 });
+        }
         await User.create({ name, email, password: hashedPassword, role, school, about });
         await School.create({ schoolname: school, organiseremail: email, organisertype: about })
         return NextResponse.json({ message: "admin registered" }, { status: 200 });
