@@ -88,7 +88,7 @@ const Requestform = () => {
     setError('')
     setSuccess('')
     console.log(data);
-    if (data.userName == '' || data.email == '' || data.role == '' || data.comment == '' || data.grade == '' || data.schoolName == '') {
+    if (data.userName == '' || data.email == '' || data.role == '' || data.grade == '' || data.schoolName == '') {
       setError('Please fill all the fields')
       return
     }

@@ -115,8 +115,8 @@ const OraganizerRequestPage = () => {
                                             <p className="w-full">{request.role}</p>
                                         </div>
                                         <div className="w-full flex items-center gap-4">
-                                            <p className="w-[200px]">Grade</p>:
-                                            <p className="w-full">Grade {request.grade}</p>
+                                            <p className="w-[200px]">Position</p>:
+                                            <p className="w-full">{request.role}</p>
                                         </div>
                                         <div className="w-full flex items-center gap-4">
                                             <p className="w-[200px]">Description</p>:
