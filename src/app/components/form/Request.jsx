@@ -1,9 +1,9 @@
 "use client";
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect} from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { webName } from "../globalDetails";
-import { grades } from "./grade";
+import { grades, roles } from "./data";
 import { AnimatePresence, motion } from "framer-motion";
 
 const Requestform = () => {
@@ -121,12 +121,10 @@ const Requestform = () => {
 
     setData({ ...data, role: value });
 
-    // setIsRoleOpen(false)
   };
 
   const handleGradeClick = value => {
     setData({ ...data, grade: value });
-    //  setIsGradeOpen(false);
   }
 
   const toggleSchool = () => {
@@ -135,6 +133,7 @@ const Requestform = () => {
 
   const handleChangeSchool = (e) => {
     const value = e.target.value;
+    setIsSchoolOpen(true)
     setData({ ...data, schoolName: value });
   };
 
@@ -157,9 +156,17 @@ const Requestform = () => {
   }
 
 
-  const roleClass = `rounded-lg  pl-2 w-72 text-b h-12 border cursor-pointer outline-none  bg-[--web-container]`;
-  const regularClass = `rounded-lg  pl-2 w-72 text-b h-12 border outline-none  bg-[--web-container]`;
-  const gradeClass = ` rounded-lg cursor-pointer pl-2 h-12  mt-10 outline-none  w-72 md:w-[600px]  border bg-[--web-container]`;
+
+
+
+
+
+
+
+
+  const roleClass = `rounded-lg  pl-2 w-72 text-b h-12 border cursor-pointer   bg-[--web-container]`;
+  const regularClass = `rounded-lg  pl-2 w-72 text-b h-12 border   bg-[--web-container]`;
+  const gradeClass = ` rounded-lg cursor-pointer pl-2 h-12  mt-10   w-72 md:w-[600px]  border bg-[--web-container]`;
   const dropdownClass = `cursor-pointer py-2 rounded-lg hover:bg-gray-100`
   const Comment =
     "Tell us more about yourself and the purpose of using our product";
@@ -183,7 +190,7 @@ const Requestform = () => {
           alt="logo"
         />
         <h1 className="text-center font-bold text-2xl py-10">
-          {webName} Memeber Request Form
+          {webName} Member Request Form
         </h1>
         <AnimatePresence mode="wait">
           {error && (
@@ -222,7 +229,8 @@ const Requestform = () => {
                   className={regularClass}
                 />
                 <div className="relative ">
-                  {isNotValid && <p className="text-red-500 absolute -mt-6">please Choose give option</p>}
+                  {isNotValid && <p className="text-red-500 absolute -mt-6">Please select a valid option
+</p>}
                   <input
                     ref={dropdownRef}
                     className={regularClass}
@@ -234,7 +242,10 @@ const Requestform = () => {
                     onFocus={handleFocusSchool}
 
                   />
-
+                  {
+                   isSchoolOpen && schoolname.filter((data) => {
+                    return schoolName === "" ? true : data.schoolname.toLowerCase().trim().includes(schoolName.toLowerCase().trim());
+                }).length > 0 && (
                   <AnimatePresence mode="wait">
                     {isSchoolOpen && (
                       <motion.div
@@ -242,7 +253,7 @@ const Requestform = () => {
                         animate={{ y: 0, opacity: 1 }}
                         exit={{ y: 10, opacity: 0 }}
                         transition={{ duration: 0.5, type: "spring" }}
-                        className="absolute shadow max-h-64 overflow-auto w-72 mt-2 z-40 pl-2 py-2  rounded-lg grid gap-2 bg-white round"
+                        className="absolute border max-h-64 overflow-auto w-72 mt-2 z-40 pl-2 py-2 shadow-lg rounded-lg grid gap-2 bg-white round "
                       >
                         {" "}
                         {schoolname
@@ -252,10 +263,12 @@ const Requestform = () => {
                               ? true
                               : data.schoolname.toLowerCase().trim().includes(schoolName.toLowerCase().trim());
                           })
-                          .map((option) => {
+                          .map((option,index) => {
                             return (
                               <p
-                                className="capitalize cursor-pointer p-1 w-[273px] rounded-lg hover:bg-gray-100"
+                              className="capitalize cursor-pointer p-1 w-[273px] rounded-lg hover:bg-gray-100"
+
+
                                 onClick={() => {
                                   handleClickSchool(option.schoolname);
                                 }}
@@ -269,6 +282,7 @@ const Requestform = () => {
                       </motion.div>
                     )}
                   </AnimatePresence>
+)}
                 </div>
               </div>
               <div className="flex flex-col gap-10 w-72 ">
@@ -277,7 +291,7 @@ const Requestform = () => {
                   placeholder="Your Email"
                   onChange={e => setData({ ...data, email: e.target.value })}
 
-                  className="rounded-lg h-12 pl-2 outline-none  border bg-[--web-container]
+                  className="rounded-lg h-12 pl-2  border bg-[--web-container]
                   "
                 />
                 <div className="relative ">
@@ -289,6 +303,7 @@ const Requestform = () => {
                     onFocus={() => { setIsRoleOpen(true) }}
                     onBlur={() => { setIsRoleOpen(false) }}
                     readOnly
+               
                     onClick={toggleRole}
                   />
                   {" "}
@@ -300,26 +315,16 @@ const Requestform = () => {
                         animate={{ y: 0, opacity: 1 }}
                         exit={{ y: 10, opacity: 0 }}
                         transition={{ duration: 0.5, type: "spring" }}
-                        className="absolute border max-h-64 overflow-auto w-72 mt-2 z-40 pl-2 py-2  rounded-lg grid gap-2 bg-white round "
+                        className="absolute border max-h-64 overflow-auto w-72 mt-2 z-40 pl-2 py-2 shadow-lg rounded-lg grid gap-2 bg-white round "
                       >
                         {" "}
-                        <p
-                          className={dropdownClass}
-                          onClick={() => {
-
-                            handleRoleClick("student");
-                          }}
-                        >
-                          Student
-                        </p>
-                        <p
-                          className={dropdownClass}
-                          onClick={() => {
-                            handleRoleClick("teacher");
-                          }}
-                        >
-                          Teacher
-                        </p>
+                        {
+                    roles.map(item => (
+                      <p key={item} className="cursor-pointer capitalize py-1 w-full px-2 rounded-lg hover:bg-gray-100" onClick={() => {
+                        handleRoleClick(item)
+                      }}> {item}</p>
+                    ))
+                  }
                       </motion.div>
                     )}
                   </AnimatePresence>
@@ -335,8 +340,10 @@ const Requestform = () => {
               onFocus={() => { setIsGradeOpen(true) }}
               onBlur={() => { setIsGradeOpen(false) }}
               placeholder="Select Your Grade"
+
               className={gradeClass}
-              value={"Grade "+grade}
+              value={grade && "Grade "+grade}
+              readOnly
             />
 
             {" "}
@@ -348,8 +355,8 @@ const Requestform = () => {
                   animate={{ y: 0, opacity: 1 }}
                   exit={{ y: 10, opacity: 0 }}
                   transition={{ duration: 0.5, type: "spring" }}
-                  className="absolute max-h-64 overflow-auto md:w-full w-72 z-40 pl-2 py-2 px-2 shadow-lg rounded-lg grid gap-2 top-[100%] bg-white round "
-                >
+                  className="absolute border max-h-64 top-full overflow-auto w-72 md:w-[600px] mt-2 z-40 pl-2 py-2 shadow-lg rounded-lg grid gap-2 bg-white round "
+                  >
                   {" "}
                   {
                     grades.map(item => (
@@ -369,7 +376,7 @@ const Requestform = () => {
               placeholder={Comment}
               onChange={e => setData({ ...data, comment: e.target.value })}
 
-              className="rounded-lg resize-none pl-2 pt-1 min-h-56 outline-none  h-auto w-72 md:w-[600px] mx-auto  border bg-[--web-container]"
+              className="rounded-lg resize-none pl-2 pt-1 min-h-56   h-auto w-72 md:w-[600px] mx-auto  border bg-[--web-container]"
             />
             <input
               type="submit"
