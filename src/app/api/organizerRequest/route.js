@@ -12,7 +12,7 @@ export async function POST(req) {
         const existingEmailRequest = await OrganizerRequest.findOne({ email });
         const existingSchool = await School.findOne({ schoolname });
         const existingSchoolRequest = await OrganizerRequest.findOne({ schoolname });
-        if(existingSchool){
+        if(`${existingSchool}`.toLowerCase === `${existingSchool}`.toLowerCase()){
             console.log(existingSchool);
             return NextResponse.json({ message: "School already exists" }, { status: 400 });
         }
