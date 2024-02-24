@@ -8,7 +8,7 @@ function Page () {
       <header className='h-[60px] border-b-[1px] border-[#008C8C] '>
         <HeadBar />
       </header>
-        <main className='flex justify-center h-[90%] '>
+        <main className='w-screen h-[90%] '>
       <Main/>
       
         </main>

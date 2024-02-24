@@ -1,15 +1,16 @@
+import { IoMdCheckmark } from "react-icons/io"; 
 import { IoMdCloudDone } from "react-icons/io"; 
 import React, { useEffect, useState } from 'react'
 import { AiOutlineCloseCircle } from 'react-icons/ai'
 
-function ProgressComp ({ progressChange,click }) {
+function ProgressComp ({ progressChange,click,title ,icon}) {
 const [complete,setComplete]=useState(0)
 useEffect(()=>{
 
   setComplete(progressChange)
 },[progressChange])
 const iconRender_progress=(
-  complete==100 ?<IoMdCloudDone />: <span className=" h-10 w-10 md:h-20 md:w-20 rounded-full bg-[--web-primary-color] animate-pulse ">
+  complete==100 ? icon=="upload"?<IoMdCloudDone />:<IoMdCheckmark />: <span className=" h-10 w-10 md:h-20 md:w-20 rounded-full bg-[--web-primary-color] animate-pulse ">
 
   </span>
 )
@@ -25,7 +26,7 @@ const iconRender_progress=(
         </span>
         <section className='flex flex-col justify-center h-full col-span-4 row-span-4 gap-5'>
           <span className='self-center duration-1000 ease-in ransition-all'>
-            Uploading:{progressChange}%
+            {title}{progressChange}%
           </span>
           <span className='w-[80%] flex ml-[10%]'>
             <span

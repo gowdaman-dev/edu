@@ -10,17 +10,15 @@ function HeadBar () {
   return (
     
       <ul className='flex items-center justify-around h-full '>
-        <li className='flex justify-center grow gap-x-10 sm:gap-x-20'>
+        <li className='flex justify-center grow gap-x-10 sm:gap-x-20 text-[--web-primary-color]'>
            {/*  //backword */}
-          <span className='text-2xl mt-[6px] text-[#008C8C]'><FaBackward /></span>
-          <span onClick={()=>setIsPlay(!isPlay)} className='text-[#008C8C] text-3xl'>{isPlay ?<FaRegCirclePause />:<FaPlayCircle />}</span>
+          <span className='text-2xl mt-[6px] '><FaBackward /></span>
+          <span onClick={()=>setIsPlay(!isPlay)} className=' text-3xl'>{isPlay ?<FaRegCirclePause />:<FaPlayCircle />}</span>
           {/* forward */}
-          <span  className='text-2xl mt-[6px] text-[#008C8C]'><FaForward /></span>
+          <span  className='text-2xl mt-[6px] '><FaForward /></span>
 
         </li>
-        <li className='mr-4 text-2xl text-gray-700'>
-          <BsThreeDots />
-        </li>
+      
       </ul>
  
   )

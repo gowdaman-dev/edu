@@ -295,7 +295,7 @@ const threeDotSvg=e.target.parentElement.classList.contains("three_dot")
       </ul>
       <section className='relative flex flex-col items-center w-full  z-[1] '>
         {progVisible && (
-          <ProgressComp progressChange={progress} click={setProgVisible} />
+          <ProgressComp progressChange={progress} click={setProgVisible} title={"Uploading :"} icon={"upload"}  />
         )}
 
         {renderData}
