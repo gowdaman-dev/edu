@@ -78,7 +78,7 @@ const OraganizerRequestPage = () => {
                 <h1 className="text-2xl font-bold text-gray-900">Organizer Requests</h1>
                 <div className=""></div>
             </div>
-            <div className="flex flex-col gap-2 w-full px-4 mt-4">
+            <div className="flex flex-col gap-2 w-full px-4 mt-4 h-full overflow-y-scroll scrollbar-hide">
                 {
                     !memberRequesthandler?"":memberRequesthandler.map((request, i) => {
                         if (request) {
