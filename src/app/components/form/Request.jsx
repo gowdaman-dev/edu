@@ -8,7 +8,6 @@ import { AnimatePresence, motion } from "framer-motion";
 
 const Requestform = () => {
   const [schoolname, setSchoolname] = useState([]);
-
   useEffect(() => {
     fetch("/api/schoolList", {
       method: "PUT",
