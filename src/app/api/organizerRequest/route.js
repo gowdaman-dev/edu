@@ -24,7 +24,7 @@ export async function POST(req) {
         }
         const existingUser = await User.findOne({ school:schoolname });
         if (existingUser) {
-            return NextResponse.json({ message: "School already exists in the database" }, { status: 400 });
+            return NextResponse.json({ message: "School already exists" }, { status: 400 });
         }
         if (!user) {
             await OrganizerRequest.create({ name, email, schoolname, role, description });
