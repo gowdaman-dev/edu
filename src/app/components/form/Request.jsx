@@ -1,6 +1,4 @@
 "use client";
-
-
 import React, { useState, useRef, useEffect,useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -93,7 +91,7 @@ const Requestform = () => {
     setError('')
     setSuccess('')
     console.log(data);
-    if (data.userName == '' || data.email == '' || data.role == '' || data.comment == '' || data.grade == '' || data.schoolName == '') {
+    if (data.userName == '' || data.email == '' || data.role == '' || data.grade == '' || data.schoolName == '') {
       setError('Please fill all the fields')
       return
     }
@@ -182,7 +180,7 @@ const Requestform = () => {
       <p className="text-center px-10 pb-8 text-lg">
         Note : This form is designed for MEMBERS OF REGISTERED SCHOOL  only. If you are the SCHOOL ORGANIZER ,
         please{" "}
-        <Link className="text-[--web-primary-color]" href={"recommend"}>
+        <Link className="text-[--web-primary-color]" href={"/new/organizer/request"}>
           Register your School
         </Link>{" "}
         instead.

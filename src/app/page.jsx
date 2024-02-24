@@ -161,7 +161,7 @@ function page() {
               To Our Best <br /> E Learning Platform{" "}
             </h1>
             <Link
-              href={"/request"}
+              href={"/new/member/request"}
               className="flex items-center justify-center gap-2 px-6 py-4 mt-2 text-white rounded-full bg-[--web-primary-color]"
             >
               Get Start your journey

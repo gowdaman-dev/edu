@@ -15,6 +15,7 @@ import { MdOutlineManageAccounts } from 'react-icons/md'
 import Accountinformation from '../dashboard/AccountInformation'
 import SchoolInformation from '../dashboard/Schoolinformation'
 import MemberRequestPage from '../dashboard/MemberRequestCom'
+import OraganizerRequestPage from '../dashboard/OrganizerRequestCom'
 function SideNav() {
     const [addmember, setAddmember] = useState(false)
     const menuref = useRef();
@@ -103,7 +104,7 @@ function SideNav() {
                                         <button onClick={() => setToggleRequest(true)}>Request</button>
                                         <AnimatePresence mode='wait'>
                                             {
-                                                toggleRequest && (<MemberRequestPage/>)
+                                                toggleRequest && (session?.user?.role ==='superadmin'?<OraganizerRequestPage/>:<MemberRequestPage/>)
                                             }
                                         </AnimatePresence>
                                     </div>
