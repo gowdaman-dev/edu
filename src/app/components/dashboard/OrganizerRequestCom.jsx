@@ -6,7 +6,7 @@ import { useSession } from 'next-auth/react';
 import { UserContext } from '@/ContextUser';
 import useSWR from 'swr';
 
-const MemberRequestPage = () => {
+const OraganizerRequestPage = () => {
     const { data: session } = useSession()
     const { setToggleRequest } = useContext(UserContext);
     const [selectedAccountFromRequest, setselectedAccountFromRequest] = useState('');
@@ -15,12 +15,8 @@ const MemberRequestPage = () => {
     const role = session?.user?.role == "admin" ? "" : "student"
     const fetchMemberRequesthandler = async () => {
         try {
-            const response = await fetch('/api/memberRequest', {
+            const response = await fetch('/api/organizerRequest', {
                 method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ school: session?.user?.school, role })
             });
             const data = await response.json();
             console.log(data);
@@ -32,7 +28,7 @@ const MemberRequestPage = () => {
     const {data:memberRequesthandler , isLoading:datafetcher , mutate} = useSWR('request fetch', fetchMemberRequesthandler)
     const handleDecline = async (id) => {
         try {
-            const response = await fetch(`/api/memberrequestevent`, {
+            const response = await fetch(`/api/organizerrequestevent`, {
                 method: 'POST',
                 headers: {
                     "Content-Type": 'application/json'
@@ -49,7 +45,7 @@ const MemberRequestPage = () => {
     };
     const handleAccept = async (id) => {
         try {
-            const response = await fetch(`/api/memberrequestevent`, {
+            const response = await fetch(`/api/organizerrequestevent`, {
                 method: 'POST',
                 headers: {
                     "Content-Type": 'application/json'
@@ -79,10 +75,10 @@ const MemberRequestPage = () => {
                 <button className="font-bold flex items-center justify-center text-gray-600 text-md" onClick={() => { setToggleRequest(false); console.log("clicked"); }}>
                     <AiOutlineLeft />Back
                 </button>
-                <h1 className="text-2xl font-bold text-gray-900">Member Requests</h1>
+                <h1 className="text-2xl font-bold text-gray-900">Organizer Requests</h1>
                 <div className=""></div>
             </div>
-            <div className="flex flex-col gap-2 w-full px-4 mt-4 overflow-y-scroll scrollbar-hide">
+            <div className="flex flex-col gap-2 w-full px-4 mt-4 h-full overflow-y-scroll scrollbar-hide">
                 {
                     !memberRequesthandler?"":memberRequesthandler.map((request, i) => {
                         if (request) {
@@ -119,8 +115,8 @@ const MemberRequestPage = () => {
                                             <p className="w-full">{request.role}</p>
                                         </div>
                                         <div className="w-full flex items-center gap-4">
-                                            <p className="w-[200px]">Grade</p>:
-                                            <p className="w-full">Grade {request.grade}</p>
+                                            <p className="w-[200px]">Position</p>:
+                                            <p className="w-full">{request.role}</p>
                                         </div>
                                         <div className="w-full flex items-center gap-4">
                                             <p className="w-[200px]">Description</p>:
@@ -139,5 +135,5 @@ const MemberRequestPage = () => {
     );
 };
 
-export default MemberRequestPage;
+export default OraganizerRequestPage;
 

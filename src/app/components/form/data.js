@@ -1,3 +1,5 @@
+import exp from "constants";
+
 export const grades = [
   '1',
   '2',
@@ -12,3 +14,8 @@ export const grades = [
   '11',
   '12',
 ];
+
+export const roles = [
+  "student",
+  "teacher",
+]
