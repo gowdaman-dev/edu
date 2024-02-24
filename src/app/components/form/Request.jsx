@@ -1,7 +1,4 @@
 "use client";
-import { AiFillCaretDown } from "react-icons/ai";
-import { AiFillCamera } from "react-icons/ai";
-
 import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";

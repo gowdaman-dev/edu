@@ -2,6 +2,7 @@ import User from "../../models/user";
 import OrganizerRequest from "../../models/OrganizerRequest";
 import { NextResponse } from "next/server";
 import { connectMongoBD } from "@/app/lib/mongodb";
+import School from "@/app/models/AddOrganisation";
 
 export async function POST(req) {
     const { name, email, schoolname, role, description } = await req.json();
@@ -9,7 +10,12 @@ export async function POST(req) {
     try {
         const user = await User.findOne({ email });
         const existingEmailRequest = await OrganizerRequest.findOne({ email });
+        const existingSchool = await School.findOne({ schoolname });
         const existingSchoolRequest = await OrganizerRequest.findOne({ schoolname });
+        if(existingSchool){
+            console.log(existingSchool);
+            return NextResponse.json({ message: "School already exists" }, { status: 400 });
+        }
         if (existingEmailRequest) {
             return NextResponse.json({ message: "Request with this email already exists" }, { status: 400 });
         }
