@@ -187,6 +187,23 @@ function SuperAdminMember() {
   const [roleFilter, setroleFilter] = useState('')
   const [roleFilterToggle, setRoleFilterToggle] = useState(false)
   const [filterdata, setFilterdata] = useState(memberdata)
+  const roleFilterRef = useRef(null);
+  const schoolFilterRef = useRef(null);
+  
+  useEffect(()=>{
+    const handleClose = (e) =>{
+      if (e.target != schoolFilterRef.current) {
+        setSchoolFilterToggle(false);
+      }
+      if (e.target != roleFilterRef.current) {
+        setRoleFilterToggle(false);
+      }
+    }
+
+    window.addEventListener('click',handleClose)
+ 
+  },[])
+
   const rolejson = ['admin', 'teacher', 'student']
   useEffect(() => {
     fetch('/api/schoolList', {
@@ -437,6 +454,7 @@ function SuperAdminMember() {
                   !schoolfilter && (
                     <button
                       onClick={() => setSchoolFilterToggle(!schoolfiltertoggle)}
+                      ref={schoolFilterRef}
                       className='bg-white text-gray-800 p-2 rounded-lg border flex items-center md:text-md text-sm gap-2'
                     >All School {schoolfiltertoggle ? <AiOutlineUp /> : <AiOutlineDown />}
                     </button>
@@ -471,6 +489,7 @@ function SuperAdminMember() {
                   !roleFilter && (
                     <button
                       onClick={() => setRoleFilterToggle(!roleFilterToggle)}
+                      ref={roleFilterRef}
                       className='bg-white text-gray-800 p-2 rounded-lg border flex items-center md:text-md text-sm gap-2'
                     >All Roles {roleFilterToggle ? <AiOutlineUp /> : <AiOutlineDown />}
                     </button>

@@ -11,12 +11,12 @@ function page() {
   useEffect(() => {
     window.addEventListener("scroll", async () => {
       if (window.scrollY >= 50) {
-        await setHomemenusrl(true);
+         setHomemenusrl(true);
         console.log(homemenusrl);
         return;
       }
       if (window.scrollY <= 49) {
-        await setHomemenusrl(false);
+         setHomemenusrl(false);
         console.log(homemenusrl);
       }
       console.log(window.scrollY);
