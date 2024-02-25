@@ -1,17 +1,10 @@
-import Navbar from '../../components/readercomp/Navbar'
-import HeadBar from '../../components/readercomp/HeadBar'
-import Main  from '../../components/readercomp/Main'
+
+import PdfViewer from '@/app/components/readercomp/Renderpdf'
 function Page () {
  
   return (
-    <div className='h-screen'>
-      <header className='h-[60px] border-b-[1px] border-[#008C8C] '>
-        <HeadBar />
-      </header>
-        <main className='w-screen h-[90%] '>
-      <Main/>
-      
-        </main>
+    <div className='h-screen    flex flex-col fixed z-[1]'>
+      <PdfViewer/>
     </div>
   )
 }
