@@ -29,24 +29,29 @@ await axios.put("/api/files",data).then((res)=>{
   console.log("yes response came");
   if(res.status===200){
     props.update(fileName)
-    props.closePop(null)
     props.animate(true)
+    props.rename(false)
 
   }
 })
  }
 
   }
-  return (<div className='absolute p-4 md:p-6 grid grid-flow-col bg-gray-200 rounded-md grid-cols-5'>
+  return (<div className='absolute p-4 md:p-6 grid  border-[2px] rounded-lg bg-white grid-cols-5 grid-rows-5'>
 
 
-    <input type="text" ref={refRename} autoFocus className='h-10 rounded-tl-full rounded-bl-full outline-none pl-6 inline-block col-span-3 md:col-span-4' value={fileName} onChange={(e) => handleChange(e)} />
+    <input type="text" ref={refRename} autoFocus className='row-span-2 bg-gray-100 rounded-full outline-none pl-6 inline-block col-span-5 ' value={fileName} onChange={(e) => handleChange(e)} />
 
-    <button className='text-white h-10 p-2 rounded-tr-full rounded-br-full bg-[--web-primary-color] active:bg-blue-400 col-span-2 md:col-span-1' onClick={()=>rename()}><span className='inline-block   text-end text-white '>
+    <button className='text-white  p-2 rounded-full col-end-6 bg-[--web-primary-color] active:bg-blue-400 col-span-2 row-span-2 row-end-6' onClick={()=>rename()}><span className='inline-block   text-end text-white '>
 
       <MdOutlineDriveFileRenameOutline />
     </span>
       Rename</button>
+
+    <button className='text-black  p-2 rounded-full col-end-3 bg-gray-200 active:bg-blue-400 col-span-2 row-span-2 row-end-6' onClick={()=>props.rename(false)}><span className='inline-block   text-end text-white '>
+
+</span>
+cancel</button>
   </div>
   )
 }

@@ -7,6 +7,8 @@ import { BsThreeDotsVertical } from 'react-icons/bs'
 import SkeletonAnimation from '../SkeletonAnimation'
 import fetchFiles from '@/utils/FetchFiles'
 import axios from 'axios'
+import Rename from "./Rename";
+
 import ProgressComp from './ProgressComponent'
 import Popper from './DeleteRename_Poppper'
 import { db } from '@/firebase/firebase'
@@ -20,6 +22,8 @@ let filesShow = []
 function Files() {
   const router=useRouter()
 
+  const [isRenameOpen, setIsRenameOpen] = useState(false)
+  const[renameId,setRenameId]=useState(null)
 
   const { data: session, loading } = useSession()
   const { school: SCHOOL } = session.user
@@ -104,22 +108,32 @@ function Files() {
   })
 
   function handlePopClick(index, id, name) {
+   
+    
     if (index === pop_DEl_Rename) {
+
       setPop_Del_Rename(null)
     }
     else {
+if(!isRenameOpen){
 
-      setPop_Del_Rename(index)
-      setDelete_id(id)
-      setName(name)
+  setPop_Del_Rename(index)
+  setDelete_id(id)
+  setName(name)
+}
+    }
+    if(!isRenameOpen){
+      setRenameId(index)
     }
   }
   const pdfClick = (e,URL) => {
 const threeDotParent=e.target.classList.contains("three_dot")
 const threeDotSvg=e.target.parentElement.classList.contains("three_dot")
     if((!threeDotParent && !threeDotSvg) && pop_DEl_Rename===null){
+if(!isRenameOpen){
 
-      router.push("/reader/"+URL)
+  router.push("/reader/"+URL)
+}
     }
 
   }
@@ -164,12 +178,18 @@ const threeDotSvg=e.target.parentElement.classList.contains("three_dot")
               <BsThreeDotsVertical />
             </span>
           }
+      {(renameId==index) && isRenameOpen &&
 
+
+<div className="fixed z-[3]  w-full flex justify-center  left-1">
+  <Rename name={file_Name} id={delete_id} update={setNewFile} closePop={setPop_Del_Rename} animate={setIsAnimate} rename={setIsRenameOpen}/>
+</div>
+}
           {pop_DEl_Rename === index &&
 
 
 
-            <Popper name={file_Name} id={delete_id} update={setNewFile} closePop={setPop_Del_Rename} animate={setIsAnimate} />
+            <Popper name={file_Name} id={delete_id} rename={setIsRenameOpen} update={setNewFile} closePop={setPop_Del_Rename} animate={setIsAnimate} />
 
           }
         </div>

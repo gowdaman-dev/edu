@@ -5,9 +5,7 @@ import React, { useEffect, useState } from 'react'
 import axios from "axios";
 import { ref, deleteObject } from "firebase/storage";
 import { db } from "@/firebase/firebase";
-import Rename from "./Rename";
 function Popper(props) {
-  const [isOpen, setIsOpen] = useState(false)
   const id = props.id
   function handleDelete() {
 
@@ -34,7 +32,9 @@ function Popper(props) {
 
   }
   function handle_click_rename() {
-    setIsOpen(true);
+    props.closePop(null)
+
+    props.rename(true)
   }
   return (
     <div className="delete_rename" >
@@ -60,13 +60,7 @@ function Popper(props) {
         </div>
 
       </div>
-      {isOpen &&
 
-
-        <div className="fixed z-[3]  w-full flex justify-center  left-1">
-          <Rename name={props.name} id={id} update={props.update} closePop={props.closePop} animate={props.animate}/>
-        </div>
-      }
     </div>
   )
 }

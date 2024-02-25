@@ -27,6 +27,7 @@ const PdfViewer = () => {
   const [progress, setProgress] = useState(0)
   const [progVisible, setProgVisible] = useState(false)
   const [isTools, setIsTools] = useState(false)
+  const [text, setText] = useState("")
   //plugins 
   const zoomPluginInstance = zoomPlugin();
   const { CurrentScale, ZoomIn, ZoomOut } = zoomPluginInstance;
@@ -85,18 +86,40 @@ const PdfViewer = () => {
 
     const dataPresent = viewerRef.current
     if (dataPresent.querySelector(".rpv-core__inner-pages--vertical")) {
-
       const mainClass = dataPresent.querySelector(".rpv-core__inner-pages--vertical")
       dataPresent.querySelector(".rpv-core__viewer").style.width = "100vw"
       //hide side bar 
       mainClass.classList.add('scrollbar-hide')
-      const updatingPages = mainClass.children[0]
-
 
     }
 
   }, [pdfrender]);
 
+  useEffect(() => {
+    const dataPresent = viewerRef.current
+const id=setInterval(()=>{
+
+  if (dataPresent &&dataPresent.innerText) {
+    setText(dataPresent.innerText)
+ clearInterval(id);
+
+  }
+},1000)
+return ()=>clearInterval(id)
+  });
+
+useEffect(() => {
+  const fetcher=async ()=>{
+    await axios.post("http://localhost:3000/",{data:text}).then(res=>{
+      console.log(res);
+    })
+
+  }
+  if(text){
+console.log(text);
+    fetcher()
+  }
+}, [text])
   const handleDocumentLoad = () => {
     setpdfRender(!pdfrender)
   };
