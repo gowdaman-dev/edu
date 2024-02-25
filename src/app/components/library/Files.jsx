@@ -18,6 +18,7 @@ import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage"
 import { useSession } from "next-auth/react";
 import { UserContext } from "@/ContextUser";
 import Alert from "./Alert";
+import { AnimatePresence,motion } from "framer-motion";
 let filesShow = []
 function Files() {
   const router=useRouter()
@@ -152,8 +153,7 @@ if(!isRenameOpen){
       name = name.length > 30 ? name.slice(0, 30) + '...' : name
       // for file size
       size = size / 1000
-      size =
-        size > 1000
+      size =size > 1000
           ? (size / 1000).toFixed(2) + 'MB/s'
           : Math.floor(size) + ' KB/s'
 
@@ -178,13 +178,23 @@ if(!isRenameOpen){
               <BsThreeDotsVertical />
             </span>
           }
-      {(renameId==index) && isRenameOpen &&
+          <AnimatePresence mode="wait">
 
+      {(renameId==index) && isRenameOpen &&(
 
-<div className="fixed z-[3]  w-full flex justify-center  left-1">
+<div className="h-screen w-screen fixed backdrop-blur-sm z-[3] top-0 ">
+
+<div className="fixed z-[3]  w-full flex justify-center top-48 left-1">
   <Rename name={file_Name} id={delete_id} update={setNewFile} closePop={setPop_Del_Rename} animate={setIsAnimate} rename={setIsRenameOpen}/>
 </div>
+</div>  
+      )
+
+
 }
+          </AnimatePresence>
+          <AnimatePresence mode="wait">
+
           {pop_DEl_Rename === index &&
 
 
@@ -192,6 +202,7 @@ if(!isRenameOpen){
             <Popper name={file_Name} id={delete_id} rename={setIsRenameOpen} update={setNewFile} closePop={setPop_Del_Rename} animate={setIsAnimate} />
 
           }
+          </AnimatePresence>
         </div>
       )
     })
@@ -314,10 +325,16 @@ if(!isRenameOpen){
         </li>}
       </ul>
       <section className='relative flex flex-col items-center w-full  z-[1] '>
-        {progVisible && (
+       <AnimatePresence mode="wait">
+       {progVisible && (
+          <div  className="h-screen w-screen fixed backdrop-blur-sm z-[3] top-0 ">
+
           <ProgressComp progressChange={progress} click={setProgVisible} title={"Uploading :"} icon={"upload"}  />
+          </div>
         )}
 
+
+       </AnimatePresence>
         {renderData}
         {isAnimate && <SkeletonAnimation />}
         {isAnimate && <SkeletonAnimation />}

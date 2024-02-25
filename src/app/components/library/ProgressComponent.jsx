@@ -2,7 +2,7 @@ import { AiOutlineClose } from "react-icons/ai";
 import { IoMdCheckmark } from "react-icons/io"; 
 import { IoMdCloudDone } from "react-icons/io"; 
 import React, { useEffect, useState } from 'react'
-
+import { AnimatePresence,motion } from "framer-motion";
 function ProgressComp ({ progressChange,click,title ,icon}) {
 const [complete,setComplete]=useState(0)
 useEffect(()=>{
@@ -16,7 +16,7 @@ const iconRender_progress=(
 )
 
   return (
-    <div className='relative flex justify-center '>
+    <motion.div initial={{ opacity: .4 }} animate={{ opacity: 1 }} transition={{ type: 'spring', duration: .5 }} exit={{ opacity: 0 }}  className='relative flex justify-center top-40 '>
       <div className='absolute  items-center justify-center md:h-52  md:w-96 backdrop-blur-sm top-7 z-[60] rounded-2xl  border-gray-200 border-2 w-52 h-36 grid grid-cols-4 grid-rows-9 grid-flow-col bg-white'>
         <span className='flex justify-end col-span-1 col-end-5 text-2xl p-2  mt-4 text-gray-500' onClick={()=>click(false)}>
          <AiOutlineClose />
@@ -36,7 +36,7 @@ const iconRender_progress=(
           </span>
         </section>
       </div>
-    </div>
+    </motion.div>
   )
 }
 

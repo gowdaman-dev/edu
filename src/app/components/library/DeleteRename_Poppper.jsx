@@ -1,7 +1,8 @@
 "use client"
 import { MdDelete } from "react-icons/md";
 import { MdOutlineDriveFileRenameOutline } from "react-icons/md";
-import React, { useEffect, useState } from 'react'
+import { AnimatePresence,motion } from "framer-motion";
+
 import axios from "axios";
 import { ref, deleteObject } from "firebase/storage";
 import { db } from "@/firebase/firebase";
@@ -37,7 +38,7 @@ function Popper(props) {
     props.rename(true)
   }
   return (
-    <div className="delete_rename" >
+    <motion.div className="delete_rename" initial={{ opacity: .4 }} animate={{ opacity: 1 }} transition={{ type: 'spring', duration: .5 }} exit={{ opacity: 0 }}   >
 
 
       <div className='fixed grid grid-rows-2 rounded-md bg-white border-gray-400 border z-[2] md:right-44 right-16 sm:right-28 lg:right-60 xl:right-96 ' >
@@ -61,7 +62,7 @@ function Popper(props) {
 
       </div>
 
-    </div>
+    </motion.div>
   )
 }
 

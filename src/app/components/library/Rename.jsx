@@ -3,6 +3,8 @@
 import axios from 'axios';
 import React,{useState,useRef} from 'react'
 import { MdOutlineDriveFileRenameOutline } from "react-icons/md";
+import { AnimatePresence,motion } from "framer-motion";
+
  function Rename(props) {
   const id=props.id
   const refRename=useRef()
@@ -37,7 +39,7 @@ await axios.put("/api/files",data).then((res)=>{
  }
 
   }
-  return (<div className='absolute p-4 md:p-6 grid  border-[2px] rounded-lg bg-white grid-cols-5 grid-rows-5'>
+  return (<motion.div initial={{ opacity: .4 }} animate={{ opacity: 1 }} transition={{ type: 'spring', duration: .5 }} exit={{ opacity: 0 }}   className='absolute p-4 md:p-6 grid  border-[2px] rounded-lg bg-white grid-cols-5 grid-rows-5'>
 
 
     <input type="text" ref={refRename} autoFocus className='row-span-2 bg-gray-100 rounded-full outline-none pl-6 inline-block col-span-5 ' value={fileName} onChange={(e) => handleChange(e)} />
@@ -52,7 +54,7 @@ await axios.put("/api/files",data).then((res)=>{
 
 </span>
 cancel</button>
-  </div>
+  </motion.div>
   )
 }
 

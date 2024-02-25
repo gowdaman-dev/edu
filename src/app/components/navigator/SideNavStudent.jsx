@@ -10,12 +10,14 @@ import { signOut, useSession } from 'next-auth/react'
 import Image from 'next/image'
 import { IoLibraryOutline, IoReaderOutline } from 'react-icons/io5'
 import { FaRegUser } from 'react-icons/fa6'
+import Accountinformation from '../dashboard/AccountInformation';
 function SideNavStudent() {
     const [addmember, setAddmember] = useState(false)
     const menuref = useRef();
     const menulistref = useRef();
     const path = usePathname();
-    const { nav, setnav, addmanually, setAddmanually } = useContext(UserContext)
+    const { nav, setnav, addmanually, setAddmanually , showAccInfo,
+        setShowAccInfo} = useContext(UserContext)
     const [addorganisermanually, setaddorganisermanually] = useState(false)
     const animenavtext = (variants) => {
         return {
@@ -86,19 +88,14 @@ function SideNavStudent() {
                     <motion.p {...animenavtext(navtext)} className='text-[--web-primary-color] text-xl font-bold'>EDULEARN</motion.p>
                 </div>
                 <div className="flex flex-col w-full px-2 py-2 items-start gap-4">
-                    <Link href={'/dashboard'} className={`flex w-full  justify-start overflow-hidden rounded-lg ${(path == '/dashboard') ? "bg-[--web-primary-color] text-white" : "hover:bg-gray-100 text-gray-800"} `}>
-                        <div className="w-fit flex justify-start  py-2 px-3 items-center gap-4">
-                            <IoReaderOutline className='text-xl' />
-                            <motion.p {...animenavtext(navtext)} className='text-md'>Reader</motion.p>
-                        </div>
-                    </Link>
+                   
                     <Link href={'/dashboard/library'} className={`flex w-full  justify-start overflow-hidden rounded-lg ${(path == '/dashboard/library') ? "bg-[--web-primary-color] text-white" : "hover:bg-gray-100 text-gray-800"} `}>
                         <div className="w-fit flex justify-start  py-2 px-3 items-center gap-4">
                             <IoLibraryOutline className='text-xl' />
                             <motion.p {...animenavtext(navtext)} className='text-md'>Library</motion.p>
                         </div>
                     </Link>
-                    <button className="flex w-full  justify-start overflow-hidden hover:bg-gray-100 rounded-lg">
+                    <button onClick={()=>setShowAccInfo(true)} className="flex w-full  justify-start overflow-hidden hover:bg-gray-100 rounded-lg">
                         <div className="w-fit flex justify-start  py-2 px-3 items-center gap-4">
                             <FaRegUser className='text-xl' />
                             <motion.p {...animenavtext(navtext)} className='text-gray-800 text-md'>Account</motion.p>
@@ -112,6 +109,15 @@ function SideNavStudent() {
                     </button>
                 </div>
             </div>
+            <AnimatePresence mode='wait'>
+                {
+                    showAccInfo && (
+                        <Accountinformation />
+                    )
+                }
+
+
+            </AnimatePresence>
         </motion.div>
     )
 }

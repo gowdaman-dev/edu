@@ -54,16 +54,14 @@ function layout({ children }) {
                         }
                         {
                             (session?.user?.role == "student") && (
-                                <div className='max-w-screen overflow-hidden'>
-                                    <div className="flex h-screen max-w-screen">
-                                        <div className="md:flex flex-1 hidden relative z-[10]">
-                                            <SideNavStudent />
-                                        </div>
-                                        <div className="md:hidden flex-1 flex relative z-[10]">
-                                            <SideNavMobStudent />
-                                        </div>
-                                        <div className="h-screen md:w-full relative z-0">
-                                            <NavBarStudent />
+                        <div className='max-w-screen overflow-hidden'>
+                             <div className="flex h-screen max-w-screen">
+                              <div className="flex flex-1 absolute md:relative z-[10]">
+                            <SideNavStudent />
+                            </div>
+                                     
+                             <div className="h-screen md:w-full relative z-0">
+                                  <NavBarStudent />
                                             {children}
                                         </div>
                                     </div>

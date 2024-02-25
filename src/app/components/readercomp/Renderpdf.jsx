@@ -20,6 +20,8 @@ import axios from "axios";
 import { getDownloadURL, ref } from "firebase/storage";
 import { db } from "@/firebase/firebase";
 import ProgressComp from "../library/ProgressComponent";
+import { AnimatePresence,motion } from "framer-motion";
+
 const PdfViewer = () => {
   const params = useParams()
   const [buffer, setBuffer] = useState([]);
@@ -110,13 +112,10 @@ return ()=>clearInterval(id)
 
 useEffect(() => {
   const fetcher=async ()=>{
-    await axios.post("http://localhost:3000/",{data:text}).then(res=>{
-      console.log(res);
-    })
+ //fetch using api
 
   }
   if(text){
-console.log(text);
     fetcher()
   }
 }, [text])
@@ -135,7 +134,7 @@ console.log(text);
 
   return (
     <>
-      <header className='h-[60px] border-t-[1px] border-[--web-primary-color] w-screen absolute z-[20] bottom-0 md:relative bg-white md:border-b-[1px] '>
+      <header className='h-[60px] border-t-[1px] border-[--web-primary-color] w-screen fixed z-[20] bottom-0 md:relative bg-white md:border-b-[1px] '>
         <ul className='flex items-center justify-around h-full relative'>
           <li className='flex justify-center grow gap-x-10 sm:gap-x-20 text-[--web-primary-color]'>
                 <span onClick={() => setIsPlay(!isPlay)} className='text-2xl sm:text-3xl cursor-pointer'>{isPlay ? <FaRegCirclePause /> : <FaPlayCircle />}</span>
@@ -150,7 +149,9 @@ console.log(text);
 
         </ul>      </header>
       <main className='w-screen h-[90%] '>
+
         <section className={` fixed z-[10] w-screen grid grid-cols-12 ${isTools ? "h-screen" : null} grid-rows-12 tool`}>
+      
 
           {isTools && (
             <Rotate direction={RotateDirection.Backward}>
@@ -196,11 +197,15 @@ console.log(text);
             </Rotate>
           )
           }
+        
         </section>
         <section className='absolute flex flex-col items-center w-screen z-[1] '>
 
           {progVisible && (
+                      <div className="h-screen w-screen fixed backdrop-blur-sm z-[3] top-0 ">
+
             <ProgressComp progressChange={progress} click={setProgVisible} title={"Downloading :"} icon={"download"} />
+            </div>
           )}
         </section>
         {!progVisible && (
