@@ -49,13 +49,12 @@ const Requestform = () => {
     }
   };
 
-  const Comment = `Explore EduLearn : Streamline PDF sharing for educational advancement! Share why EduLearn is a must for your school.`;
   return (
     <div className="mt-16">
       <p className="text-center px-10 pb-8 text-lg">
-        You can write to your school here to ask them to create an account wth
-        us. After they create an account, they can invite you to their group to
-        gain free access.
+        Note: This form is only for new school registeration by admin, If you are member of registered school, then {''}
+        <Link className="text-[--web-primary-color]" href={'new/member/request'} >Register your account </Link>{''}as member
+        instead.
       </p>
       <div className=" rounded-lg md:shadow-[0px_0px_2px_0px] sm:w-fit w-full px-1 md:px-10 mx-auto flex-col justify-center">
         <Image
@@ -63,7 +62,7 @@ const Requestform = () => {
           src={"/logo.svg"}
           width={100}
           height={100}
-          alt=""
+          alt="MiWay logo"
         />
         <AnimatePresence mode="wait">
           {error && (
@@ -92,7 +91,7 @@ const Requestform = () => {
           )}
         </AnimatePresence>
         <h1 className="text-center  font-bold text-2xl py-10">
-          Recommend {webName} to your School
+          {webName} Organizer Request Form
         </h1>
         <form onSubmit={submitEvent} className="text-gray-800" action="">
           <div className="flex justify-center">
@@ -105,7 +104,7 @@ const Requestform = () => {
                   placeholder="Your Name"
                   value={formData.name}
                   onChange={handleChange}
-                  className="rounded-lg pl-2 h-12 outline-none border  bg-[--web-container]"
+                  className="rounded-lg pl-2 h-12 border  bg-[--web-container]"
                 />
                 <input
                   id="schoolname"
@@ -114,7 +113,7 @@ const Requestform = () => {
                   placeholder="School Name"
                   value={formData.schoolname}
                   onChange={handleChange}
-                  className="rounded-lg pl-2 h-12 border outline-none border web-container]"
+                  className="rounded-lg pl-2 h-12  border web-container]"
                 />
               </div>
               <div className="flex flex-col gap-10 w-full md:w-72 ">
@@ -125,7 +124,7 @@ const Requestform = () => {
                   placeholder="Your Email"
                   value={formData.email}
                   onChange={handleChange}
-                  className="rounded-lg h-12 pl-2 outline-none border  bg-[--web-container]"
+                  className="rounded-lg h-12 pl-2 border  bg-[--web-container]"
                 />
                 <input
                   id="role"
@@ -134,7 +133,7 @@ const Requestform = () => {
                   placeholder="Role You Play"
                   value={formData.role}
                   onChange={handleChange}
-                  className="rounded-lg h-12 pl-2 border outline-none border web-container]"
+                  className="rounded-lg h-12 pl-2  border web-container]"
                 />
               </div>
             </div>
@@ -145,10 +144,10 @@ const Requestform = () => {
               id="description"
               name="description"
               type="text"
-              placeholder={Comment}
+              placeholder="Tell more about your self and purpose of using our product"
               value={formData.description}
               onChange={handleChange}
-              className="rounded-lg pl-2 pt-1 min-h-56 outline-none border order border resize-none"
+              className="rounded-lg pl-2 pt-1 min-h-56  order border resize-none"
             />
             <input
               type="submit"
@@ -161,20 +160,16 @@ const Requestform = () => {
       <div className="grid justify-center">
         <div className=" w-80 md:w-[600px] py-10">
           <h2 className="md:-ml-8 -ml-4  font-bold">Instructions: </h2>
-          <div className=" py-5 leading-6">
-            <p className="text-justify ">
-              This is for students to send a request to their school's
-              administrators to sign up for an account with NaturalReader. If
-              you are an administrator or teacher, you can{" "}
-              <Link
-                href={"requeststaff"}
-                className="text-[--web-primary-color]"
-              >
-                contact us directly
-              </Link>{" "}
-              to open an account.
-            </p>
-          </div>
+          <ol className=" py-5 leading-6 text-justify grid gap-4">
+            <li>
+              1. Once a School is set up under your account, you as the school admin  can create Classes and add Students & Teachers. Users set as
+              "Teachers" have admin access to invite or delete other members.
+            </li>
+            <li>
+              2. Only school admins (not members) may register thier school for MiWay account, such as  school administrators, principals,owners, etc.
+            </li>
+
+          </ol>
         </div>
       </div>
     </div>

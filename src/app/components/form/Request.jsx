@@ -67,7 +67,7 @@ const Requestform = () => {
   }, []);
   useEffect(() => {
     const validate = () => {
-      
+
       const optionExist = schoolname.find(
         (item) => {
           const val = item.schoolname.toLowerCase()
@@ -171,9 +171,7 @@ const Requestform = () => {
   const roleClass = `rounded-lg  pl-2 w-72 text-b h-12 border cursor-pointer   bg-[--web-container]`;
   const regularClass = `rounded-lg  pl-2 w-72 text-b h-12 border   bg-[--web-container]`;
   const gradeClass = ` rounded-lg cursor-pointer pl-2 h-12  mt-10   w-72 md:w-[600px]  border bg-[--web-container]`;
-  const dropdownClass = `cursor-pointer py-2 rounded-lg hover:bg-gray-100`
-  const Comment =
-    "Tell us more about yourself and the purpose of using our product";
+
 
   return (
     <div className="mt-16 w-screen z-30">
@@ -377,7 +375,7 @@ const Requestform = () => {
           <div className="flex justify-center gap-10 flex-col py-10 ">
             <textarea
               type="text"
-              placeholder={Comment}
+              placeholder="Tell more about yourself"
               onChange={e => setData({ ...data, comment: e.target.value })}
 
               className="rounded-lg resize-none pl-2 pt-1 min-h-56   h-auto w-72 md:w-[600px] mx-auto  border bg-[--web-container]"
@@ -392,28 +390,20 @@ const Requestform = () => {
       <div className="grid justify-center">
         <div className=" w-80 md:w-[600px] py-10">
           <h2 className="md:-ml-8 -ml-4  font-bold ">Instructions: </h2>
-          <div className=" py-5 leading-6">
-            <p className="pb-3 text-justify">
-              1. Only Registered School's members  may register for an EDU
+          <ol className=" py-5 leading-6 text-justify grid gap-4">
+            <li>
+              1. Only Registered School's members may request for an MiWay member
               account, such as teachers or students ...
-            </p>
-            <p className="pb-3 text-justify">
-              2. Once a School is set up under your account, you as the account
-              owner can create Classes and add Students & Teachers. Users set as
-              "Teachers" have admin access to invite or delete other members.
-            </p>
-            <p className="pb-3 text-justify">
-              3. Under a free EDU account, all invited users also have free user
-              limitations.
-            </p>
-            <p className="pb-3 text-justify">
-              4. If you are a student, you can{" "}
+            </li>
+
+            <li>
+              2. If your school is not yet registered, then you can{" "}
               <Link href={"recommend"} className="text-[--web-primary-color]">
-                request that your school
-              </Link>{" "}
+                Register Your school
+              </Link>{" "} to
               open an account with us.
-            </p>
-          </div>
+            </li>
+          </ol>
         </div>
       </div>
     </div>
