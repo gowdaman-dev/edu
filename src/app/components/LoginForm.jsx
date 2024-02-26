@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { signIn } from "next-auth/react"
+import { signIn, useSession } from "next-auth/react"
 import Image from "next/image";
 import LoaderPage from "./loader/LoadingPage";
 import { useRouter } from "next/navigation";
@@ -11,6 +11,7 @@ function LoginForm() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const router = useRouter()
+  const {data:session} = useSession();
   const handleExist = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -74,8 +75,12 @@ function LoginForm() {
               <div className="py-6">
                 <div className="flex flex-col items-center ">
                   <Image src={'/logos/logo.svg'} height={150} width={150} alt="logo" />
-                  <h2 className="text-4xl py-2 text-[#0B1770] font-bold">Login</h2>
-                  <p className="font-light text-gray-400">Please <strong>login</strong> to continue to <span className="text-[#0B1770]">Education</span></p>
+                  <h2 className="text-4xl py-2 text-[--web-primary-color] font-bold">Login</h2>
+                  
+                  {
+                    (session?.user)?<p className="font-light text-gray-400"><strong>Redirecting....</strong></p>:
+                    <p className="font-light text-gray-400">Please <strong>login</strong> to continue to <span className="text-[#0B1770]">Education</span></p>
+                  }
                 </div>
               </div>
               <form onSubmit={exist ? handleSubmit : handleExist} className="flex flex-col w-full gap-6 " action="" method="post">
