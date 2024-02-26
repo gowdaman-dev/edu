@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useRef, useEffect} from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { webName } from "../globalDetails";
@@ -8,24 +8,24 @@ import { grades, roles } from "./data";
 import { AnimatePresence, motion } from "framer-motion";
 
 const Requestform = () => {
-  
-    const [schoolname, setSchoolname] = useState([]);
-  
-    useEffect(() => {
-      fetch("/api/schoolList", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-        .then((response) => response.json())
-        .then((data) => setSchoolname(data));
-    }, []);
-  
-  
-  
-  
-  
+
+  const [schoolname, setSchoolname] = useState([]);
+
+  useEffect(() => {
+    fetch("/api/schoolList", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => setSchoolname(data));
+  }, []);
+
+
+
+
+
   const [isRoleOpen, setIsRoleOpen] = useState(false);
   const [isGradeOpen, setIsGradeOpen] = useState(false);
   const [isSchoolOpen, setIsSchoolOpen] = useState(false);
@@ -67,8 +67,7 @@ const Requestform = () => {
   }, []);
   useEffect(() => {
     const validate = () => {
-      /*       props.handleSchool(schoolName);
-       */
+      
       const optionExist = schoolname.find(
         (item) => {
           const val = item.schoolname.toLowerCase()
@@ -235,7 +234,7 @@ const Requestform = () => {
                 />
                 <div className="relative ">
                   {isNotValid && <p className="text-red-500 absolute -mt-6">Please select a valid option
-</p>}
+                  </p>}
                   <input
                     ref={dropdownRef}
                     className={regularClass}
@@ -248,46 +247,46 @@ const Requestform = () => {
 
                   />
                   {
-                   isSchoolOpen && schoolname.filter((data) => {
-                    return schoolName === "" ? true : data.schoolname.toLowerCase().trim().includes(schoolName.toLowerCase().trim());
-                }).length > 0 && (
-                  <AnimatePresence mode="wait">
-                    {isSchoolOpen && (
-                      <motion.div
-                        initial={{ y: 10, opacity: 0.6 }}
-                        animate={{ y: 0, opacity: 1 }}
-                        exit={{ y: 10, opacity: 0 }}
-                        transition={{ duration: 0.5, type: "spring" }}
-                        className="absolute border max-h-64 overflow-auto w-72 mt-2 z-40 pl-2 py-2 shadow-lg rounded-lg grid gap-2 bg-white round "
-                      >
-                        {" "}
-                        {schoolname
-                          // filter the data according to input
-                          .filter((data) => {
-                            return schoolName === ""
-                              ? true
-                              : data.schoolname.toLowerCase().trim().includes(schoolName.toLowerCase().trim());
-                          })
-                          .map((option,index) => {
-                            return (
-                              <p
-                              className="capitalize cursor-pointer p-1 w-[273px] rounded-lg hover:bg-gray-100"
+                    isSchoolOpen && schoolname.filter((data) => {
+                      return schoolName === "" ? true : data.schoolname.toLowerCase().trim().includes(schoolName.toLowerCase().trim());
+                    }).length > 0 && (
+                      <AnimatePresence mode="wait">
+                        {isSchoolOpen && (
+                          <motion.div
+                            initial={{ y: 10, opacity: 0.6 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            exit={{ y: 10, opacity: 0 }}
+                            transition={{ duration: 0.5, type: "spring" }}
+                            className="absolute border max-h-64 overflow-auto w-72 mt-2 z-40 pl-2 py-2 shadow-lg rounded-lg grid gap-2 bg-white round "
+                          >
+                            {" "}
+                            {schoolname
+                              // filter the data according to input
+                              .filter((data) => {
+                                return schoolName === ""
+                                  ? true
+                                  : data.schoolname.toLowerCase().trim().includes(schoolName.toLowerCase().trim());
+                              })
+                              .map((option, index) => {
+                                return (
+                                  <p
+                                    className="capitalize cursor-pointer p-1 w-[273px] rounded-lg hover:bg-gray-100"
 
 
-                                onClick={() => {
-                                  handleClickSchool(option.schoolname);
-                                }}
-                                key={option.schoolname}
-                              >
-                                {" "}
-                                {option.schoolname}
-                              </p>
-                            );
-                          })}
-                      </motion.div>
+                                    onClick={() => {
+                                      handleClickSchool(option.schoolname);
+                                    }}
+                                    key={option.schoolname}
+                                  >
+                                    {" "}
+                                    {option.schoolname}
+                                  </p>
+                                );
+                              })}
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
                     )}
-                  </AnimatePresence>
-)}
                 </div>
               </div>
               <div className="flex flex-col gap-10 w-72 ">
@@ -308,7 +307,7 @@ const Requestform = () => {
                     onFocus={() => { setIsRoleOpen(true) }}
                     onBlur={() => { setIsRoleOpen(false) }}
                     readOnly
-               
+
                     onClick={toggleRole}
                   />
                   {" "}
@@ -324,12 +323,12 @@ const Requestform = () => {
                       >
                         {" "}
                         {
-                    roles.map(item => (
-                      <p key={item} className="cursor-pointer capitalize py-1 w-full px-2 rounded-lg hover:bg-gray-100" onClick={() => {
-                        handleRoleClick(item)
-                      }}> {item}</p>
-                    ))
-                  }
+                          roles.map(item => (
+                            <p key={item} className="cursor-pointer capitalize py-1 w-full px-2 rounded-lg hover:bg-gray-100" onClick={() => {
+                              handleRoleClick(item)
+                            }}> {item}</p>
+                          ))
+                        }
                       </motion.div>
                     )}
                   </AnimatePresence>
@@ -347,7 +346,7 @@ const Requestform = () => {
               placeholder="Select Your Grade"
 
               className={gradeClass}
-              value={grade && "Grade "+grade}
+              value={grade && "Grade " + grade}
               readOnly
             />
 
@@ -361,7 +360,7 @@ const Requestform = () => {
                   exit={{ y: 10, opacity: 0 }}
                   transition={{ duration: 0.5, type: "spring" }}
                   className="absolute border max-h-64 top-full overflow-auto w-72 md:w-[600px] mt-2 z-40 pl-2 py-2 shadow-lg rounded-lg grid gap-2 bg-white round "
-                  >
+                >
                   {" "}
                   {
                     grades.map(item => (

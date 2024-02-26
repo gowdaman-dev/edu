@@ -261,28 +261,25 @@ function SuperAdminMember() {
   const [outSchoolName, setOutSchoolName] = useState('')
   const [isSchoolOpen, setIsSchoolOpen] = useState(false);
   const [isNotValid, setIsNotValid] = useState(false);
-  /*  const [check, setCheck] = useState('') */
+  const [check, setCheck] = useState('') 
 
 
-  /*   useEffect(() => {
+    useEffect(() => {
       const validate = () => {
-              props.handleSchool(schoolName);
-         
         const optionExist = inSchoolName.find(
           (item) => (
-            item.inSchoolName?.toLowerCase() == outSchoolName.toLowerCase().trim()
-           
+            item.schoolname?.toLowerCase() == outSchoolName.toLowerCase().trim()  
         ));
         optionExist || outSchoolName == ""
           ? setIsNotValid(false)
           : setIsNotValid(true);
       };
-      validate();
+      validate();     
   
   
     }, [check]);
   
-    */
+    
 
   const toggleSchool = () => {
     setIsSchoolOpen(true);
@@ -299,7 +296,7 @@ function SuperAdminMember() {
     const value = e.target.value;
     setIsSchoolOpen(false)
     setOutSchoolName(value)
-    /* setCheck(value) */
+     setCheck(value) 
   };
 
   const handleClickSchool = (value) => {
@@ -393,6 +390,14 @@ function SuperAdminMember() {
                             )}
                           </AnimatePresence>
                           }
+                          {
+                            isNotValid && (
+                              <p className="text-red-500 text-xs">
+                                Invalid School Name
+                              </p>
+                            )
+                          }
+
                         </div>
                       ) :
                         <p className='bg-gray-50 rounded-lg px-2 py-1 w-[80%]' > {selectedrecord.school} </p>
