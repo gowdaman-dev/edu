@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import bcrypt from 'bcryptjs'
 import { signOut, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import { webName } from '@/app/components/globalDetails';
 function page({ params }) {
     const { user } = params;
     const [currentpass, setCurrentpass] = useState({
@@ -67,7 +68,7 @@ function page({ params }) {
                 )
             }
             <div className="flex flex-col items-center justify-center rounded-lg p-4 md:max-w-[600px] w-[90%] gap-2">
-                <h1 className='text-purple-800 text-6xl uppercase font-bold'>Edulearn</h1>
+                <h1 className='text-purple-800 text-6xl uppercase font-bold'>{webName}</h1>
                 <h2 className='text-2xl text-gray-900 font-semibold'>Reset your Password</h2>
                 <p className='text-gray-800 font-[200] text-[12px]'>Caution : don't share your reset password link .</p>
                 <form onSubmit={resetPassword} className='flex flex-col items-center justify-center gap-4 w-full' method="post">
