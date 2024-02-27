@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+/* import { NextRequest, NextResponse } from "next/server";
 import { getAudioBuffer } from "simple-tts-mp3";
 
 ;export const config = {
@@ -20,7 +20,7 @@ export async function POST(req, res) {
         return new NextResponse({}, { status: 200 }); // Return an error response if an exception occurs
     }
 
-   /*  try {
+    try {
         const buffer = await getAudioBuffer(text);
         const blob = new Blob([buffer], { type: 'audio/mp3' })
         const headers = new Headers();
@@ -29,6 +29,7 @@ export async function POST(req, res) {
         return new NextResponse(blob, { status: 200, statusText: "OK", headers });
     } catch (error) {
         console.log(error);
-    } */
+    } 
 
 };
+ */

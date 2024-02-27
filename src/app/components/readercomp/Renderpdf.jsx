@@ -109,7 +109,7 @@ const [transcript,setTransScript]=useState([])
 
 
 
-useEffect(() => {
+/* useEffect(() => {
   const fetcher=async ()=>{
     const blob=new Blob([originalPdfBuffer],{ type: 'application/pdf' })
     await fetch('/api/audio', {
@@ -122,8 +122,8 @@ useEffect(() => {
       const blob = data.blob().then((data) => {
         console.log("audio done");
         const url = URL.createObjectURL(data)
-/*         setAudiodata(url)
- */      })
+        setAudiodata(url)
+      })
     })
   } 
 
@@ -134,7 +134,7 @@ useEffect(() => {
 }, [originalPdfBuffer]);
 
 
-
+ */
   const handleDocumentLoad = () => {
     setpdfRender(!pdfrender)
   };
