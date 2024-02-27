@@ -39,6 +39,7 @@ function page() {
         form.reset();
         setContactMessage('mail sent !')
         setInterval(() => {
+          
           setContactMessage("")
         }, 3000);
 
