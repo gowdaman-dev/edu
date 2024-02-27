@@ -14,7 +14,7 @@ if(query){
     await connectMongoBD()
    
     
-     const data = await libFiles.find({file_school:query.school,file_grade:GRADE})
+     const data = await libFiles.find({file_school:{ $in: [query.school, "default"] },file_grade:GRADE})
 
     
     if (data.length > 0) {
@@ -43,6 +43,7 @@ console.log("from api post /files");
   try {
     let { fname,fsize,_fid,fgrade,fschool,furl } = await req.json()
     fgrade=Number(fgrade);
+    console.log(fschool);
     
 
 
@@ -64,9 +65,9 @@ export async function DELETE(req){
   try{
     const {id}=await req.json()
     if(id){
-      console.log(id);
    await connectMongoBD()
- await libFiles.deleteOne({file_id:id})
+ const data=await libFiles.deleteOne({file_id:id})
+ console.log(data);
   return NextResponse.json({message:"deleted successfully"},{status:200})
      
     }

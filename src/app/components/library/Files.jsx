@@ -18,18 +18,18 @@ import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage"
 import { useSession } from "next-auth/react";
 import { UserContext } from "@/ContextUser";
 import Alert from "./Alert";
-import { AnimatePresence,motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 let filesShow = []
 function Files() {
-  const router=useRouter()
+  const router = useRouter()
 
   const [isRenameOpen, setIsRenameOpen] = useState(false)
-  const[renameId,setRenameId]=useState(null)
+  const [renameId, setRenameId] = useState(null)
 
   const { data: session, loading } = useSession()
-  const { school: SCHOOL } = session.user
+  let { school: SCHOOL,role:ROLE } = session.user
   const [isStudent, setStudent] = useState(session.user.role === "student")
-  const { navGrade: GRADE,setUrl } = useContext(UserContext)
+  const { navGrade: GRADE, schoolFilter } = useContext(UserContext)
   const [data, setData] = useState([])
   const [isAnimate, setIsAnimate] = useState(true)
   const [newFile, setNewFile] = useState(0)
@@ -44,7 +44,7 @@ function Files() {
 
 
       try {
-        fetchFiles(session, GRADE).then(res => {
+        fetchFiles(session, GRADE,schoolFilter).then(res => {
           if (res) {
             setIsAnimate(false)
 
@@ -58,7 +58,7 @@ function Files() {
 
     fetchData()
 
-  }, [newFile, GRADE, loading])
+  }, [newFile, GRADE, loading,schoolFilter])
   useEffect(() => {
     // Define the event listener function
     function clickEvent(e) {
@@ -109,32 +109,32 @@ function Files() {
   })
 
   function handlePopClick(index, id, name) {
-   
-    
+
+
     if (index === pop_DEl_Rename) {
 
       setPop_Del_Rename(null)
     }
     else {
-if(!isRenameOpen){
+      if (!isRenameOpen) {
 
-  setPop_Del_Rename(index)
-  setDelete_id(id)
-  setName(name)
-}
+        setPop_Del_Rename(index)
+        setDelete_id(id)
+        setName(name)
+      }
     }
-    if(!isRenameOpen){
+    if (!isRenameOpen) {
       setRenameId(index)
     }
   }
-  const pdfClick = (e,URL) => {
-const threeDotParent=e.target.classList.contains("three_dot")
-const threeDotSvg=e.target.parentElement.classList.contains("three_dot")
-    if((!threeDotParent && !threeDotSvg) && pop_DEl_Rename===null){
-if(!isRenameOpen){
+  const pdfClick = (e, URL) => {
+    const threeDotParent = e.target.classList.contains("three_dot")
+    const threeDotSvg = e.target.parentElement.classList.contains("three_dot")
+    if ((!threeDotParent && !threeDotSvg) && pop_DEl_Rename === null) {
+      if (!isRenameOpen) {
 
-  router.push("/reader/"+URL)
-}
+        router.push("/reader/" + URL)
+      }
     }
 
   }
@@ -143,7 +143,7 @@ if(!isRenameOpen){
       let name = item.fname
       let size = item.fsize
       let id = item.fid
-      const URLID=id
+      const URLID = id
       //work done on items
       //for file name
       let trimName = item.fname
@@ -153,21 +153,21 @@ if(!isRenameOpen){
       name = name.length > 30 ? name.slice(0, 30) + '...' : name
       // for file size
       size = size / 1000
-      size =size > 1000
-          ? (size / 1000).toFixed(2) + 'MB/s'
-          : Math.floor(size) + ' KB/s'
+      size = size > 1000
+        ? (size / 1000).toFixed(2) + 'MB/s'
+        : Math.floor(size) + ' KB/s'
 
       return (
-        <div 
+        <div
           key={'file' + index}
           className='grid grid-flow-col grid-rows-3   grid-cols-8 cursor-pointer  text-balance   text-gray-500 w-full border-gray-200 relative md:text-[16px] sm:text-md text-sm border-b-[1px]
           '
         >
-          <span className='grid col-span-1 row-span-3 text-3xl text-gray-500 sm:text-2xl  place-content-center py-3 ' onClick={(e)=>pdfClick(e,URLID)}>
+          <span className='grid col-span-1 row-span-3 text-3xl text-gray-500 sm:text-2xl  place-content-center py-3 ' onClick={(e) => pdfClick(e, URLID)}>
             <MdPictureAsPdf />
           </span>
           <p
-            className='col-span-5 sm:col-span-6 row-span-3 font-light     flex  items-center' onClick={(e)=>pdfClick(e,URLID)}
+            className='col-span-5 sm:col-span-6 row-span-3 font-light     flex  items-center' onClick={(e) => pdfClick(e, URLID)}
             key={'filename' + index}
           >
             {name}
@@ -180,28 +180,28 @@ if(!isRenameOpen){
           }
           <AnimatePresence mode="wait">
 
-      {(renameId==index) && isRenameOpen &&(
+            {(renameId == index) && isRenameOpen && (
 
-<div className="h-screen w-screen fixed backdrop-blur-sm z-[3] top-0 ">
+              <div className="h-screen w-screen fixed backdrop-blur-sm z-[3] top-0 ">
 
-<div className="fixed z-[3]  w-full flex justify-center top-48 left-1">
-  <Rename name={file_Name} id={delete_id} update={setNewFile} closePop={setPop_Del_Rename} animate={setIsAnimate} rename={setIsRenameOpen}/>
-</div>
-</div>  
-      )
+                <div className="fixed z-[3]  w-full flex justify-center top-48 left-1">
+                  <Rename name={file_Name} id={delete_id} update={setNewFile} closePop={setPop_Del_Rename} animate={setIsAnimate} rename={setIsRenameOpen} />
+                </div>
+              </div>
+            )
 
 
-}
+            }
           </AnimatePresence>
           <AnimatePresence mode="wait">
 
-          {pop_DEl_Rename === index &&
+            {pop_DEl_Rename === index &&
 
 
 
-            <Popper name={file_Name} id={delete_id} rename={setIsRenameOpen} update={setNewFile} closePop={setPop_Del_Rename} animate={setIsAnimate} />
+              <Popper name={file_Name} id={delete_id} rename={setIsRenameOpen} update={setNewFile} closePop={setPop_Del_Rename} animate={setIsAnimate} />
 
-          }
+            }
           </AnimatePresence>
         </div>
       )
@@ -224,9 +224,13 @@ if(!isRenameOpen){
     let file = e.target.files[0]
     const _uuid = uuid()
     const NAME = file.name
+
     //TODO:firebase operation
     if (file) {
       if (NAME.includes(".pdf")) {
+        if(ROLE==="superadmin"){
+          SCHOOL="default"
+        }
         setProgVisible(true)
         const reference = ref(db, `files/${_uuid}`)
         const uploadTask = uploadBytesResumable(reference, file);
@@ -325,16 +329,16 @@ if(!isRenameOpen){
         </li>}
       </ul>
       <section className='relative flex flex-col items-center w-full  z-[1] '>
-       <AnimatePresence mode="wait">
-       {progVisible && (
-          <div  className="h-screen w-screen fixed backdrop-blur-sm z-[3] top-0 ">
+        <AnimatePresence mode="wait">
+          {progVisible && (
+            <div className="h-screen w-screen fixed backdrop-blur-sm z-[3] top-0 ">
 
-          <ProgressComp progressChange={progress} click={setProgVisible} title={"Uploading :"} icon={"upload"}  />
-          </div>
-        )}
+              <ProgressComp progressChange={progress} click={setProgVisible} title={"Uploading :"} icon={"upload"} />
+            </div>
+          )}
 
 
-       </AnimatePresence>
+        </AnimatePresence>
         {renderData}
         {isAnimate && <SkeletonAnimation />}
         {isAnimate && <SkeletonAnimation />}

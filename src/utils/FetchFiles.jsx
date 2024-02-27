@@ -1,8 +1,11 @@
 import axios from "axios";
-async function fetchFiles(session,contextGrade) {
+async function fetchFiles(session,contextGrade,schoolFilter) {
   const { user } = session
-  const SCHOOL=user.school
-  
+  let SCHOOL=user.school
+  if(user.role =="superadmin"){
+
+    SCHOOL=schoolFilter
+  }
   const GRADE = "grade" in user ? user.grade : contextGrade;
   const response = await axios.get(`/api/files`, {
     params: {

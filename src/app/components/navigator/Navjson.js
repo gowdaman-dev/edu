@@ -70,5 +70,10 @@ export const superadminnavlinks = [
         label:"Member List",
         path:'/dashboard',
         icon:<PiUsersLight className='text-xl' />
-    }
+    },
+    {
+        label:"Sharded Library",
+        path:'/dashboard/library',
+        icon:<VscLibrary  className='text-xl'/>
+    },
 ]

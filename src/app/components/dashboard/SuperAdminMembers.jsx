@@ -6,11 +6,9 @@ import { json2csv } from 'json-2-csv';
 import { AnimatePresence, motion } from 'framer-motion';
 import { FaRegEdit } from 'react-icons/fa';
 import { AiOutlineClose, AiOutlineCloseCircle, AiOutlineDown, AiOutlineDownload, AiOutlineReload, AiOutlineUp } from 'react-icons/ai';
-import useSWR from 'swr';
 function SuperAdminMember() {
   const {
     navSearch,
-    fetchrole,
     count,
     setCount,
     setExporter,
@@ -169,6 +167,7 @@ function SuperAdminMember() {
       setdeleteuser(false)
     }
   }
+  
   const [schoolfilterdata, setSchoolFilterData] = useState({})
   const [memberdata, setMemberdata] = useState();
   useEffect(() => {
@@ -189,9 +188,9 @@ function SuperAdminMember() {
   const [filterdata, setFilterdata] = useState(memberdata)
   const roleFilterRef = useRef(null);
   const schoolFilterRef = useRef(null);
-  
-  useEffect(()=>{
-    const handleClose = (e) =>{
+
+  useEffect(() => {
+    const handleClose = (e) => {
       if (e.target != schoolFilterRef.current) {
         setSchoolFilterToggle(false);
       }
@@ -200,9 +199,9 @@ function SuperAdminMember() {
       }
     }
 
-    window.addEventListener('click',handleClose)
- 
-  },[])
+    window.addEventListener('click', handleClose)
+
+  }, [])
 
   const rolejson = ['admin', 'teacher', 'student']
   useEffect(() => {
@@ -261,25 +260,25 @@ function SuperAdminMember() {
   const [outSchoolName, setOutSchoolName] = useState('')
   const [isSchoolOpen, setIsSchoolOpen] = useState(false);
   const [isNotValid, setIsNotValid] = useState(false);
-  const [check, setCheck] = useState('') 
+  const [check, setCheck] = useState('')
 
 
-    useEffect(() => {
-      const validate = () => {
-        const optionExist = inSchoolName.find(
-          (item) => (
-            item.schoolname?.toLowerCase() == outSchoolName.toLowerCase().trim()  
+  useEffect(() => {
+    const validate = () => {
+      const optionExist = inSchoolName.find(
+        (item) => (
+          item.schoolname?.toLowerCase() == outSchoolName.toLowerCase().trim()
         ));
-        optionExist || outSchoolName == ""
-          ? setIsNotValid(false)
-          : setIsNotValid(true);
-      };
-      validate();     
-  
-  
-    }, [check]);
-  
-    
+      optionExist || outSchoolName == ""
+        ? setIsNotValid(false)
+        : setIsNotValid(true);
+    };
+    validate();
+
+
+  }, [check]);
+
+
 
   const toggleSchool = () => {
     setIsSchoolOpen(true);
@@ -296,7 +295,7 @@ function SuperAdminMember() {
     const value = e.target.value;
     setIsSchoolOpen(false)
     setOutSchoolName(value)
-     setCheck(value) 
+    setCheck(value)
   };
 
   const handleClickSchool = (value) => {
@@ -349,46 +348,46 @@ function SuperAdminMember() {
                         <div className='w-[80%] relative'>
                           <input type="text" value={outSchoolName} placeholder='school' id='school' name='school' onClick={toggleSchool} onBlur={handleBlurSchool} onFocus={handleFocusSchool} onChange={handleChangeSchool} className='capitalize bg-gray-200 w-full  rounded-lg px-2 py-1' />
                           {(selectedrecord.role !== "admin" && inSchoolName.filter((data) => {
-                    return outSchoolName === "" ? true : data.schoolname.toLowerCase().trim().includes(outSchoolName.toLowerCase().trim());
-                }).length > 0 ) && 
-
-                          
-                          <AnimatePresence mode="wait">
-                            {isSchoolOpen && (
-                              <motion.div
-                                initial={{ y: 10, opacity: 0.6 }}
-                                animate={{ y: 0, opacity: 1 }}
-                                exit={{ y: 10, opacity: 0 }}
-                                transition={{ duration: 0.5, type: "spring" }}
-                                className="absolute shadow max-h-64 overflow-auto w-full mt-2 z-40 pl-2 py-2 px-2 rounded-lg grid gap-2 bg-white round"
-                              >
-                                {" "}
-                                {inSchoolName
-                                  // filter the data according to input
-                                  .filter((data) => {
-                                    return outSchoolName === ""
-                                      ? true
-                                      : data.schoolname.toLowerCase().trim().includes(outSchoolName?.toLowerCase().trim());
-                                  })
-                                  .map((option, index) => {
-                                    return (
-                                      <p
-                                        className="capitalize cursor-pointer p-1 w-full rounded-lg hover:bg-gray-100"
+                            return outSchoolName === "" ? true : data.schoolname.toLowerCase().trim().includes(outSchoolName.toLowerCase().trim());
+                          }).length > 0) &&
 
 
-                                        onClick={() => {
-                                          handleClickSchool(option.schoolname);
-                                        }}
-                                        key={option.schoolname}
-                                      >
-                                        {" "}
-                                        {option.schoolname}
-                                      </p>
-                                    );
-                                  })}
-                              </motion.div>
-                            )}
-                          </AnimatePresence>
+                            <AnimatePresence mode="wait">
+                              {isSchoolOpen && (
+                                <motion.div
+                                  initial={{ y: 10, opacity: 0.6 }}
+                                  animate={{ y: 0, opacity: 1 }}
+                                  exit={{ y: 10, opacity: 0 }}
+                                  transition={{ duration: 0.5, type: "spring" }}
+                                  className="absolute shadow max-h-64 overflow-auto w-full mt-2 z-40 pl-2 py-2 px-2 rounded-lg grid gap-2 bg-white round"
+                                >
+                                  {" "}
+                                  {inSchoolName
+                                    // filter the data according to input
+                                    .filter((data) => {
+                                      return outSchoolName === ""
+                                        ? true
+                                        : data.schoolname.toLowerCase().trim().includes(outSchoolName?.toLowerCase().trim());
+                                    })
+                                    .map((option, index) => {
+                                      return (
+                                        <p
+                                          className="capitalize cursor-pointer p-1 w-full rounded-lg hover:bg-gray-100"
+
+
+                                          onClick={() => {
+                                            handleClickSchool(option.schoolname);
+                                          }}
+                                          key={option.schoolname}
+                                        >
+                                          {" "}
+                                          {option.schoolname}
+                                        </p>
+                                      );
+                                    })}
+                                </motion.div>
+                              )}
+                            </AnimatePresence>
                           }
                           {
                             isNotValid && (

@@ -15,6 +15,7 @@ function ContextUserData({ children }) {
     const [showAccInfo, setShowAccInfo] = useState(false);
     const [showsklinfo, setShowSklInfo] = useState(false);
     const [toggleRequest, setToggleRequest] = useState(false);
+    const [schoolFilter, setSchoolFilter] = useState('');
 
     return (
         <UserContext.Provider value={{
@@ -43,7 +44,9 @@ function ContextUserData({ children }) {
             showsklinfo,
             setShowSklInfo,
             toggleRequest, 
-            setToggleRequest
+            setToggleRequest,
+            schoolFilter, 
+            setSchoolFilter
         }}>
             {children}
         </UserContext.Provider>
