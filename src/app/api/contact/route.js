@@ -6,7 +6,7 @@ export async function POST(req){
     const data = await req.formData()
     transporter.sendMail({
         ...mailOption,
-        to:process.env.SUPERADMIN_MAIL,
+        to:"charliecharloluv@gmail.com",
         subject:`Contact from ${data.get('email')}`,
         html:`
             <h1>${webName}</h1>
