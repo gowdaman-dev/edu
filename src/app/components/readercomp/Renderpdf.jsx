@@ -21,15 +21,22 @@ import { getDownloadURL, ref } from "firebase/storage";
 import { db } from "@/firebase/firebase";
 import ProgressComp from "../library/ProgressComponent";
 import { AnimatePresence,motion } from "framer-motion";
-
+//test
 const PdfViewer = () => {
+  //texst
+  const audioRef = useRef(null);
+const [transcript,setTransScript]=useState([])
+  const [audiodata, setAudiodata] = useState()
+  const [highlights, setHighlights] = useState([]); 
+//text
+
   const params = useParams()
   const [buffer, setBuffer] = useState([]);
   const viewerRef = useRef(null);
   const [progress, setProgress] = useState(0)
   const [progVisible, setProgVisible] = useState(false)
   const [isTools, setIsTools] = useState(false)
-  const [text, setText] = useState("")
+  const [pdfText, setPdfText] = useState("")
   //plugins 
   const zoomPluginInstance = zoomPlugin();
   const { CurrentScale, ZoomIn, ZoomOut } = zoomPluginInstance;
@@ -41,6 +48,7 @@ const PdfViewer = () => {
   const { Open } = openPluginInstance;
   const rotatePluginInstance = rotatePlugin();
   const { Rotate } = rotatePluginInstance;
+  const [originalPdfBuffer,setOriginalPdfBuffer] =useState([])
   //player
   const [isPlay, setIsPlay] = useState(false)
 
@@ -68,10 +76,11 @@ const PdfViewer = () => {
       const URLWithParam = `${URL}?r=${randomParam}`;
 
       try {
-        const data1 = await axios.get(URLWithParam, {
+        const data = await axios.get(URLWithParam, {
           responseType: "arraybuffer", onDownloadProgress: updateProgress,
         })
-        const dataArray = new Uint8Array(data1.data)
+       setOriginalPdfBuffer(data.data)
+        const dataArray = new Uint8Array(data.data)
 
 
         setBuffer(dataArray);
@@ -83,6 +92,7 @@ const PdfViewer = () => {
     }
     fetchBytes();
   }, []);
+
 
   useEffect(() => {
 
@@ -97,28 +107,34 @@ const PdfViewer = () => {
 
   }, [pdfrender]);
 
-  useEffect(() => {
-    const dataPresent = viewerRef.current
-const id=setInterval(()=>{
 
-  if (dataPresent &&dataPresent.innerText) {
-    setText(dataPresent.innerText)
- clearInterval(id);
-
-  }
-},1000)
-return ()=>clearInterval(id)
-  });
 
 useEffect(() => {
   const fetcher=async ()=>{
- //fetch using api
+    const blob=new Blob([originalPdfBuffer],{ type: 'application/pdf' })
+    await fetch('/api/audio', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/pdf', // Specify content type
+      },
+      body: blob
+    }).then((data) => {
+      const blob = data.blob().then((data) => {
+        console.log("audio done");
+        const url = URL.createObjectURL(data)
+/*         setAudiodata(url)
+ */      })
+    })
+  } 
 
-  }
-  if(text){
+  
+  if(originalPdfBuffer){
     fetcher()
   }
-}, [text])
+}, [originalPdfBuffer]);
+
+
+
   const handleDocumentLoad = () => {
     setpdfRender(!pdfrender)
   };
@@ -129,16 +145,26 @@ useEffect(() => {
       setIsTools(!isTools)
     }
   }
-  //fullscreen
 
 
   return (
     <>
-      <header className='h-[60px] border-t-[1px] border-[--web-primary-color] w-screen fixed z-[20] bottom-0 md:relative bg-white md:border-b-[1px] '>
+      <header className='h-[60px] border-[--web-primary-color] w-screen  z-[20]  relative bg-white border-b-[1px] '>
         <ul className='flex items-center justify-around h-full relative'>
           <li className='flex justify-center grow gap-x-10 sm:gap-x-20 text-[--web-primary-color]'>
                 <span onClick={() => setIsPlay(!isPlay)} className='text-2xl sm:text-3xl cursor-pointer'>{isPlay ? <FaRegCirclePause /> : <FaPlayCircle />}</span>
      
+          </li>
+          <li className="absolute left-0">
+          <div>
+      {
+        audiodata && (
+          <audio controls ref={audioRef}  >
+            <source src={audiodata} type="audio/mp3"  />
+          </audio>
+        )
+      }
+    </div>
           </li>
           <li className="absolute right-2  " onClick={toggleTools}>
             <span className="flex justify-center items-center text-2xl cursor-pointer">
