@@ -26,7 +26,6 @@ export async function PUT(req) {
     const school = await data.get('school')
     const oldschool = await data.get('oldschool')
     const role = await data.get('role')
-    console.log(id, name, email, school, oldschool)
     await connectMongoBD();
     if(role == 'admin') {
       await User.updateMany({ school: oldschool }, { school: school });

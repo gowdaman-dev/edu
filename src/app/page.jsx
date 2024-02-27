@@ -11,12 +11,12 @@ function page() {
   useEffect(() => {
     window.addEventListener("scroll", async () => {
       if (window.scrollY >= 50) {
-         setHomemenusrl(true);
+        setHomemenusrl(true);
         console.log(homemenusrl);
         return;
       }
       if (window.scrollY <= 49) {
-         setHomemenusrl(false);
+        setHomemenusrl(false);
         console.log(homemenusrl);
       }
       console.log(window.scrollY);
@@ -24,7 +24,27 @@ function page() {
     });
   });
   const [homemenu, setHomemenu] = useState(false);
+  const [contactMessage, setContactMessage] = useState('');
   const { data: session, error } = useSession();
+
+  const contactEvent = (e) => {
+    e.preventDefault();
+    const formdata = new FormData(e.target);
+    fetch('/api/contact', {
+      method: 'POST',
+      body: formdata
+    }).then((data) => {
+      if (data.ok) {
+        const form = e.target;
+        form.reset();
+        setInterval(() => {
+          setContactMessage('mail sent !')
+        }, 3000);
+        setContactMessage("")
+      }
+    })
+  }
+
   return (
     <div className="min-w-screen overflow-x-hidden h-fit">
       <div className="nav w-screen flex justify-between">
@@ -119,8 +139,8 @@ function page() {
           {session ? (
             <Link
               className={`p-2 ${homemenusrl
-                  ? "bg-[--web-primary-color] text-gray-800 border-none hover:bg-[--web-primary-color]"
-                  : "border border-white"
+                ? "bg-[--web-primary-color] text-gray-800 border-none hover:bg-[--web-primary-color]"
+                : "border border-white"
                 } px-4 tracking-widest rounded-xl hover:text-[--web-primary-color] hover:bg-white transition-color duration-500 ease-in-out text-white`}
               href={"/dashboard"}
             >
@@ -129,8 +149,8 @@ function page() {
           ) : (
             <Link
               className={`p-2 ${homemenusrl
-                  ? "bg-[--web-primary-color] text-gray-800 border-none hover:bg-[--web-primary-color]"
-                  : "border border-white"
+                ? "bg-[--web-primary-color] text-gray-800 border-none hover:bg-[--web-primary-color]"
+                : "border border-white"
                 } px-4 tracking-widest rounded-xl hover:text-[--web-primary-color] hover:bg-white transition-color duration-500 ease-in-out text-white`}
               href={"/signin"}
             >
@@ -271,11 +291,20 @@ function page() {
         <div className="container mx-auto">
           <h2 className="text-4xl font-bold text-center mb-8">Contact Us</h2>
           <div className="flex justify-center">
-            <form className="w-full max-w-lg">
+            <form onSubmit={contactEvent} className="w-full max-w-lg">
+              <AnimatePresence mode="wait">
+                {
+                  contactMessage && (
+                    <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ ease: 'linear', duration: .5 }} className="text-green-500 font-semibold">{contactMessage}</motion.p>
+                  )
+                }
+              </AnimatePresence>
               <div className="flex flex-wrap -mx-3 mb-6">
                 <div className="w-full px-3">
                   <input
                     className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                    name="name"
+                    id="name"
                     type="text"
                     placeholder="Your Name"
                     required
@@ -285,6 +314,8 @@ function page() {
               <div className="flex flex-wrap -mx-3 mb-6">
                 <div className="w-full px-3">
                   <input
+                    name="email"
+                    id="email"
                     className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                     type="email"
                     placeholder="Your Email"
@@ -295,6 +326,8 @@ function page() {
               <div className="flex flex-wrap -mx-3 mb-6">
                 <div className="w-full px-3">
                   <textarea
+                    name="message"
+                    id="message"
                     className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                     placeholder="Your Message"
                     required

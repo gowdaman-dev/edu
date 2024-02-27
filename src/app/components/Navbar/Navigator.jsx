@@ -9,6 +9,7 @@ import { IoSchoolOutline } from "react-icons/io5";
 import { IoIosMenu } from "react-icons/io";
 import { CiSearch } from "react-icons/ci";
 import { IoIosCloseCircleOutline } from "react-icons/io";
+import { webName } from '../globalDetails'
 const grades = [
     {
         label: 'grade 1',
@@ -90,7 +91,7 @@ function Navigator({ children }) {
                     <IoIosMenu onClick={() => setnav(!nav)} className='text-4xl' />
                     <div className="flex items-center justify-center gap-2 ">
                         <Image src={'/logos/logo.svg'} height={30} width={30} alt='logo' />
-                        <h1 className='hidden text-lg font-bold tex-gray-900 md:flex'>Edulearn</h1>
+                        <h1 className='hidden text-lg font-bold tex-gray-900 md:flex'>{webName}</h1>
                     </div>
                 </div>
                 <div className="md:flex hidden bg-[#92D1CD99] px-2 rounded-lg items-center">

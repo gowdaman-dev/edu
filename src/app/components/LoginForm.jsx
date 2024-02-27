@@ -11,7 +11,7 @@ function LoginForm() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const router = useRouter()
-  const {data:session} = useSession();
+  const { data: session } = useSession();
   const handleExist = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -76,10 +76,10 @@ function LoginForm() {
                 <div className="flex flex-col items-center ">
                   <Image src={'/logos/logo.svg'} height={150} width={150} alt="logo" />
                   <h2 className="text-4xl py-2 text-[--web-primary-color] font-bold">Login</h2>
-                  
+
                   {
-                    (session?.user)?<p className="font-light text-gray-400"><strong>Redirecting....</strong></p>:
-                    <p className="font-light text-gray-400">Please <strong>login</strong> to continue to <span className="text-[#0B1770]">Education</span></p>
+                    (session?.user) ? <p className="font-light text-gray-400"><strong>Redirecting....</strong></p> :
+                      <p className="font-light text-gray-400">Please <strong>login</strong> to continue to <span className="text-[#0B1770]">Education</span></p>
                   }
                 </div>
               </div>
@@ -123,7 +123,10 @@ function LoginForm() {
                   }
                 </div>
               </form>
-              <p className=" text-gray-500 py-2 font-light text-[12px]">If you not have account! contact your <span className="md:text-black text-[--web-primary-color]">Educator</span></p>
+              <div className="flex w-full justify-between items-center ">
+                <p className=" text-gray-500 py-2 font-light text-[12px]">If you not have account! contact <a href="/new/member/request" className="md:text-black text-[--web-primary-color]">here</a></p>
+                <a href="/new/reset-your-password" className="text-[12px] font light text-gray-500 capitalize">reset password</a>
+              </div>
             </div>
           </div>
         </div>
