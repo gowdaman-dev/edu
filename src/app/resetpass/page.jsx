@@ -7,26 +7,24 @@ import Image from 'next/image';
 function page() {
     const[next,setNext]=useState(false)
     const[Resetpass,setResetpass]=useState(false)
+
     function handlesubmit(e){
-             e.preventDefault()
-        
+        e.preventDefault();
+        if(e.target.ResetEmail !=""){
+
+            setNext(true)
         }
-        let Email="";
-        let otp="";
-        function handleinput(e){
-           Email=e.target.value;
-           otp=e.target.value
-           
+       
+    }
+    function handlefinal(e){
+         if(e.target.otp !=""){
+            setResetpass(true)
         }
-        function handlevalues(){
-            if(Email !=""){
-                setNext(true)
-            }
-            else if(Email !="" && otp !=""){
-                console.log("donbe");
-                setResetpass(true)
-            }
-        }
+    
+
+    }
+    
+    
  
     return (
         <div className=" flex  items-center justify-center p-4 w-[100vw] h-[100vh] overflow-x-hidden bg-[#F3FFF8]">
@@ -46,30 +44,47 @@ function page() {
                 <h2 className="text-3xl font-medium py-2 text-[#0B1770]">Reset Password</h2>
 
             </div>
-          
+            {
+                Resetpass ? 
+                <>
+            <div className="">
+                <form action="" className="flex flex-col gap-2">
+                    <input type="text" name="reset password"  placeholder="Enter New Password" className="border rounded-md p-2"/>
+
+                    <input type="text" name="conform password"  placeholder="Conform Password" className="border rounded-md p-2"/>
+
+                    <button className="rounded-md p-2  bg-[--web-primary-color] text-white">
+                        Change Password
+                    </button>
+                </form>
+            </div>
+            </> :
             
-                  <div className=" ">
-                  <form action="" onSubmit={handlesubmit} className="flex flex-col justify-center items-center gap-4">
-                      <input type="text" name="ResetEmail" onChange={(e)=>handleinput(e)} placeholder="Your Email .. " className="border rounded-md p-2 w-[70%]"  onFocus={(e)=>{  Email= e.target.value}}/>
-                      <div className="w-[70%]">
-  
-                      {next ? <>
-                      <div className="flex gap-1"> 
-                          <form action="">
-                              <input type="text" name="otp" onChange={(e)=>handleinput(e)} placeholder="Enter Valid OTP" className="border rounded-md p-2 "/>
-                          </form>
-                      <div className="">
-                          <button className="border p-2 rounded-md  ">
-                              Resend OTP
-                          </button>
-  
-                      </div>
-                      </div>
-                      </> :""}
-                      </div>
-                      <button type="submit" onClick={handlevalues}  className="p-2 rounded-md  w-[70%] bg-[--web-primary-color] text-white cursor-pointer  "  >Next</button>
-                  </form>
-              </div>    
+            <div className=" ">
+            <form action="/" onSubmit={handlesubmit} className="flex flex-col justify-center items-center gap-4">
+                <input type="text" name="ResetEmail" onChange={(e)=>handleinput(e)} placeholder="Your Email .. " className="border rounded-md p-2 w-[70%]"  />
+                <div className="w-[70%]">
+
+                {next ? <>
+                <div className="flex gap-1"> 
+                    <form action="/">
+                        <input type="text" name="otp" onChange={(e)=>handleinput(e)} placeholder="Enter Valid OTP"   className="border rounded-md p-2 "/>
+                    </form>
+                <div className="">
+                    <button className="border p-2 rounded-md  ">
+                        Resend OTP
+                    </button>
+
+                </div>
+                </div>
+                </> :null}
+                </div>
+                <button type="submit" onDoubleClick={handlefinal}   className="p-2 rounded-md  w-[70%] bg-[--web-primary-color] text-white cursor-pointer  "  >Next</button>
+            </form>
+        </div> 
+            }
+          
+               
              </div>
 
             </div>
