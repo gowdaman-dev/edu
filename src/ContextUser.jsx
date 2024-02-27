@@ -15,6 +15,7 @@ function ContextUserData({ children }) {
     const [showAccInfo, setShowAccInfo] = useState(false);
     const [showsklinfo, setShowSklInfo] = useState(false);
     const [toggleRequest, setToggleRequest] = useState(false);
+    
     console.log(toggleRequest);
     return (
         <UserContext.Provider value={{
@@ -41,8 +42,7 @@ function ContextUserData({ children }) {
             showAccInfo,
             setShowAccInfo,
             showsklinfo,
-            setShowSklInfo,url,
-            setUrl
+            setShowSklInfo
         }}>
             {children}
         </UserContext.Provider>
