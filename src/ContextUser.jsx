@@ -15,8 +15,7 @@ function ContextUserData({ children }) {
     const [showAccInfo, setShowAccInfo] = useState(false);
     const [showsklinfo, setShowSklInfo] = useState(false);
     const [toggleRequest, setToggleRequest] = useState(false);
-    
-    console.log(toggleRequest);
+
     return (
         <UserContext.Provider value={{
             navmob,
@@ -42,7 +41,9 @@ function ContextUserData({ children }) {
             showAccInfo,
             setShowAccInfo,
             showsklinfo,
-            setShowSklInfo
+            setShowSklInfo,
+            toggleRequest, 
+            setToggleRequest
         }}>
             {children}
         </UserContext.Provider>

@@ -42,10 +42,20 @@ export async function PUT(req) {
         await connectMongoBD();
         if (!role) {
             const allMemberRequestsall = await MemberRequest.find({ schoolname: school });
-            return NextResponse.json(allMemberRequestsall, { status: 200 });
+            if(allMemberRequestsall.length > 0) {
+                return NextResponse.json(allMemberRequestsall, { status: 200 });
+            }
+            else{
+                return NextResponse.json({message:"No requests found"},{status:400})
+            }
         }
         const allMemberRequests = await MemberRequest.find({ schoolname: school, role });
-        return NextResponse.json(allMemberRequests, { status: 200 });
+        if(allMemberRequests.length > 0) {
+            return NextResponse.json(allMemberRequests, { status: 200 });
+        }
+        else{
+            return NextResponse.json({message:"No requests found"},{status:400})
+        }
     } catch (error) {
         console.log(error);
         return NextResponse.json({ message: "Internal server error" }, { status: 500 });

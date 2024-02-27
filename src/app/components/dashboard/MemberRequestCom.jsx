@@ -11,6 +11,7 @@ const MemberRequestPage = () => {
     const { setToggleRequest } = useContext(UserContext);
     const [selectedAccountFromRequest, setselectedAccountFromRequest] = useState('');
     const [counter, setCounter] = useState(1)
+    const [error, setError] = useState('')
     const [requestCount, setRequestCount] = useState(0)
     const role = session?.user?.role == "admin" ? "" : "student"
     const fetchMemberRequesthandler = async () => {
@@ -22,8 +23,12 @@ const MemberRequestPage = () => {
                 },
                 body: JSON.stringify({ school: session?.user?.school, role })
             });
+            if(response.status === 400){
+                setError("there is no reauest action");
+                return
+            }
+            setError('');
             const data = await response.json();
-            console.log(data);
             return data
         } catch (error) {
             console.error('Error fetching member requests:', error);
@@ -83,6 +88,11 @@ const MemberRequestPage = () => {
                 <div className=""></div>
             </div>
             <div className="flex flex-col gap-2 w-full px-4 mt-4 overflow-y-scroll scrollbar-hide">
+                {
+                    error &&(
+                        <p className='text-sm font-light text-gray-800 text-center'>{error}</p>
+                    )
+                }
                 {
                     !memberRequesthandler?"":memberRequesthandler.map((request, i) => {
                         if (request) {
