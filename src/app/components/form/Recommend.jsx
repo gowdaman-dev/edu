@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { webName } from "../globalDetails";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 const Requestform = () => {
   const [formData, setFormData] = useState({
     name: "",
@@ -25,7 +25,10 @@ const Requestform = () => {
     setError('')
     setSuccess('')
     e.preventDefault();
-    console.log(formData);
+    if (formData.name === '' || formData.schoolname === '' || formData.email === '' || formData.role === '') {
+      setError('Please fill all the fields')
+      return
+    }
     try {
       const response = await fetch("/api/organizerRequest", {
         method: "POST",
@@ -46,13 +49,12 @@ const Requestform = () => {
     }
   };
 
-  const Comment = `Explore EduLearn : Streamline PDF sharing for educational advancement! Share why EduLearn is a must for your school.`;
   return (
     <div className="mt-16">
       <p className="text-center px-10 pb-8 text-lg">
-        You can write to your school here to ask them to create an account wth
-        us. After they create an account, they can invite you to their group to
-        gain free access.
+        Note: This form is only for new school registeration by admin, If you are member of registered school, then {''}
+        <Link className="text-[--web-primary-color]" href={'new/member/request'} >Register your account </Link>{''}as member
+        instead.
       </p>
       <div className=" rounded-lg md:shadow-[0px_0px_2px_0px] sm:w-fit w-full px-1 md:px-10 mx-auto flex-col justify-center">
         <Image
@@ -60,27 +62,36 @@ const Requestform = () => {
           src={"/logo.svg"}
           width={100}
           height={100}
-          alt=""
+          alt="MiWay logo"
         />
-        {error && (
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-            <span className="block sm:inline">{error}</span>
-          </div>
-        )}
-        {success && (
-          <motion.div
-            initial={{ opacity: 0, y: -50 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -50 }}
-            transition={{ duration: 0.5 }}
-            className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative"
-            role="alert"
-          >
-            <span className="block sm:inline">{success}</span>
-          </motion.div>
-        )}
+        <AnimatePresence mode="wait">
+          {error && (
+            <motion.div
+              initial={{ y: 10, opacity: 0.6 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: 10, opacity: 0 }}
+              transition={{ duration: 0.5, type: "spring" }}
+              className="my-4 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-4 rounded-lg shadow-lg z-50"
+            >
+              <p className="text-red-500 text-center">{error}</p>
+            </motion.div>
+          )}
+        </AnimatePresence>
+        <AnimatePresence mode="wait">
+          {success && (
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0 }}
+              transition={{ duration: 0.5 }}
+              className="my-4 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-4 rounded-lg shadow-lg z-50"
+            >
+              <p className="text-green-500 text-center">Request submitted successfully!</p>
+            </motion.div>
+          )}
+        </AnimatePresence>
         <h1 className="text-center  font-bold text-2xl py-10">
-          Recommend {webName} to your School
+          {webName} Organizer Request Form
         </h1>
         <form onSubmit={submitEvent} className="text-gray-800" action="">
           <div className="flex justify-center">
@@ -89,44 +100,40 @@ const Requestform = () => {
                 <input
                   id="name"
                   name="name"
-                  required
                   type="text"
                   placeholder="Your Name"
                   value={formData.name}
                   onChange={handleChange}
-                  className="rounded-lg pl-2 h-12 outline-none border  bg-[--web-container]"
+                  className="rounded-lg pl-2 h-12 border  bg-[--web-container]"
                 />
                 <input
                   id="schoolname"
                   name="schoolname"
-                  required
                   type="text"
                   placeholder="School Name"
                   value={formData.schoolname}
                   onChange={handleChange}
-                  className="rounded-lg pl-2 h-12 border outline-none border web-container]"
+                  className="rounded-lg pl-2 h-12  border web-container]"
                 />
               </div>
               <div className="flex flex-col gap-10 w-full md:w-72 ">
                 <input
                   id="email"
                   name="email"
-                  required
                   type="text"
                   placeholder="Your Email"
                   value={formData.email}
                   onChange={handleChange}
-                  className="rounded-lg h-12 pl-2 outline-none border  bg-[--web-container]"
+                  className="rounded-lg h-12 pl-2 border  bg-[--web-container]"
                 />
                 <input
                   id="role"
                   name="role"
-                  required
                   type="text"
                   placeholder="Role You Play"
                   value={formData.role}
                   onChange={handleChange}
-                  className="rounded-lg h-12 pl-2 border outline-none border web-container]"
+                  className="rounded-lg h-12 pl-2  border web-container]"
                 />
               </div>
             </div>
@@ -137,10 +144,10 @@ const Requestform = () => {
               id="description"
               name="description"
               type="text"
-              placeholder={Comment}
+              placeholder="Tell more about your self and purpose of using our product"
               value={formData.description}
               onChange={handleChange}
-              className="rounded-lg pl-2 pt-1 min-h-56 outline-none border order border resize-none"
+              className="rounded-lg pl-2 pt-1 min-h-56  order border resize-none"
             />
             <input
               type="submit"
@@ -153,20 +160,16 @@ const Requestform = () => {
       <div className="grid justify-center">
         <div className=" w-80 md:w-[600px] py-10">
           <h2 className="md:-ml-8 -ml-4  font-bold">Instructions: </h2>
-          <div className=" py-5 leading-6">
-            <p className="text-justify ">
-              This is for students to send a request to their school's
-              administrators to sign up for an account with NaturalReader. If
-              you are an administrator or teacher, you can{" "}
-              <Link
-                href={"requeststaff"}
-                className="text-[--web-primary-color]"
-              >
-                contact us directly
-              </Link>{" "}
-              to open an account.
-            </p>
-          </div>
+          <ol className=" py-5 leading-6 text-justify grid gap-4">
+            <li>
+              1. Once a School is set up under your account, you as the school admin  can create Classes and add Students & Teachers. Users set as
+              "Teachers" have admin access to invite or delete other members.
+            </li>
+            <li>
+              2. Only school admins (not members) may register thier school for MiWay account, such as  school administrators, principals,owners, etc.
+            </li>
+
+          </ol>
         </div>
       </div>
     </div>

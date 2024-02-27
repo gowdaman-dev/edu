@@ -1,15 +1,14 @@
 "use client";
-import { AiFillCaretDown } from "react-icons/ai";
-import { AiFillCamera } from "react-icons/ai";
-
 import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { webName } from "../globalDetails";
-import { grades } from "./grade";
+import { grades, roles } from "./data";
+
 import { AnimatePresence, motion } from "framer-motion";
 
 const Requestform = () => {
+
   const [schoolname, setSchoolname] = useState([]);
 
   useEffect(() => {
@@ -22,6 +21,8 @@ const Requestform = () => {
       .then((response) => response.json())
       .then((data) => setSchoolname(data));
   }, []);
+
+
 
 
 
@@ -66,8 +67,7 @@ const Requestform = () => {
   }, []);
   useEffect(() => {
     const validate = () => {
-      /*       props.handleSchool(schoolName);
-       */
+
       const optionExist = schoolname.find(
         (item) => {
           const val = item.schoolname.toLowerCase()
@@ -88,14 +88,13 @@ const Requestform = () => {
   const [success, setSuccess] = useState('');
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('')
+    setSuccess('')
     console.log(data);
-    await fetch('/api/memberRequest', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    })
+    if (data.userName == '' || data.email == '' || data.role == '' || data.grade == '' || data.schoolName == '') {
+      setError('Please fill all the fields')
+      return
+    }
     try {
       const response = await fetch('/api/memberRequest', {
         method: 'POST',
@@ -104,16 +103,16 @@ const Requestform = () => {
         },
         body: JSON.stringify(data),
       });
-      const data = await response.json();
+      const res = await response.json();
       if (response.status === 400) {
-        await setError(data.message);
+        setError(res.message);
         return
       } else {
-        await setSuccess(data.message)
+        setSuccess(res.message)
         return
       }
     } catch (error) {
-      setError('Something went wrong')
+      console.log(error);
     }
   };
   const toggleRole = () => {
@@ -126,12 +125,10 @@ const Requestform = () => {
 
     setData({ ...data, role: value });
 
-    // setIsRoleOpen(false)
   };
 
   const handleGradeClick = value => {
     setData({ ...data, grade: value });
-    //  setIsGradeOpen(false);
   }
 
   const toggleSchool = () => {
@@ -140,6 +137,7 @@ const Requestform = () => {
 
   const handleChangeSchool = (e) => {
     const value = e.target.value;
+    setIsSchoolOpen(true)
     setData({ ...data, schoolName: value });
   };
 
@@ -162,22 +160,25 @@ const Requestform = () => {
   }
 
 
-  const roleColor = role === "" ? " text-gray-400" : "text-black";
-  const gradeColor = grade === "" ? " text-gray-400" : "text-black";
 
-  const roleClass = `rounded-lg ${roleColor} pl-2 w-72 text-b h-12 border cursor-pointer outline-none  bg-[--web-container]`;
-  const regularClass = `rounded-lg  pl-2 w-72 text-b h-12 border outline-none  bg-[--web-container]`;
-  const gradeClass = ` rounded-lg cursor-pointer ${gradeColor} pl-2 h-12  mt-10 outline-none  w-72 md:w-[600px]  border bg-[--web-container]`;
-  const dropdownClass = `cursor-pointer py-2 rounded-lg hover:bg-gray-100`
-  const Comment =
-    "Tell us more about yourself and the purpose of using our product";
+
+
+
+
+
+
+
+  const roleClass = `rounded-lg  pl-2 w-72 text-b h-12 border cursor-pointer   bg-[--web-container]`;
+  const regularClass = `rounded-lg  pl-2 w-72 text-b h-12 border   bg-[--web-container]`;
+  const gradeClass = ` rounded-lg cursor-pointer pl-2 h-12  mt-10   w-72 md:w-[600px]  border bg-[--web-container]`;
+
 
   return (
     <div className="mt-16 w-screen z-30">
       <p className="text-center px-10 pb-8 text-lg">
         Note : This form is designed for MEMBERS OF REGISTERED SCHOOL  only. If you are the SCHOOL ORGANIZER ,
         please{" "}
-        <Link className="text-[--web-primary-color]" href={"recommend"}>
+        <Link className="text-[--web-primary-color]" href={"/new/organizer/request"}>
           Register your School
         </Link>{" "}
         instead.
@@ -191,30 +192,34 @@ const Requestform = () => {
           alt="logo"
         />
         <h1 className="text-center font-bold text-2xl py-10">
-          {webName} Memeber Request Form
+          {webName} Member Request Form
         </h1>
-        {error && (
-          <motion.div
-            initial={{ y: 10, opacity: 0.6 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: 10, opacity: 0 }}
-            transition={{ duration: 0.5, type: "spring" }}
-            className="my-4 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-4 rounded-lg shadow-lg z-50"
-          >
-            <p className="text-red-500 text-center">{error}</p>
-          </motion.div>
-        )}
-        {success && (
-          <motion.div
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            exit={{ scale: 0 }}
-            transition={{ duration: 0.5 }}
-            className="my-4 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-4 rounded-lg shadow-lg z-50"
-          >
-            <p className="text-green-500 text-center">Request submitted successfully!</p>
-          </motion.div>
-        )}
+        <AnimatePresence mode="wait">
+          {error && (
+            <motion.div
+              initial={{ y: 10, opacity: 0.6 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: 10, opacity: 0 }}
+              transition={{ duration: 0.5, type: "spring" }}
+              className="my-4 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-4 rounded-lg shadow-lg z-50"
+            >
+              <p className="text-red-500 text-center">{error}</p>
+            </motion.div>
+          )}
+        </AnimatePresence>
+        <AnimatePresence mode="wait">
+          {success && (
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0 }}
+              transition={{ duration: 0.5 }}
+              className="my-4 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-4 rounded-lg shadow-lg z-50"
+            >
+              <p className="text-green-500 text-center">Request submitted successfully!</p>
+            </motion.div>
+          )}
+        </AnimatePresence>
         <form action="" onSubmit={handleSubmit}>
           <div className="flex justify-center">
             <div className="flex md:flex-row flex-col justify-center gap-10 md:gap-6">
@@ -223,11 +228,11 @@ const Requestform = () => {
                   type="text"
                   placeholder="Your Name"
                   onChange={e => setData({ ...data, userName: e.target.value })}
-                  required
                   className={regularClass}
                 />
                 <div className="relative ">
-                  {isNotValid && <p className="text-red-500 absolute -mt-6">please Choose give option</p>}
+                  {isNotValid && <p className="text-red-500 absolute -mt-6">Please select a valid option
+                  </p>}
                   <input
                     ref={dropdownRef}
                     className={regularClass}
@@ -237,53 +242,58 @@ const Requestform = () => {
                     onClick={toggleSchool}
                     value={schoolName}
                     onFocus={handleFocusSchool}
-                    required
-                  />
 
-                  <AnimatePresence mode="wait">
-                    {isSchoolOpen && (
-                      <motion.div
-                        initial={{ y: 10, opacity: 0.6 }}
-                        animate={{ y: 0, opacity: 1 }}
-                        exit={{ y: 10, opacity: 0 }}
-                        transition={{ duration: 0.5, type: "spring" }}
-                        className="absolute max-h-64 overflow-auto w-72 mt-2 z-40 pl-2 py-2  rounded-lg grid gap-2 bg-white round"
-                      >
-                        {" "}
-                        {schoolname
-                          // filter the data according to input
-                          .filter((data) => {
-                            return schoolName === ""
-                              ? true
-                              : data.schoolname.toLowerCase().trim().includes(schoolName.toLowerCase().trim());
-                          })
-                          .map((option) => {
-                            return (
-                              <p
-                                className="capitalize cursor-pointer p-1 w-[273px] rounded-lg hover:bg-gray-100"
-                                onClick={() => {
-                                  handleClickSchool(option.schoolname);
-                                }}
-                                key={option.schoolname}
-                              >
-                                {" "}
-                                {option.schoolname}
-                              </p>
-                            );
-                          })}
-                      </motion.div>
+                  />
+                  {
+                    isSchoolOpen && schoolname.filter((data) => {
+                      return schoolName === "" ? true : data.schoolname.toLowerCase().trim().includes(schoolName.toLowerCase().trim());
+                    }).length > 0 && (
+                      <AnimatePresence mode="wait">
+                        {isSchoolOpen && (
+                          <motion.div
+                            initial={{ y: 10, opacity: 0.6 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            exit={{ y: 10, opacity: 0 }}
+                            transition={{ duration: 0.5, type: "spring" }}
+                            className="absolute border max-h-64 overflow-auto w-72 mt-2 z-40 pl-2 py-2 shadow-lg rounded-lg grid gap-2 bg-white round "
+                          >
+                            {" "}
+                            {schoolname
+                              // filter the data according to input
+                              .filter((data) => {
+                                return schoolName === ""
+                                  ? true
+                                  : data.schoolname.toLowerCase().trim().includes(schoolName.toLowerCase().trim());
+                              })
+                              .map((option, index) => {
+                                return (
+                                  <p
+                                    className="capitalize cursor-pointer p-1 w-[273px] rounded-lg hover:bg-gray-100"
+
+
+                                    onClick={() => {
+                                      handleClickSchool(option.schoolname);
+                                    }}
+                                    key={option.schoolname}
+                                  >
+                                    {" "}
+                                    {option.schoolname}
+                                  </p>
+                                );
+                              })}
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
                     )}
-                  </AnimatePresence>
                 </div>
               </div>
               <div className="flex flex-col gap-10 w-72 ">
                 <input
-                  required
                   type="email"
                   placeholder="Your Email"
                   onChange={e => setData({ ...data, email: e.target.value })}
 
-                  className="rounded-lg h-12 pl-2 outline-none  border bg-[--web-container]
+                  className="rounded-lg h-12 pl-2  border bg-[--web-container]
                   "
                 />
                 <div className="relative ">
@@ -295,6 +305,7 @@ const Requestform = () => {
                     onFocus={() => { setIsRoleOpen(true) }}
                     onBlur={() => { setIsRoleOpen(false) }}
                     readOnly
+
                     onClick={toggleRole}
                   />
                   {" "}
@@ -306,26 +317,16 @@ const Requestform = () => {
                         animate={{ y: 0, opacity: 1 }}
                         exit={{ y: 10, opacity: 0 }}
                         transition={{ duration: 0.5, type: "spring" }}
-                        className="absolute  max-h-64 overflow-auto w-72 mt-2 z-40 pl-2 py-2  rounded-lg grid gap-2 bg-white round "
+                        className="absolute border max-h-64 overflow-auto w-72 mt-2 z-40 pl-2 py-2 shadow-lg rounded-lg grid gap-2 bg-white round "
                       >
                         {" "}
-                        <p
-                          className={dropdownClass}
-                          onClick={() => {
-
-                            handleRoleClick("student");
-                          }}
-                        >
-                          Student
-                        </p>
-                        <p
-                          className={dropdownClass}
-                          onClick={() => {
-                            handleRoleClick("teacher");
-                          }}
-                        >
-                          Teacher
-                        </p>
+                        {
+                          roles.map(item => (
+                            <p key={item} className="cursor-pointer capitalize py-1 w-full px-2 rounded-lg hover:bg-gray-100" onClick={() => {
+                              handleRoleClick(item)
+                            }}> {item}</p>
+                          ))
+                        }
                       </motion.div>
                     )}
                   </AnimatePresence>
@@ -333,7 +334,7 @@ const Requestform = () => {
               </div>
             </div>
           </div>
-          <div className="flex justify-center">
+          <div className="flex justify-center relative">
 
             <input
               ref={gradeRef}
@@ -341,8 +342,10 @@ const Requestform = () => {
               onFocus={() => { setIsGradeOpen(true) }}
               onBlur={() => { setIsGradeOpen(false) }}
               placeholder="Select Your Grade"
+
               className={gradeClass}
-              value={grade}
+              value={grade && "Grade " + grade}
+              readOnly
             />
 
             {" "}
@@ -354,14 +357,14 @@ const Requestform = () => {
                   animate={{ y: 0, opacity: 1 }}
                   exit={{ y: 10, opacity: 0 }}
                   transition={{ duration: 0.5, type: "spring" }}
-                  className="absolute max-h-64 overflow-auto w-72 z-40 pl-2 py-2  rounded-lg grid gap-2 mt-2 bg-white round "
+                  className="absolute border max-h-64 top-full overflow-auto w-72 md:w-[600px] mt-2 z-40 pl-2 py-2 shadow-lg rounded-lg grid gap-2 bg-white round "
                 >
                   {" "}
                   {
                     grades.map(item => (
-                      <p key={item} className="cursor-pointer py-1 w-64 rounded-lg hover:bg-gray-100" onClick={() => {
+                      <p key={item} className="cursor-pointer py-1 w-full px-2 rounded-lg hover:bg-gray-100" onClick={() => {
                         handleGradeClick(item)
-                      }}>{item}</p>
+                      }}>Grade {item}</p>
                     ))
                   }
                 </motion.div>
@@ -372,10 +375,10 @@ const Requestform = () => {
           <div className="flex justify-center gap-10 flex-col py-10 ">
             <textarea
               type="text"
-              placeholder={Comment}
+              placeholder="Tell more about yourself"
               onChange={e => setData({ ...data, comment: e.target.value })}
 
-              className="rounded-lg resize-none pl-2 pt-1 min-h-56 outline-none  h-auto w-72 md:w-[600px] mx-auto  border bg-[--web-container]"
+              className="rounded-lg resize-none pl-2 pt-1 min-h-56   h-auto w-72 md:w-[600px] mx-auto  border bg-[--web-container]"
             />
             <input
               type="submit"
@@ -387,28 +390,20 @@ const Requestform = () => {
       <div className="grid justify-center">
         <div className=" w-80 md:w-[600px] py-10">
           <h2 className="md:-ml-8 -ml-4  font-bold ">Instructions: </h2>
-          <div className=" py-5 leading-6">
-            <p className="pb-3 text-justify">
-              1. Only Registered School's members  may register for an EDU
+          <ol className=" py-5 leading-6 text-justify grid gap-4">
+            <li>
+              1. Only Registered School's members may request for an MiWay member
               account, such as teachers or students ...
-            </p>
-            <p className="pb-3 text-justify">
-              2. Once a School is set up under your account, you as the account
-              owner can create Classes and add Students & Teachers. Users set as
-              "Teachers" have admin access to invite or delete other members.
-            </p>
-            <p className="pb-3 text-justify">
-              3. Under a free EDU account, all invited users also have free user
-              limitations.
-            </p>
-            <p className="pb-3 text-justify">
-              4. If you are a student, you can{" "}
+            </li>
+
+            <li>
+              2. If your school is not yet registered, then you can{" "}
               <Link href={"recommend"} className="text-[--web-primary-color]">
-                request that your school
-              </Link>{" "}
+                Register Your school
+              </Link>{" "} to
               open an account with us.
-            </p>
-          </div>
+            </li>
+          </ol>
         </div>
       </div>
     </div>

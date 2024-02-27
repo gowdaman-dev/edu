@@ -6,15 +6,13 @@ import { UserContext } from '@/ContextUser';
 import { motion } from 'framer-motion';
 function Accountinformation() {
     const { showAccInfo, setShowAccInfo } = useContext(UserContext)
-    const [gradeinfo, setGradeinfo] = useState({})
     const [resetrequest, setresetrequest] = useState(false)
-    const [resetrequesttext, setresetrequesttext] = useState('change password')
+    const [resetrequesttext, setresetrequesttext] = useState('')
     const { data: session } = useSession()
     console.log(session?.user);
     const mailnow = async (e) => {
+        setresetrequesttext('sending mail...')
         e.preventDefault();
-        await setresetrequest(true);
-        await setresetrequesttext('sending mail...')
         fetch('/api/mailer', {
             method: 'POST',
             headers: {
@@ -22,11 +20,13 @@ function Accountinformation() {
             },
             body: JSON.stringify({ email: session?.user?.email, name: session?.user?.name, id: session?.user?.acId })
         }).then(() => {
-            setresetrequest(false); setInterval(() => {
-                setresetrequesttext('mail sent!')
+            setresetrequesttext('mail sent!')
+            setInterval(() => {
+                setresetrequesttext('')
             }, 2000);
         }).catch((err) => console.log(err))
-        await setresetrequesttext('change password')
+
+        setresetrequest(false)
     }
     const infofetch = async () => {
         const res = await fetch('/api/userinfo', {
@@ -63,12 +63,10 @@ function Accountinformation() {
                     </h1>
                     {session?.user?.email}
                 </div>
-                <form onSubmit={mailnow} action="" method="post">
-                    <button className='text-purple-800 w-fit px-4' disabled={resetrequest} type='submit'>{resetrequesttext}</button>
-                </form>
+                <button onClick={mailnow} className='text-purple-800 capitalize w-fit px-4' disabled={resetrequest} type='submit'>{resetrequesttext}{resetrequesttext?"":'Change Password'}</button>
                 {
                     session?.user?.role == "teacher" && (
-                        <div className='h-fit flex p-3   '>
+                        <div className='h-fit flex p-3'>
                             <div className='flex w-full h-fit gap-4 items-center'>
                                 <h1 className='text-lg font-medium'>
                                     Grade :

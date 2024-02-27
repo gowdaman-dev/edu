@@ -105,7 +105,7 @@ function ManualAdder({ close }) {
 				headers: {
 					"Content-Type": 'application/json'
 				},
-				body: JSON.stringify({ name, email, password, role, school , about })
+				body: JSON.stringify({ name, email, password, role, school:school.toLowerCase(), about })
 			})
 			if (res.ok) {
 				const form = await e.target;

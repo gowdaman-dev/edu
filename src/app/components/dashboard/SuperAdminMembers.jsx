@@ -1,5 +1,5 @@
 'use client'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState, useRef } from 'react'
 import { UserContext } from '@/ContextUser'
 import DataTable, { createTheme } from 'react-data-table-component';
 import { json2csv } from 'json-2-csv';
@@ -138,8 +138,9 @@ function SuperAdminMember() {
     setupdatinguser(true);
     e.preventDefault();
     const formdata = new FormData(e.target)
-    await formdata.append('id', selectedrecord.id)
-    await formdata.append('oldschool', selectedrecord.school)
+    formdata.append('id', selectedrecord.id)
+    formdata.append('oldschool', selectedrecord.school)
+    formdata.append('role', selectedrecord.role)
     const res = await fetch('/api/register', {
       method: 'PUT',
       body: formdata
@@ -168,7 +169,7 @@ function SuperAdminMember() {
       setdeleteuser(false)
     }
   }
-  const [ schoolfilterdata , setSchoolFilterData] = useState({})
+  const [schoolfilterdata, setSchoolFilterData] = useState({})
   const [memberdata, setMemberdata] = useState();
   useEffect(() => {
     setMemberdata(undefined)
@@ -186,16 +187,33 @@ function SuperAdminMember() {
   const [roleFilter, setroleFilter] = useState('')
   const [roleFilterToggle, setRoleFilterToggle] = useState(false)
   const [filterdata, setFilterdata] = useState(memberdata)
-  const rolejson = ['admin', 'teacher', 'student']
+  const roleFilterRef = useRef(null);
+  const schoolFilterRef = useRef(null);
+  
   useEffect(()=>{
+    const handleClose = (e) =>{
+      if (e.target != schoolFilterRef.current) {
+        setSchoolFilterToggle(false);
+      }
+      if (e.target != roleFilterRef.current) {
+        setRoleFilterToggle(false);
+      }
+    }
+
+    window.addEventListener('click',handleClose)
+ 
+  },[])
+
+  const rolejson = ['admin', 'teacher', 'student']
+  useEffect(() => {
     fetch('/api/schoolList', {
       method: "PUT",
       headers: {
         "Content-Type": 'application/json'
       },
       cache: 'no-store', next: { revalidate: 0 }
-    }).then((data)=>data.json()).then((values)=>setSchoolFilterData(values)).catch((err)=>console.log("fetching data"))
-  },[schoolfilter , schoolfiltertoggle])
+    }).then((data) => data.json()).then((values) => setSchoolFilterData(values)).catch((err) => console.log("fetching data"))
+  }, [schoolfilter, schoolfiltertoggle])
   useEffect(() => {
     let filter = async () => {
       try {
@@ -223,7 +241,78 @@ function SuperAdminMember() {
     }
     filter()
     console.log(filterdata);
-  }, [navSearch, roleFilter, schoolfilter , schoolfiltertoggle])
+  }, [navSearch, roleFilter, schoolfilter, schoolfiltertoggle])
+
+  const [inSchoolName, setInSchoolName] = useState([]);
+
+
+
+  useEffect(() => {
+    fetch("/api/schoolList", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => setInSchoolName(data));
+  }, []);
+
+  const [outSchoolName, setOutSchoolName] = useState('')
+  const [isSchoolOpen, setIsSchoolOpen] = useState(false);
+  const [isNotValid, setIsNotValid] = useState(false);
+  const [check, setCheck] = useState('') 
+
+
+    useEffect(() => {
+      const validate = () => {
+        const optionExist = inSchoolName.find(
+          (item) => (
+            item.schoolname?.toLowerCase() == outSchoolName.toLowerCase().trim()  
+        ));
+        optionExist || outSchoolName == ""
+          ? setIsNotValid(false)
+          : setIsNotValid(true);
+      };
+      validate();     
+  
+  
+    }, [check]);
+  
+    
+
+  const toggleSchool = () => {
+    setIsSchoolOpen(true);
+
+  };
+
+  const handleChangeSchool = (e) => {
+    const value = e.target.value;
+    setIsSchoolOpen(true)
+    setOutSchoolName(value)
+  };
+
+  const handleBlurSchool = (e) => {
+    const value = e.target.value;
+    setIsSchoolOpen(false)
+    setOutSchoolName(value)
+     setCheck(value) 
+  };
+
+  const handleClickSchool = (value) => {
+    setOutSchoolName(value)
+
+    setIsNotValid(false);
+    setIsSchoolOpen(false);
+  };
+
+  const handleFocusSchool = () => {
+    setIsSchoolOpen(true);
+  }
+  const handleEdit = () => {
+    setUsereditable(!usereditable)
+    setOutSchoolName(selectedrecord.school)
+  }
   return (
     <div className='md:w-full w-screen'>
       <AnimatePresence mode='wait'>
@@ -234,31 +323,84 @@ function SuperAdminMember() {
                 <div className="flex justify-between py-2 border-b text-xl">
                   <button className="" onClick={() => { setUserDetailpopup(false); setUsereditable(false) }}><AiOutlineClose /></button>
                   <h1 className='text-center font-medium text-gray-800'>Account detail ({selectedrecord.role})</h1>
-                  <button className="" onClick={() => setUsereditable(!usereditable)}><FaRegEdit /></button>
+                  <button className="" onClick={handleEdit}><FaRegEdit /></button>
                 </div>
                 <form onSubmit={usereditable ? UpdateUserEvent : RemoveUserEvent} className='w-full flex flex-col gap-4 py-2 pt-4' action="" method="post">
                   <div className="flex w-full justify-between">
                     <label htmlFor="name">Name</label>
                     {
                       usereditable ?
-                        <input type="text" placeholder='name' id='name' name='name' className='bg-gray-200 rounded-lg px-2 py-1 w-[80%]' /> :
-                        <input type="text" placeholder='name' id='name' name='name' value={selectedrecord.name} disabled={!usereditable} className='w-[80%] rounded-lg px-2 py-1 w-[80%]' />
+                        <input type="text" placeholder='name' id='name' defaultValue={selectedrecord.name} name='name' className='bg-gray-200 rounded-lg px-2 py-1 w-[80%]' /> :
+                        <p className='bg-gray-50 rounded-lg px-2 py-1 w-[80%]' > {selectedrecord.name} </p>
                     }
                   </div>
                   <div className="flex w-full justify-between">
                     <label htmlFor="email">Email</label>
                     {
                       usereditable ?
-                        <input type="email" placeholder='email' id='email' name="email" className='bg-gray-200 rounded-lg px-2 py-1 w-[80%]' /> :
-                        <input type="eamil" placeholder='email' id='email' name="email" value={selectedrecord.email} disabled={!usereditable} className='w-[80%] rounded-lg px-2 py-1 w-[80%]' />
+                        <input type="email" placeholder='email' id='email' defaultValue={selectedrecord.email} name="email" className='bg-gray-200 rounded-lg px-2 py-1 w-[80%]' /> :
+                        <p className='bg-gray-50 rounded-lg px-2 py-1 w-[80%]' >{selectedrecord.email}</p>
                     }
                   </div>
                   <div className="flex w-full justify-between">
                     <label htmlFor="school">school</label>
                     {
-                      usereditable ?
-                        <input type="text" placeholder='school' id='school' name='school' className='bg-gray-200 rounded-lg px-2 py-1 w-[80%]' /> :
-                        <input type="text" placeholder='school' id='school' name='school' value={selectedrecord.school} disabled={!usereditable} className='w-[80%] rounded-lg px-2 py-1 w-[80%]' />
+                      usereditable ? (
+                        <div className='w-[80%] relative'>
+                          <input type="text" value={outSchoolName} placeholder='school' id='school' name='school' onClick={toggleSchool} onBlur={handleBlurSchool} onFocus={handleFocusSchool} onChange={handleChangeSchool} className='capitalize bg-gray-200 w-full  rounded-lg px-2 py-1' />
+                          {(selectedrecord.role !== "admin" && inSchoolName.filter((data) => {
+                    return outSchoolName === "" ? true : data.schoolname.toLowerCase().trim().includes(outSchoolName.toLowerCase().trim());
+                }).length > 0 ) && 
+
+                          
+                          <AnimatePresence mode="wait">
+                            {isSchoolOpen && (
+                              <motion.div
+                                initial={{ y: 10, opacity: 0.6 }}
+                                animate={{ y: 0, opacity: 1 }}
+                                exit={{ y: 10, opacity: 0 }}
+                                transition={{ duration: 0.5, type: "spring" }}
+                                className="absolute shadow max-h-64 overflow-auto w-full mt-2 z-40 pl-2 py-2 px-2 rounded-lg grid gap-2 bg-white round"
+                              >
+                                {" "}
+                                {inSchoolName
+                                  // filter the data according to input
+                                  .filter((data) => {
+                                    return outSchoolName === ""
+                                      ? true
+                                      : data.schoolname.toLowerCase().trim().includes(outSchoolName?.toLowerCase().trim());
+                                  })
+                                  .map((option, index) => {
+                                    return (
+                                      <p
+                                        className="capitalize cursor-pointer p-1 w-full rounded-lg hover:bg-gray-100"
+
+
+                                        onClick={() => {
+                                          handleClickSchool(option.schoolname);
+                                        }}
+                                        key={option.schoolname}
+                                      >
+                                        {" "}
+                                        {option.schoolname}
+                                      </p>
+                                    );
+                                  })}
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+                          }
+                          {
+                            isNotValid && (
+                              <p className="text-red-500 text-xs">
+                                Invalid School Name
+                              </p>
+                            )
+                          }
+
+                        </div>
+                      ) :
+                        <p className='bg-gray-50 rounded-lg px-2 py-1 w-[80%]' > {selectedrecord.school} </p>
                     }
                   </div>
                   {
@@ -317,6 +459,7 @@ function SuperAdminMember() {
                   !schoolfilter && (
                     <button
                       onClick={() => setSchoolFilterToggle(!schoolfiltertoggle)}
+                      ref={schoolFilterRef}
                       className='bg-white text-gray-800 p-2 rounded-lg border flex items-center md:text-md text-sm gap-2'
                     >All School {schoolfiltertoggle ? <AiOutlineUp /> : <AiOutlineDown />}
                     </button>
@@ -332,17 +475,17 @@ function SuperAdminMember() {
                     </button>
                   )
                 }
-                  {
-                    schoolfiltertoggle && (
-                      <div className="absolute right-0 top-full z-[8] mt-2 min-w-[180px] flex flex-col px-2 py-2 bg-white rounded-lg border">
-                        {
-                          schoolfilterdata.map((item) => {
-                            return <button key={item._id} onClick={() => { setSchoolFilter(item.schoolname);setSchoolFilterToggle(false);}} className='text-sm text-gray-800 rounded-lg py-1 px-2 text-left px-2 hover:bg-gray-100'>{item.schoolname}</button>
-                          })
-                        }
-                      </div>
-                    )
-                  }
+                {
+                  schoolfiltertoggle && (
+                    <div className="absolute right-0 top-full z-[8] mt-2 min-w-[180px] flex flex-col px-2 py-2 bg-white rounded-lg border">
+                      {
+                        schoolfilterdata.map((item) => {
+                          return <button key={item._id} onClick={() => { setSchoolFilter(item.schoolname); setSchoolFilterToggle(false); }} className='text-sm text-gray-800 rounded-lg py-1 px-2 text-left px-2 hover:bg-gray-100'>{item.schoolname}</button>
+                        })
+                      }
+                    </div>
+                  )
+                }
               </div>
             </div>
             <div className="flex items-center justify-center">
@@ -351,6 +494,7 @@ function SuperAdminMember() {
                   !roleFilter && (
                     <button
                       onClick={() => setRoleFilterToggle(!roleFilterToggle)}
+                      ref={roleFilterRef}
                       className='bg-white text-gray-800 p-2 rounded-lg border flex items-center md:text-md text-sm gap-2'
                     >All Roles {roleFilterToggle ? <AiOutlineUp /> : <AiOutlineDown />}
                     </button>

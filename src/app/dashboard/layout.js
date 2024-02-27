@@ -36,7 +36,7 @@ function layout({ children }) {
                     <>
                         {
                             (session?.user?.role == "admin" || session?.user?.role == "teacher" || session?.user?.role == "superadmin") && (
-                                <div className='max-w-screen overflow-hidden'>
+                                <div className='max-w-screen overflow-x-hidden'>
                                     <NavBar />
                                     <div className="flex h-screen max-w-screen">
                                         <div className="md:flex hidden">
@@ -45,7 +45,7 @@ function layout({ children }) {
                                         <div className="md:hidden flex">
                                             <SideNavMob />
                                         </div>
-                                        <div className="h-screen md:w-full">
+                                        <div className="min-h-screen md:w-full">
                                             {children}
                                         </div>
                                     </div>
