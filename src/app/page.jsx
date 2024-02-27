@@ -37,10 +37,11 @@ function page() {
       if (data.ok) {
         const form = e.target;
         form.reset();
+        setContactMessage('mail sent !')
         setInterval(() => {
-          setContactMessage('mail sent !')
+          setContactMessage("")
         }, 3000);
-        setContactMessage("")
+
       }
     })
   }
