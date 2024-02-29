@@ -125,7 +125,7 @@ function LoginForm() {
               </form>
               <div className="flex w-full justify-between items-center ">
                 <p className=" text-gray-500 py-2 font-light text-[12px]">If you not have account! contact <a href="/new/member/request" className="md:text-black text-[--web-primary-color]">here</a></p>
-                <a href="/new/reset-your-password" className="text-[12px] font light text-gray-500 capitalize">reset password</a>
+                <a href="/forgotpassword/reset" className="text-[12px] font light text-gray-500 capitalize">reset password</a>
               </div>
             </div>
           </div>
