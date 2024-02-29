@@ -6,7 +6,7 @@ export async function POST(req){
     const data = await req.formData()
     transporter.sendMail({
         ...mailOption,
-        to:"charliecharloluv@gmail.com",
+        to:"damangowdaman@gmail.com",
         subject:`Contact from ${data.get('email')}`,
         html:`
             <h1>${webName}</h1>
