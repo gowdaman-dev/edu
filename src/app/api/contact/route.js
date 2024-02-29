@@ -4,8 +4,8 @@ import { NextResponse } from "next/server";
 
 export async function POST(req){
     const data = await req.formData()
-    transporter.sendMail({
-        ...mailOption,
+    await transporter.sendMail({
+        from:process.env.NODEMAILER_USER,
         to:"damangowdaman@gmail.com",
         subject:`Contact from ${data.get('email')}`,
         html:`
