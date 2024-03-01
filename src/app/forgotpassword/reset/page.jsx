@@ -180,9 +180,6 @@ function page() {
                                         <button disabled={otpResendTimer}>
                                             <motion.div
                                                 onClick={resendOTP}
-                                                initial={{ scale: 0 }}
-                                                animate={{ scale: 1 }}
-                                                transition={{ duration: 0.5 }}
                                                 className="border-blue-400 text-blue-500 cursor-pointer font-sm text-white py-1 px-2 rounded-md w-[140px] sm:w-full text-center"
                                             >
                                                 {otpResendTimer ? "Resend in " + formatTime(otpResendTimer) : "resend"}
