@@ -254,7 +254,7 @@ function UserProvider() {
                                                     })
                                                 }
                                             </select> :
-                                            <p className='w-[80%] rounded-lg px-2 py-1 w-[80%]'>{selecteddetailpop.standard} grade</p>
+                                            <p className='w-[80%] rounded-lg px-2 py-1 w-[80%]'>Grade {selecteddetailpop.standard}</p>
                                     }
                                 </div>
                                 {
