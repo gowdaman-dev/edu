@@ -77,7 +77,7 @@ function ManualAdder({ close }) {
                 },
                 body: JSON.stringify({ email })
             })
-            if (resexist.status == 200) {
+            if (resexist.status == 400 ) {
                 setError('Account Already exist')
                 return
             }

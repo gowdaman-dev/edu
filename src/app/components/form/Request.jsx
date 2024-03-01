@@ -143,7 +143,6 @@ const Requestform = () => {
 
   const handleBlurSchool = (e) => {
     const value = e.target.value;
-    setIsSchoolOpen(false)
     setData({ ...data, schoolName: value });
     setCheck(value)
   };
