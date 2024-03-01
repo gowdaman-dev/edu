@@ -78,6 +78,7 @@ function page({ params }) {
                     <input required aria-label='reset pasword edulearn' onChange={(e) => setCurrentpass({ ...currentpass, conform: e.target.value })} type="password" className='md:w-[300px] rounded-lg w-full outline-none border p-2' placeholder='Conform New Password' />
                     <input type="submit" className='cursor-pointer md:w-[300px] rounded-lg w-full outline-none border p-2 bg-purple-800 text-white' value={status?status:'reset password'} />
                 </form>
+                <a href="/forgotpassword/reset" className='text-[10px] font-light text-gray-800'>try another way</a>
             </div>
         </div>
     )
