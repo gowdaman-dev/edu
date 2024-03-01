@@ -15,13 +15,13 @@ import { MdOutlineManageAccounts } from 'react-icons/md'
 import Accountinformation from '../dashboard/AccountInformation'
 import SchoolInformation from '../dashboard/Schoolinformation'
 import MemberRequestPage from '../dashboard/MemberRequestCom'
+import OraganizerRequestPage from '../dashboard/OrganizerRequestCom'
 function SideNav() {
     const [addmember, setAddmember] = useState(false)
     const menuref = useRef();
     const menulistref = useRef();
     const path = usePathname();
-    const { nav, setnav, addmanually, setAddmanually, requestedpop, setRequestedpop, showAccInfo, setShowAccInfo, showsklinfo, setShowSklInfo, showRequest,
-        setShowRequest, } = useContext(UserContext)
+    const { nav ,setnav, addmanually, setAddmanually,toggleRequest, setToggleRequest, showAccInfo, setShowAccInfo, showsklinfo, setShowSklInfo } = useContext(UserContext)
     const [addorganisermanually, setaddorganisermanually] = useState(false)
     const anime = (variants) => {
         return {
@@ -101,10 +101,10 @@ function SideNav() {
                                                 session?.user?.role == "superadmin" ? addmanually && (<OrganiserManualAdder close={setAddmanually} />) : addmanually && (<ManualAdder close={setAddmanually} />)
                                             }
                                         </AnimatePresence>
-                                        <button onClick={() => setShowRequest(true)}>Request</button>
+                                        <button onClick={() => setToggleRequest(true)}>Request</button>
                                         <AnimatePresence mode='wait'>
                                             {
-                                                showRequest && (<MemberRequestPage close={setRequestedpop} />)
+                                                toggleRequest && (session?.user?.role ==='superadmin'?<OraganizerRequestPage/>:<MemberRequestPage/>)
                                             }
                                         </AnimatePresence>
 

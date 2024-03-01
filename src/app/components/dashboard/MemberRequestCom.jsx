@@ -96,10 +96,10 @@ const MemberRequestPage = () => {
                 {
                     !memberRequesthandler?"":memberRequesthandler.map((request, i) => {
                         if (request) {
-                            return <motion.div key={request._id} onClick={() => { toggleShowAccInfo(i) }} className="shadow-md rounded-lg p-4 cursor-pointer h-fit" style={{ overflow: "hidden" }}
+                            return <motion.div key={request._id} className="shadow-md rounded-lg p-4 cursor-pointer h-fit" style={{ overflow: "hidden" }}
                             >
-                                <div className="flex items-center justify-between py-2">
-                                    <div className="flex items-center gap-6">
+                                <div className="flex items-center justify-between">
+                                    <div className="flex items-center gap-6 w-full px-2 py-2" onClick={() => { toggleShowAccInfo(i) }}>
                                         <p className="font-bold">{request.name}</p>
                                         <p className="text-sm text-gray-500">{request.schoolname}</p>
                                     </div>
