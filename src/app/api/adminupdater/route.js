@@ -7,12 +7,10 @@ export async function PUT(req) {
     const id = await data.get('id')
     const name = await data.get('name')
     const email = await data.get('email')
-    const school = await data.get('school')
-    const oldschool = await data.get('oldschool')
     const standard = await data.get('grade')
-    console.log(id, name, email, school, oldschool)
+    console.log(id, name, email)
     await connectMongoBD();
-    await User.findByIdAndUpdate(id, { name, email, school, standard });
+    await User.findByIdAndUpdate(id, { name, email, standard });
     return NextResponse.json({ message: "transmition complete" }, { status: 200 });
   } catch (error) {
     console.log(error);
