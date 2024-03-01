@@ -28,7 +28,7 @@ export async function POST(req) {
                     <body>
                         <h1>${webName}</h1>
                         <br>
-                        <p>Hi there ! your request from <strong>${user.email}</strong> for our educational service as been rejected by our Community</p>
+                        <p>Hi there ! your request from <strong>${user}</strong> for our educational service as been rejected by our Community</p>
                     </body>
                     </html>
                 `
