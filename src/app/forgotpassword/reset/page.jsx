@@ -9,7 +9,7 @@ import { useRouter } from 'next/navigation';
 function page() {
     const [resetEmail, setResetEmail] = useState('')
     const [sendoptstatus, setSendOptStatus] = useState(false)
-    const [emailVerification, setEmailVerification] = useState(true)
+    const [emailVerification, setEmailVerification] = useState(false)
     const [resetter, setResetter] = useState(false)
     const [newPassword, setNewPassword] = useState(true)
     let [otpResendTimer, setOptResendTimer] = useState(30)
