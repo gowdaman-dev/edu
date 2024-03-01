@@ -158,16 +158,6 @@ const Requestform = () => {
   const handleFocusSchool = () => {
     setIsSchoolOpen(true);
   }
-
-
-
-
-
-
-
-
-
-
   const roleClass = `rounded-lg  pl-2 w-72 text-b h-12 border cursor-pointer   bg-[--web-container]`;
   const regularClass = `rounded-lg  pl-2 w-72 text-b h-12 border   bg-[--web-container]`;
   const gradeClass = ` rounded-lg cursor-pointer pl-2 h-12  mt-10   w-72 md:w-[600px]  border bg-[--web-container]`;
