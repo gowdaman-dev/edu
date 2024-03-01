@@ -7,7 +7,7 @@ export async function POST(req) {
     try {
         const { name, email, password, role, school, about } = await req.json();
         await connectMongoBD();
-        const existskl = await School.findOne({ schoolname: `${schoolname}`.toLowerCase() });
+        const existskl = await School.findOne({ schoolname: `${school}`.toLowerCase() });
         if (`${existskl}`.toLowerCase() === `${school}`.toLowerCase()) {
             return NextResponse.json({ message: "School already exists" }, { status: 400 });
         }
