@@ -99,14 +99,14 @@ function page() {
             return
         }
     }
-    const otpVerfication = async(e)=>{
+    const otpVerfication = async (e) => {
         e.preventDefault()
         setSendOptStatus(true)
-        if(otp[0]+otp[1]+otp[2]+otp[3] == otpVerifier){
+        if (otp[0] + otp[1] + otp[2] + otp[3] == otpVerifier) {
             setResetter(true)
             setSendOptStatus(false)
         }
-        else{
+        else {
             setError('Incorrect OTP')
             setInterval(() => {
                 setError('')
@@ -115,15 +115,15 @@ function page() {
             return
         }
     }
-    const resetPassword = async(e)=>{
+    const resetPassword = async (e) => {
         e.preventDefault()
         setSendOptStatus(true)
-        const resetreq = await fetch('/api/forgotpassword',{
-            method:"POST",
-            headers:{
-                'Content-Type':'application/json'
+        const resetreq = await fetch('/api/forgotpassword', {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
             },
-            body:JSON.stringify({password:newPassword , email:resetEmail})
+            body: JSON.stringify({ password: newPassword, email: resetEmail })
         })
         if (resetreq.ok) {
             router.replace('/signin')
@@ -159,13 +159,12 @@ function page() {
                             <>
                                 <p className='text-sm font-light text-center'>Check your mail inbox ( <strong>{resetEmail}</strong> ) and Enter your One Time Password for verification</p>
                                 <form onSubmit={otpVerfication} className='flex flex-col gap-2 items-center py-4 w-full' method="post">
-                                    <div className="flex gap-4 sm:justify-between justify-center w-full ">
+                                    <div className="flex gap-4  justify-center w-full ">
                                         <OtpFields
-                                            containerClasses='w-[80%]'
+                                            containerClasses='w-[100%] flex items-center justify-between'
                                             length={4}
-                                            gap={8}
                                             otp={otp}
-                                            inputClasses='md:py-2 py-1 w-[50px] sm:w-[100px] border rounded-lg'
+                                            inputClasses='py-2 ms:w-[150px] w-[80px] border rounded-lg outline-none focus:outline focus:outline-blue-400s'
                                             onChange={handleOnChange}
                                             onComplete={handleOnComplete}
                                             autoFocus
@@ -177,15 +176,15 @@ function page() {
                                                 pattern: "[0-9]{4}"
                                             }}
                                         />
-                                        <button disabled={otpResendTimer}>
-                                            <motion.div
-                                                onClick={resendOTP}
-                                                className="border-blue-400 text-blue-500 cursor-pointer font-sm text-white py-1 px-2 rounded-md w-[140px] sm:w-full text-center"
-                                            >
-                                                {otpResendTimer ? "Resend in " + formatTime(otpResendTimer) : "resend"}
-                                            </motion.div>
-                                        </button>
                                     </div>
+                                    <button disabled={otpResendTimer}>
+                                        <motion.div
+                                            onClick={resendOTP}
+                                            className="border-blue-400 text-blue-500 cursor-pointer font-sm py-1 px-2 rounded-md w-[140px] sm:w-full text-center"
+                                        >
+                                            {otpResendTimer ? "Resend in " + formatTime(otpResendTimer) : "resend"}
+                                        </motion.div>
+                                    </button>
                                     <input type="submit" value={sendoptstatus ? "Verifing..." : 'Verify'} className="focus:bg-[--web-primary-color]/[.8]  border outline-none focus:outline focus:outline-blue-200 rounded-lg px-2 py-1 bg-[--web-primary-color] text-white w-full py-3 trackint-widest" disabled={sendoptstatus} />
                                 </form>
                             </>
