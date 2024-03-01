@@ -196,7 +196,7 @@ function page() {
                             <>
                                 <p className='text-sm font-light text-center'>Please enter your email address below.</p>
                                 <form onSubmit={resetPassword} className='flex flex-col gap-2 items-center py-4 w-full' method="post">
-                                    <input onChange={(e) => setNewPassword(e.target.value)} type="password" autoFocus className="border outline-none focus:outline focus:outline-blue-200 rounded-lg px-2 py-2 w-full " placeholder='Enter your email...' />
+                                    <input onChange={(e) => setNewPassword(e.target.value)} type="password" autoFocus className="border outline-none focus:outline focus:outline-blue-200 rounded-lg px-2 py-2 w-full " placeholder='Your new password..' />
                                     <input type="submit" className="focus:bg-[--web-primary-color]/[.8]  border outline-none focus:outline focus:outline-blue-200 rounded-lg px-2 py-1 bg-[--web-primary-color] text-white w-full py-3 trackint-widest" disabled={sendoptstatus} value={sendoptstatus ? "resetting..." : 'Reset Password'} />
                                 </form>
                             </>
