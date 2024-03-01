@@ -9,6 +9,7 @@ function page({ params }) {
     const [currentpass, setCurrentpass] = useState({
         password: "",
         conform: ""
+        
     })
     const router = useRouter()
     const [oldpass, setoldpass] = useState('')
