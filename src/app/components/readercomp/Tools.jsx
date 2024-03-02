@@ -42,9 +42,11 @@ function Tools({ click, fullScreen, zoomIn, zoomOut, download, newFile, rotation
         <BsZoomIn /> </span><span className="text-sm text-white bg-[--web-primary-color] rounded-t-xl h-full  block w-full">zoomin</span></button>
       <button className=" col-span-3 row-span-2 m-1 col-start-2  bg-gray-100 rounded-md gap-y-5 flex flex-col  items-center" onClick={handleZoomOut}><span className="text-3xl mt-2 text-[--web-primary-color]">
         <BsZoomOut /> </span><span className="text-sm text-white bg-[--web-primary-color] rounded-t-xl h-full  block w-full">Zoomout</span></button>
-      <button className="col-span-3 row-span-2 m-1    bg-gray-100 rounded-md gap-y-5 flex flex-col  items-center" onClick={handleDownload}><span className="text-3xl mt-2 text-[--web-primary-color]">
+
+        // the below buttons are work cool we just hie them due to not availablity of audio
+   <button className="col-span-3 row-span-2 m-1    bg-gray-100 rounded-md gap-y-5 flex flex-col  items-center" onClick={handleDownload}><span className="text-3xl mt-2 text-[--web-primary-color]">
         <AiOutlineDownload /> </span><span className="text-sm text-white bg-[--web-primary-color] rounded-t-xl h-full  block w-full">Download</span></button>
-      <button className="col-span-3 row-span-2 m-1  col-start-2  bg-gray-100 rounded-md gap-y-5 flex flex-col  items-center" onClick={handleUpload}>            <input
+     <button className="col-span-3 row-span-2 m-1  col-start-2  bg-gray-100 rounded-md gap-y-5 flex flex-col  items-center" onClick={handleUpload}>            <input
         type="file"
         onChange={(e) => handleUpload(e)}
         className="hidden"
@@ -55,7 +57,7 @@ function Tools({ click, fullScreen, zoomIn, zoomOut, download, newFile, rotation
             <AiOutlineUpload /></span><span className="text-sm text-white bg-[--web-primary-color] rounded-t-xl h-full  block w-full">Upload</span>
         </label>
 
-      </button>
+      </button> 
       <button className="col-span-3 row-span-2 m-1    bg-gray-100 rounded-md gap-y-5 flex flex-col items-center" onClick={handleRotate}><span className="text-3xl mt-2 text-[--web-primary-color]">
         <BiRotateRight /></span><span className="text-sm text-white bg-[--web-primary-color] rounded-t-xl h-full  block w-full">Rotate</span></button>
     </motion.div>

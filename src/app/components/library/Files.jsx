@@ -8,7 +8,7 @@ import SkeletonAnimation from '../SkeletonAnimation'
 import fetchFiles from '@/utils/FetchFiles'
 import axios from 'axios'
 import Rename from "./Rename";
-
+import { getAudio } from "./Tts";
 import ProgressComp from './ProgressComponent'
 import Popper from './DeleteRename_Poppper'
 import { db } from '@/firebase/firebase'
@@ -27,24 +27,28 @@ function Files() {
   const [renameId, setRenameId] = useState(null)
 
   const { data: session, loading } = useSession()
-  let { school: SCHOOL,role:ROLE } = session.user
+  let { school: SCHOOL, role: ROLE } = session.user
   const [isStudent, setStudent] = useState(session.user.role === "student")
   const { navGrade: GRADE, schoolFilter } = useContext(UserContext)
   const [data, setData] = useState([])
   const [isAnimate, setIsAnimate] = useState(true)
   const [newFile, setNewFile] = useState(0)
-  const [progress, setProgress] = useState(0)
+  const [progress, setProgress] = useState({
+    state:0,
+    title:"",
+    
+  })
   const [progVisible, setProgVisible] = useState(false)
   const [pop_DEl_Rename, setPop_Del_Rename] = useState(null)
   const [delete_id, setDelete_id] = useState(null)
   const [file_Name, setName] = useState(null)
-  const [alert, setAlert] = useState(false)
+  const [alert, setAlert] = useState({ alert: false, message: "" })
   useEffect(() => {
     const fetchData = () => {
 
 
       try {
-        fetchFiles(session, GRADE,schoolFilter).then(res => {
+        fetchFiles(session, GRADE, schoolFilter).then(res => {
           if (res) {
             setIsAnimate(false)
 
@@ -58,7 +62,7 @@ function Files() {
 
     fetchData()
 
-  }, [newFile, GRADE, loading,schoolFilter])
+  }, [newFile, GRADE, loading, schoolFilter])
   useEffect(() => {
     // Define the event listener function
     function clickEvent(e) {
@@ -228,62 +232,77 @@ function Files() {
     //TODO:firebase operation
     if (file) {
       if (NAME.includes(".pdf")) {
-        if(ROLE==="superadmin"){
-          SCHOOL="default"
-        }
-        setProgVisible(true)
-        const reference = ref(db, `files/${_uuid}`)
-        const uploadTask = uploadBytesResumable(reference, file);
+        if ((file.size / 1024) / 1024 <= 5) {
 
-        uploadTask.on("state_changed", (snapshot) => {
-          let progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          progress = Math.round(progress)
-
-          setProgress(progress);
-          switch (snapshot.state) {
-            case 'paused':
-              console.log('Upload is paused');
-              break;
-            case 'running':
-              console.log('Upload is running');
-              break;
+          if (ROLE === "superadmin") {
+            SCHOOL = "default"
           }
+          setProgVisible(true)
+          const reference = ref(db, `files/${_uuid}`)
+          const uploadTask = uploadBytesResumable(reference, file);
 
-        }, (err) => {
+          uploadTask.on("state_changed", (snapshot) => {
+            let progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            progress = Math.round(progress)
 
-
-        }, () => {
-          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-            const fileData = {
-              fname: file.name,
-              fsize: file.size,
-              _fid: _uuid,
-              furl: downloadURL,
-              fgrade: GRADE,
-              fschool: SCHOOL
-
+            setProgress({state:progress,title:"uploading"});
+            switch (snapshot.state) {
+              case 'paused':
+                console.log('Upload is paused');
+                break;
+              case 'running':
+                console.log('Upload is running');
+                break;
             }
-            sendData(fileData)
-            setProgVisible(false)
-            setProgress(0)
-            e.target.value = ""
+
+          }, (err) => {
+
+
+          }, () => {
+            getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+              const fileData = {
+                fname: file.name,
+                fsize: file.size,
+                _fid: _uuid,
+                furl: downloadURL,
+                fgrade: GRADE,
+                fschool: SCHOOL
+
+              }
+              const parseText={
+                fname:file.name,
+                fid: _uuid,
+
+              }
+
+              sendData(fileData,parseText)
+              /* setProgVisible(false)
+              setProgress(0) */
+              e.target.value = ""
+
+            })
 
           })
+        }
+        else {
+          setAlert({ state: true, message: "Important! Only PDFs with 5MB are accepted . Please split your file." })
 
-        })
+          e.target.value = ""
+
+        }
 
 
 
       }
       else {
-        setAlert(true)
+        setAlert({ state: true, message: "Important! Only PDFs are currently accepted. Please change your upload to a PDF file." })
         e.target.value = ""
       }
     }
 
   }
 
-  async function sendData(data) {
+  async function sendData(data,parseText) {
     setProgVisible(true)
     const sendFile = await axios.post(
       `/api/files`,
@@ -294,8 +313,10 @@ function Files() {
     } else {
       //  setProgVisible(false)
 
-      setIsAnimate(true)
-      setNewFile(newFile + 1)
+      /* setIsAnimate(true)
+      setNewFile(newFile + 1) */
+      const sendParse= await axios.post(`/api/parser`,parseText)
+      getAudio(sendParse.data.text,sendParse.data.fid)
     }
   }
   return (
@@ -344,7 +365,7 @@ function Files() {
         {isAnimate && <SkeletonAnimation />}
         {isAnimate && <SkeletonAnimation />}
         {isAnimate && <SkeletonAnimation />}
-        {alert && <Alert msg={"Important! Only PDFs are currently accepted. Please change your upload to a PDF file."} title={"ALERT"} click={setAlert} />}
+        {alert.state && <Alert msg={alert.message} title={"ALERT"} click={setAlert} />}
       </section>
     </div>
   )

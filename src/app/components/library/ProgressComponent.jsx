@@ -26,11 +26,12 @@ const iconRender_progress=(
         </span>
         <section className='flex flex-col justify-center h-full col-span-4 row-span-4 gap-5'>
           <span className='self-center duration-1000 ease-in ransition-all'>
-            {title}{progressChange}%
+            
+            {title}{progressChange.state}%
           </span>
           <span className='w-[80%] flex ml-[10%]'>
             <span
-              style={{ width: progressChange + '%' }}
+              style={{ width: progressChange.state + '%' }}
               className='self-start block h-2 transition-all duration-500 ease-in bg-[--web-primary-color] rounded-3xl'
             ></span>
           </span>

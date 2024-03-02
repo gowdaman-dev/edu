@@ -20,15 +20,15 @@ import axios from "axios";
 import { getDownloadURL, ref } from "firebase/storage";
 import { db } from "@/firebase/firebase";
 import ProgressComp from "../library/ProgressComponent";
-import { AnimatePresence,motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 //test
 const PdfViewer = () => {
   //texst
   const audioRef = useRef(null);
-const [transcript,setTransScript]=useState([])
+  const [transcript, setTransScript] = useState([])
   const [audiodata, setAudiodata] = useState()
-  const [highlights, setHighlights] = useState([]); 
-//text
+  const [highlights, setHighlights] = useState([]);
+  //text
 
   const params = useParams()
   const [buffer, setBuffer] = useState([]);
@@ -36,7 +36,6 @@ const [transcript,setTransScript]=useState([])
   const [progress, setProgress] = useState(0)
   const [progVisible, setProgVisible] = useState(false)
   const [isTools, setIsTools] = useState(false)
-  const [pdfText, setPdfText] = useState("")
   //plugins 
   const zoomPluginInstance = zoomPlugin();
   const { CurrentScale, ZoomIn, ZoomOut } = zoomPluginInstance;
@@ -48,7 +47,7 @@ const [transcript,setTransScript]=useState([])
   const { Open } = openPluginInstance;
   const rotatePluginInstance = rotatePlugin();
   const { Rotate } = rotatePluginInstance;
-  const [originalPdfBuffer,setOriginalPdfBuffer] =useState([])
+  const [originalPdfBuffer, setOriginalPdfBuffer] = useState([])
   //player
   const [isPlay, setIsPlay] = useState(false)
 
@@ -79,7 +78,7 @@ const [transcript,setTransScript]=useState([])
         const data = await axios.get(URLWithParam, {
           responseType: "arraybuffer", onDownloadProgress: updateProgress,
         })
-       setOriginalPdfBuffer(data.data)
+        setOriginalPdfBuffer(data.data)
         const dataArray = new Uint8Array(data.data)
 
 
@@ -108,33 +107,6 @@ const [transcript,setTransScript]=useState([])
   }, [pdfrender]);
 
 
-
-/* useEffect(() => {
-  const fetcher=async ()=>{
-    const blob=new Blob([originalPdfBuffer],{ type: 'application/pdf' })
-    await fetch('/api/audio', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/pdf', // Specify content type
-      },
-      body: blob
-    }).then((data) => {
-      const blob = data.blob().then((data) => {
-        console.log("audio done");
-        const url = URL.createObjectURL(data)
-        setAudiodata(url)
-      })
-    })
-  } 
-
-  
-  if(originalPdfBuffer){
-    fetcher()
-  }
-}, [originalPdfBuffer]);
-
-
- */
   const handleDocumentLoad = () => {
     setpdfRender(!pdfrender)
   };
@@ -152,19 +124,19 @@ const [transcript,setTransScript]=useState([])
       <header className='h-[60px] border-[--web-primary-color] w-screen  z-[20]  relative bg-white border-b-[1px] '>
         <ul className='flex items-center justify-around h-full relative'>
           <li className='flex justify-center grow gap-x-10 sm:gap-x-20 text-[--web-primary-color]'>
-                <span onClick={() => setIsPlay(!isPlay)} className='text-2xl sm:text-3xl cursor-pointer'>{isPlay ? <FaRegCirclePause /> : <FaPlayCircle />}</span>
-     
+            <span onClick={() => setIsPlay(!isPlay)} className='text-2xl sm:text-3xl cursor-pointer'>{isPlay ? <FaRegCirclePause /> : <FaPlayCircle />}</span>
+
           </li>
           <li className="absolute left-0">
-          <div>
-      {
-        audiodata && (
-          <audio controls ref={audioRef}  >
-            <source src={audiodata} type="audio/mp3"  />
-          </audio>
-        )
-      }
-    </div>
+            <div>
+              {
+                audiodata && (
+                  <audio controls ref={audioRef}  >
+                    <source src={audiodata} type="audio/mp3" />
+                  </audio>
+                )
+              }
+            </div>
           </li>
           <li className="absolute right-2  " onClick={toggleTools}>
             <span className="flex justify-center items-center text-2xl cursor-pointer">
@@ -177,7 +149,7 @@ const [transcript,setTransScript]=useState([])
       <main className='w-screen h-[90%] '>
 
         <section className={` fixed z-[10] w-screen grid grid-cols-12 ${isTools ? "h-screen" : null} grid-rows-12 tool`}>
-      
+
 
           {isTools && (
             <Rotate direction={RotateDirection.Backward}>
@@ -223,14 +195,14 @@ const [transcript,setTransScript]=useState([])
             </Rotate>
           )
           }
-        
+
         </section>
         <section className='absolute flex flex-col items-center w-screen z-[1] '>
 
           {progVisible && (
-                      <div className="h-screen w-screen fixed backdrop-blur-sm z-[3] top-0 ">
+            <div className="h-screen w-screen fixed backdrop-blur-sm z-[3] top-0 ">
 
-            <ProgressComp progressChange={progress} click={setProgVisible} title={"Downloading :"} icon={"download"} />
+              <ProgressComp progressChange={progress} click={setProgVisible} title={"Downloading :"} icon={"download"} />
             </div>
           )}
         </section>
