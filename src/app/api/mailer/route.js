@@ -6,9 +6,30 @@ export async function POST(req) {
         const data = await transporter.sendMail({
             ...mailOption,
             to: email,
-            subject: 'Reset Password',
+            subject: 'change Password',
             text: 'edulearn service',
-            html: `<!DOCTYPE html><html lang="en"><head></head><body><div class="container"><img src="http://edulearnuln.vercel.app/_next/image?url=%2Fmailimg.jpg&w=1920&q=75" alt=""><h1>hello ${name}</h1><p>Thanks for using our eductional web service. Your email ${email}, you have requested to reset your password</p><p>To reset Your password <a href=${link}>click here</a></p></div> <style> body {font-family: sans-serif;} img {width: 100%;} p {text-align: center;font-weight: 300;color: rgb(34, 34, 34);} h1 {font-size: 2rem;color: purple;} .container {height: 500px;width: 100%;background-color: white;border-radius: 2rem;display: flex;flex-direction: column;align-items: center;}</style></body></html>`
+            html: `
+            <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Change Password</title>
+</head>
+<body>
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+        <h2>Change Password</h2>
+        <p>Hello,</p>
+        <p>You have requested to change your password for the Miway community.</p>
+        <p>To proceed with the password reset, please click the following link:</p>
+        <p><a href="${link}">Change Password</a></p>
+        <p>If you did not request this password reset, you can safely ignore this email.</p>
+        <p>Thank you,<br> The Miway Team</p>
+    </div>
+</body>
+</html>
+
+            `
         })
         console.log(data.response)
         return Response.json({});
@@ -20,13 +41,34 @@ export async function POST(req) {
 export async function PUT(req) {
     try {
         const { id, email, name , message , subject } = await req.json()
-        const link = await `${process.env.NEXTAUTH_URL}resetpassword/${id}`
+        const link = await `${process.env.NEXTAUTH_URL}signin`
         const data = await transporter.sendMail({
             ...mailOption,
             to: email,
             subject: subject,
             text: 'edulearn service',
-            html: `<!DOCTYPE html><html lang="en"><head></head><body><div class="container"><img src="http://edulearnuln.vercel.app/_next/image?url=%2Fmailimg.jpg&w=1920&q=75" alt=""><h1>hello ${name}</h1><p>Thanks for using our eductional web service. Your email ${email}, ${message}</p></div> <style> body {font-family: sans-serif;} img {width: 100%;} p {text-align: center;font-weight: 300;color: rgb(34, 34, 34);} h1 {font-size: 2rem;color: purple;} .container {height: 500px;width: 100%;background-color: white;border-radius: 2rem;display: flex;flex-direction: column;align-items: center;}</style></body></html>`
+            html: `
+            <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Changed</title>
+</head>
+<body>
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+        <h2>Password Changed Successfully</h2>
+        <p>Hello,</p>
+        <p>Your password for the Miway community has been successfully changed.</p>
+        <p>You can now sign in using your new password.</p>
+        <p><a href="${link}" style="display: inline-block; background-color: #007bff; color: #fff; text-decoration: none; padding: 10px 20px; border-radius: 5px;">Sign In</a></p>
+        <p>If you did not initiate this password change, please contact our support team immediately.</p>
+        <p>Thank you,<br> The Miway Team</p>
+    </div>
+</body>
+</html>
+
+            `
         })
         console.log(data.response)
         return Response.json({});
