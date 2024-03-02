@@ -2,12 +2,10 @@ import { mailOption, transporter } from '@/app/components/mailcomponent/nodemail
 export async function POST(req) {
     try {
         const { id, email, name } = await req.json()
-        const link = `${process.env.NEXTAUTH_URL+"resetpassword/" + id}`
         const data = await transporter.sendMail({
             ...mailOption,
             to: email,
             subject: 'change Password',
-            text: 'edulearn service',
             html: `
             <!DOCTYPE html>
 <html lang="en">
@@ -22,7 +20,7 @@ export async function POST(req) {
         <p>Hello,</p>
         <p>You have requested to change your password for the Miway community.</p>
         <p>To proceed with the password reset, please click the following link:</p>
-        <p><a href="${link}">Change Password</a></p>
+        <p><a href="${process.env.NEXTAUTH_URL+'resetpassword/'+id}">Change Password</a></p>
         <p>If you did not request this password reset, you can safely ignore this email.</p>
         <p>Thank you,<br> The Miway Team</p>
     </div>
