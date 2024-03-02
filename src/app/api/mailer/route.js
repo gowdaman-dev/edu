@@ -2,7 +2,7 @@ import { mailOption, transporter } from '@/app/components/mailcomponent/nodemail
 export async function POST(req) {
     try {
         const { id, email, name } = await req.json()
-        const link = await `${process.env.NEXTAUTH_URL}resetpassword/${id}`
+        const link = `${process.env.NEXTAUTH_URL}resetpassword/${id}`
         const data = await transporter.sendMail({
             ...mailOption,
             to: email,
@@ -41,7 +41,7 @@ export async function POST(req) {
 export async function PUT(req) {
     try {
         const { id, email, name , message , subject } = await req.json()
-        const link = await `${process.env.NEXTAUTH_URL}signin`
+        const link = `${process.env.NEXTAUTH_URL}signin`
         const data = await transporter.sendMail({
             ...mailOption,
             to: email,
