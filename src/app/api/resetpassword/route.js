@@ -17,7 +17,28 @@ export async function PUT(req) {
                 to: email,
                 subject: "Password reset Successfull",
                 text: 'edulearn service',
-                html: `<!DOCTYPE html><html lang="en"><head></head><body><div class="container"><img src="http://edulearnuln.vercel.app/_next/image?url=%2Fmailimg.jpg&w=1920&q=75" alt=""><h1>hello ${name}</h1><p>Thanks for using our eductional web service. Your email ${email}, Your Password as been resetted successfully!</p><a href=${process.env.NEXTAUTH_URL}signin>sign in now </a></div> <style> body {font-family: sans-serif;} img {width: 100%;} p {text-align: center;font-weight: 300;color: rgb(34, 34, 34);} h1 {font-size: 2rem;color: purple;} .container {height: 500px;width: 100%;background-color: white;border-radius: 2rem;display: flex;flex-direction: column;align-items: center;}</style></body></html>`
+                html: `
+                <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Reset</title>
+</head>
+<body>
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+        <h2>Password Reset</h2>
+        <p>Hello,</p>
+        <p>You have requested to reset your password for the Miway community.</p>
+        <p>To proceed with the password reset, please click the following link:</p>
+        <p><a href="${process.env.NEXTAUTH_URL+"resetpassword/"+_id}">Reset Password</a></p>
+        <p>If you did not request this password reset, you can safely ignore this email.</p>
+        <p>Thank you,<br> The Miway Team</p>
+    </div>
+</body>
+</html>
+
+                `
             })
         } catch (error) {
             console.log(error)
