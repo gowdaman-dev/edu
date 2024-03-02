@@ -1,10 +1,10 @@
 'use server'
-import * as fs from 'fs'
+
 import { getAudioBuffer } from "simple-tts-mp3";
 import { db } from '@/firebase/firebase';
 import { getDownloadURL,ref,uploadBytes } from 'firebase/storage';
 export const getAudio = async (text,fid) => {
-    console.log("tts");
+    console.log(text);
     if (text.length > 2500) {
         let textres = ''
         let tempinit = 0
