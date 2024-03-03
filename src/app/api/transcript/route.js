@@ -19,6 +19,7 @@ export async function POST(req){
         const reference = ref(db,`transcript/${fid}`)
         const upload = await uploadBytesResumable(reference, blob)
         const downloadURL = await getDownloadURL(upload.ref);
+        console.log("transcript upload",downloadURL);
         return NextResponse.json({url:downloadURL},{status:200})
                   
     }

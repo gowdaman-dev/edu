@@ -44,8 +44,7 @@ function Files() {
   const [delete_id, setDelete_id] = useState(null)
   const [file_Name, setName] = useState(null)
   const [alert, setAlert] = useState({ alert: false, message: "" })
-const [audioUrl,setAudioUrl] = useState("")
-const [transcriptUrl,settranscriptUrl] = useState("")
+
  
   useEffect(() => {
     const fetchData = () => {
@@ -248,7 +247,7 @@ const [transcriptUrl,settranscriptUrl] = useState("")
          icon:"extract"
         })
 const audioURl= await getText(fileData,_uuid)
-setAudioUrl(audioURl)
+
 setProgress({
   title:"Creating Transcript",
   icon:"transcript"
@@ -286,8 +285,7 @@ await getTranscript(audioURl,_uuid)
                 fsize: file.size,
                 _fid: _uuid,
                 furl: downloadURL,
-                aurl:audioUrl,
-                turl:transcriptUrl,
+              
                 fgrade: GRADE,
                 fschool: SCHOOL
 
@@ -360,10 +358,10 @@ await getTranscript(audioURl,_uuid)
    }
    const getTranscript= async(url,fid)=>{
 
-console.log(url);
 
-const transcript=await axios.post(`/api/transcript`,{URL:url,fid:fid})
-settranscriptUrl(transcript.url)
+
+await axios.post(`/api/transcript`,{URL:url,fid:fid})
+
    }
   return (
     <div>
