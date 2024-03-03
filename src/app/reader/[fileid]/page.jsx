@@ -110,11 +110,11 @@ function Page({ params }) {
         </div>
       </header>
       <div className={`flex flex-col z-[1] ${openPlayer ? "h-fit" : 'h-screen'} overflow-y-scroll`}>
-        {/* {
+        {
           !openPlayer && (
             <PdfViewer />
           )
-        } */}
+        }
         <div className="w-screen px-4 py-2 mt-[100px] flex">
           {
             openPlayer && (
