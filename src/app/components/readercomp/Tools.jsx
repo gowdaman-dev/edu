@@ -31,7 +31,7 @@ function Tools({ click, fullScreen, zoomIn, zoomOut, download, newFile, rotation
 
   return (
     <motion.div initial={{ opacity: .4 }} animate={{ opacity: 1 }} transition={{ type: 'spring', duration: .5 }} exit={{ opacity: 0 }}    className='tool col-end-12 row-span-4  absolute grid grid-cols-8  grid-rows-8  bg-white w-72 rounded-lg border-[2px] row-start-2 box-border col-span-4 right-1 justify-center'>
-      <h4 className="col-span-7 flex justify-center items-center ml-10">Tools</h4>
+      <h4 className="col-span-7 flex justify-center items-center ml-10 ">Tools</h4>
       <span className='flex justify-end col-span-1 col-end-9 text-3xl p-2 cursor-pointer text-gray-500' onClick={() => click(false)}>
         <AiOutlineClose />
       </span>
@@ -44,7 +44,7 @@ function Tools({ click, fullScreen, zoomIn, zoomOut, download, newFile, rotation
         <BsZoomOut /> </span><span className="text-sm text-white bg-[--web-primary-color] rounded-t-xl h-full  block w-full">Zoomout</span></button>
 
         // the below buttons are work cool we just hie them due to not availablity of audio
-   <button className="col-span-3 row-span-2 m-1    bg-gray-100 rounded-md gap-y-5 flex flex-col  items-center" onClick={handleDownload}><span className="text-3xl mt-2 text-[--web-primary-color]">
+   {/* <button className="col-span-3 row-span-2 m-1    bg-gray-100 rounded-md gap-y-5 flex flex-col  items-center" onClick={handleDownload}><span className="text-3xl mt-2 text-[--web-primary-color]">
         <AiOutlineDownload /> </span><span className="text-sm text-white bg-[--web-primary-color] rounded-t-xl h-full  block w-full">Download</span></button>
      <button className="col-span-3 row-span-2 m-1  col-start-2  bg-gray-100 rounded-md gap-y-5 flex flex-col  items-center" onClick={handleUpload}>            <input
         type="file"
@@ -57,7 +57,7 @@ function Tools({ click, fullScreen, zoomIn, zoomOut, download, newFile, rotation
             <AiOutlineUpload /></span><span className="text-sm text-white bg-[--web-primary-color] rounded-t-xl h-full  block w-full">Upload</span>
         </label>
 
-      </button> 
+      </button>  */}
       <button className="col-span-3 row-span-2 m-1    bg-gray-100 rounded-md gap-y-5 flex flex-col items-center" onClick={handleRotate}><span className="text-3xl mt-2 text-[--web-primary-color]">
         <BiRotateRight /></span><span className="text-sm text-white bg-[--web-primary-color] rounded-t-xl h-full  block w-full">Rotate</span></button>
     </motion.div>

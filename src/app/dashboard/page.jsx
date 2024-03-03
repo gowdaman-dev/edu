@@ -30,7 +30,8 @@ function page() {
             {
               (session?.user?.role == "student") && (
                 <>
-                  student
+                  student1234
+                  
                 </>
               )
             }
