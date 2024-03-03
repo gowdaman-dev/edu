@@ -32,6 +32,14 @@ const libSchema=new Schema({
         required:true
         
     },
+    audio_url:{
+        type:String,
+        required:true
+    },
+    trans_url:{
+        type:String,
+        required:true
+    }
 
 
 

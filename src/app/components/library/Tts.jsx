@@ -2,8 +2,9 @@
 
 import { getAudioBuffer } from "simple-tts-mp3";
 import { db } from '@/firebase/firebase';
-import { getDownloadURL,ref,uploadBytes } from 'firebase/storage';
-export const getAudio = async (text,fid) => {
+import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
+export const getAudio = async (text, fid) => {
+    let downloadURL=""
     console.log(text);
     if (text.length > 2500) {
         let textres = ''
@@ -45,29 +46,37 @@ export const getAudio = async (text,fid) => {
         }
         console.log("final:", len, 'actual:', textres.length);
         const blob = new Blob(buffer, { type: 'audio/mp3' })
-        blob.arrayBuffer().then(async (data) => {
+      const bufferAudio=  await blob.arrayBuffer()
             const storageRef = ref(db, `audio/${fid}`);
-            const upload = await uploadBytes(storageRef, data)
-            const downloadURL = await getDownloadURL(upload.ref);
-            console.log(downloadURL);
-           
-        })
+            const upload = await uploadBytesResumable(storageRef, bufferAudio)
+           downloadURL = await getDownloadURL(upload.ref);
+           console.log(downloadURL);
+           return downloadURL;
+      
+
+        
     } else {
         try {
 
             const buffer = await getAudioBuffer(text);
 
             const blob = new Blob([buffer], { type: 'audio/mp3' })
-            blob.arrayBuffer().then(async (data) => {
-                const storageRef = ref(db, `audio/${fid}`);
-                const upload = await uploadBytes(storageRef, data)
-                const downloadURL = await getDownloadURL(upload.ref);
-               
-            })
+            const bufferAudio=  await blob.arrayBuffer()
+            const storageRef = ref(db, `audio/${fid}`);
+            const upload = await uploadBytesResumable(storageRef, bufferAudio)
+           downloadURL = await getDownloadURL(upload.ref);
+           console.log(downloadURL);
+           return downloadURL;
+
+
+            
         } catch (e) {
 
             console.log(e.message);
             getAudio()
         }
     }
+    
+
+
 }
