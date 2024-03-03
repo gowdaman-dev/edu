@@ -1,34 +1,55 @@
-'use client'
-import { signOut, useSession } from 'next-auth/react';
-import { createContext, useContext, useEffect, useState } from 'react';
+"use client";
+import { createContext, useEffect, useState } from "react";
 export const UserContext = createContext();
 function ContextUserData({ children }) {
-    const { data: session } = useSession();
-    const [userData, setUserData] = useState();
-    const check = async () => {
-        console.log("checking");
-        try {
-            const userExist = await fetch(`${process.env.NEXTAUTH_URL}/api/userinfo`,
-                {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ email: session?.user?.email })
-                })
-            const { user } = await userExist.json()
-            console.log(user);
-            if (user) {
-                setUserData(user)
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    }
+    const [nav, setnav] = useState(false);
+    const [navmob, setnavmob] = useState(false);
+    const [exporter, setExporter] = useState("false");
+    const [fetchrole, setFetchrole] = useState("");
+    const [navSearch, setNavSearch] = useState("");
+    const [navGrade, setNavGrade] = useState("1");
+    const [count, setCount] = useState(0);
+    const [addmanually, setAddmanually] = useState(false);
+    const [userDetailpopup, setUserDetailpopup] = useState(false);
+    const [requestedpop, setRequestedpop] = useState(false);
+    const [showAccInfo, setShowAccInfo] = useState(false);
+    const [showsklinfo, setShowSklInfo] = useState(false);
+    const [toggleRequest, setToggleRequest] = useState(false);
+    const [schoolFilter, setSchoolFilter] = useState('');
+
     return (
-        <UserContext.Provider value={{ userData , check }}>
+        <UserContext.Provider value={{
+            navmob,
+            setnavmob,
+            nav,
+            setnav,
+            fetchrole,
+            setFetchrole,
+            addmanually,
+            setAddmanually,
+            count,
+            setCount,
+            exporter,
+            setExporter,
+            navSearch,
+            setNavSearch,
+            navGrade,
+            setNavGrade,
+            userDetailpopup,
+            setUserDetailpopup,
+            requestedpop,
+            setRequestedpop,
+            showAccInfo,
+            setShowAccInfo,
+            showsklinfo,
+            setShowSklInfo,
+            toggleRequest, 
+            setToggleRequest,
+            schoolFilter, 
+            setSchoolFilter
+        }}>
             {children}
         </UserContext.Provider>
     );
 }
-export default ContextUserData
+export default ContextUserData;

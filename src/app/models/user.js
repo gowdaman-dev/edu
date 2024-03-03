@@ -13,6 +13,20 @@ const userSchema = new Schema({
         type:String,
         required:true,
     },
+    standard:{
+        type:Number,
+    },
+    role:{
+        type:String,
+        required:true,
+    },
+    school:{
+        type:String,
+    },
+    about:{
+        type:String,
+    },
+
 },{timestamps:true})
 
 const User = mongoose.models.User || mongoose.model('User',userSchema)
