@@ -77,8 +77,7 @@ function ManualAdder({ close }) {
                 },
                 body: JSON.stringify({ email })
             })
-            const { user } = await resexist.json()
-            if (user !== null) {
+            if (resexist.status == 200) {
                 setError('Account Already exist')
                 return
             }

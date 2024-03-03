@@ -167,7 +167,7 @@ function SuperAdminMember() {
       setdeleteuser(false)
     }
   }
-  
+
   const [schoolfilterdata, setSchoolFilterData] = useState({})
   const [memberdata, setMemberdata] = useState();
   useEffect(() => {
@@ -294,8 +294,8 @@ function SuperAdminMember() {
   const handleBlurSchool = (e) => {
     const value = e.target.value;
     setIsSchoolOpen(false)
-    setOutSchoolName(value)
-    setCheck(value)
+    setOutSchoolName(value);
+    (selectedrecord.role !== "admin") ? setCheck(value) : null
   };
 
   const handleClickSchool = (value) => {

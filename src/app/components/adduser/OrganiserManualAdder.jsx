@@ -63,7 +63,7 @@ function ManualAdder({ close }) {
 	const inner = useRef()
 	const SignUpHandler = async (e) => {
 		e.preventDefault()
-		await setsaloader(true)
+		setsaloader(true)
 		try {
 			const resexist = await fetch('/api/userExists', {
 				method: 'POST',
@@ -72,8 +72,7 @@ function ManualAdder({ close }) {
 				},
 				body: JSON.stringify({ email })
 			})
-			const { user } = await resexist.json()
-			if (user !== null) {
+			if (resexist.status == 200) {
 				setError('Account Already exist')
 				setsaloader(false)
 				return
@@ -90,8 +89,8 @@ function ManualAdder({ close }) {
 				},
 				body: JSON.stringify({ school })
 			})
-			const { exist } = await resschoolexist.json()
-			if (exist !== null) {
+			console.log(resschoolexist.status);
+			if (resschoolexist.status == 200) {
 				setError('School already Exists!')
 				setsaloader(false)
 				return
@@ -105,7 +104,7 @@ function ManualAdder({ close }) {
 				headers: {
 					"Content-Type": 'application/json'
 				},
-				body: JSON.stringify({ name, email, password, role, school:school.toLowerCase(), about })
+				body: JSON.stringify({ name: name.toLowerCase(), email, password, role, school: school.toLowerCase(), about })
 			})
 			if (res.ok) {
 				const form = await e.target;
@@ -141,7 +140,7 @@ function ManualAdder({ close }) {
 			</div>
 			<motion.div initial={{ scale: .7, opacity: .4 }} animate={{ scale: 1, opacity: 1 }} transition={{ type: 'spring', duration: .5 }} exit={{ scale: .7, opacity: 0 }} ref={inner} className="md:w-1/2 h-fit overflow-y-scroll bg-white rounded-lg flex flex-col p-2 py-4">
 				<IoIosCloseCircleOutline className='text-2xl' onClick={() => close(false)} />
-				<h1 className='text-center text-xl text-gray-700 font-medium py-2'>Add User Manually</h1>
+				<h1 className='text-center text-xl text-gray-700 font-medium py-2'>Add Organizer Manually</h1>
 				<form onSubmit={SignUpHandler} action="" className='px-5 flex flex-col gap-4' method="post">
 					<div className="flex justify-between gap-4 items-center w-full ">
 						<label className='text-xl' htmlFor="name">Name</label>
@@ -159,7 +158,7 @@ function ManualAdder({ close }) {
 						<label className='text-xl' htmlFor="about">About</label>
 						<input onChange={(e) => { setAbout(e.target.value) }} className='w-[80%] text-sm text-gray-700 outline-none bg-gray-200 p-2 rounded-lg' type="text" required placeholder='eg. principal , correspondent.....' id='school' />
 					</div>
-					<button type='submit' className='w-full mt-2 py-2 bg-[--web-primary-color] rounded-lg text-white tracking-wide'>{saloader?"processing..":'Add Organiser'}</button>
+					<button type='submit' className='w-full mt-2 py-2 bg-[--web-primary-color] rounded-lg text-white tracking-wide'>{saloader ? "processing.." : 'Add Organiser'}</button>
 					<p className='text-[12px] font-light text-gray-700'>Note: By Default the password is set to "Admin@1234"</p>
 				</form>
 			</motion.div>

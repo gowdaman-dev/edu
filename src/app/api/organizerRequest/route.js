@@ -41,8 +41,11 @@ export async function POST(req) {
 export async function PUT() {
     try {
         await connectMongoBD();
-        const allOrganizerRequests = await OrganizerRequest.find()
-        return NextResponse.json(allOrganizerRequests, { status: 200 });
+        const allMemberRequests = await OrganizerRequest.find()
+        if (allMemberRequests == null){
+            return NextResponse.json(allMemberRequests, { status: 400 });
+        }
+        return NextResponse.json(allMemberRequests, { status: 200 });
     } catch (error) {
         console.log(error);
         return NextResponse.json({}, { status: 500 });

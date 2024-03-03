@@ -28,8 +28,8 @@ export async function PUT(req) {
     const role = await data.get('role')
     await connectMongoBD();
     if(role == 'admin') {
-      await User.updateMany({ school: oldschool }, { school: school });
-      await School.updateMany({ schoolname: oldschool }, { schoolname: school });
+      await User.updateMany({ school: oldschool }, { school: school , name , email });
+      await School.updateMany({ schoolname: oldschool }, { schoolname: school , organiseremail:email });
       return NextResponse.json({ message: "transmition complete" }, { status: 200 });
     }
     await User.findByIdAndUpdate(id, { name, email, school });
