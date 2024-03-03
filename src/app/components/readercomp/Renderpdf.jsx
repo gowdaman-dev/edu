@@ -10,7 +10,7 @@ import "@react-pdf-viewer/core/lib/styles/index.css";
 import '@react-pdf-viewer/full-screen/lib/styles/index.css';
 import { zoomPlugin } from '@react-pdf-viewer/zoom';
 import '@react-pdf-viewer/zoom/lib/styles/index.css';
-import { useEffect, useState, useRef, useCallback } from "react";
+import { useEffect, useState, useRef } from "react";
 import { rotatePlugin } from '@react-pdf-viewer/rotate';
 import { useParams } from 'next/navigation'
 import "@react-pdf-viewer/default-layout/lib/styles/index.css";
@@ -19,7 +19,7 @@ import { getDownloadURL, ref } from "firebase/storage";
 import { db } from "@/firebase/firebase";
 import ProgressComp from "../library/ProgressComponent";
 //test
-const PdfViewer = () => {
+const PdfViewer = ({setTools,stateTools}) => {
 
   const params = useParams()
   const [buffer, setBuffer] = useState([]);
@@ -28,7 +28,6 @@ const PdfViewer = () => {
     state:0
   })
   const [progVisible, setProgVisible] = useState(false)
-  const [isTools, setIsTools] = useState(false)
   //plugins 
   const zoomPluginInstance = zoomPlugin();
   const { CurrentScale, ZoomIn, ZoomOut } = zoomPluginInstance;
@@ -92,12 +91,7 @@ console.log(progVisible);
     setpdfRender(!pdfrender)
   };
 
-  const toggleTools = () => {
-    if (!progVisible) {
-
-      setIsTools(!isTools)
-    }
-  }
+  
 
 
   return (
@@ -105,8 +99,8 @@ console.log(progVisible);
 
       <main className='w-screen h-[90%] '>
 
-        <section className={` fixed z-[10] w-screen grid grid-cols-12 ${isTools ? "h-screen" : null} grid-rows-12 tool`}>
-          {isTools && (
+        <section className={` fixed z-[10] w-screen grid grid-cols-12 ${stateTools ? "h-screen" : null} grid-rows-12 tool`} >
+          {stateTools && (
             <Rotate direction={RotateDirection.Backward}>
               {(rotate) => (
                 <Open>
@@ -119,7 +113,7 @@ console.log(progVisible);
                               {(zoomIn) => (
                                 <EnterFullScreen>
                                   {(screen) => (
-                                    <Tools click={setIsTools} fullScreen={screen} zoomIn={zoomIn} zoomOut={zoomOut} download={getFile} newFile={open} rotation={rotate} />
+                                    <Tools click={setTools} fullScreen={screen} zoomIn={zoomIn} zoomOut={zoomOut} download={getFile} newFile={open} rotation={rotate} />
                                   )}
                                 </EnterFullScreen>
                               )}

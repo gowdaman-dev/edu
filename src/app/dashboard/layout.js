@@ -56,7 +56,7 @@ function layout({ children }) {
                             (session?.user?.role == "student") && (
                         <div className='max-w-screen overflow-hidden'>
                              <div className="flex h-screen max-w-screen">
-                              <div className="flex flex-1 absolute md:relative z-[10]">
+                              <div className="flex flex-1  md:relative z-[10]">
                             <SideNavStudent />
                             </div>
                                      

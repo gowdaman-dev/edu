@@ -8,6 +8,8 @@ import Audio from "./Audio";
 
 function Page({ params }) {
   const [isPlay, setIsPlay] = useState(false)
+  const [isTools, setIsTools] = useState(false)
+
   //const [transcript, setTransScript] = useState(Transcribe(fileid))
   const [openPlayer, setOpenPlayer] = useState(false)
   const audioData = `https://firebasestorage.googleapis.com/v0/b/lmsedu-e5dbc.appspot.com/o/audio%2F${params.fileid}?alt=media&token=11fccbc3-c457-40bc-9c96-386a5bbef464`
@@ -187,7 +189,7 @@ function Page({ params }) {
         </div>
       </header>
       <div className='h-screen    flex flex-col fixed z-[1]'>
-        <PdfViewer />
+        <PdfViewer stateTools={isTools} setTools={setIsTools} />
       </div>
     </>
   )
