@@ -74,7 +74,7 @@ function Page({ params }) {
             openPlayer && (
               <div className="player">
                 <div className="playpause" onClick={() => setIsPlaying(!isPlaying)}>
-                  {isPlaying ? <AiOutlinePauseCircle onClick={() => audioRef.current.pause()} className="text-2xl sm:text-4xl text-[--web-primary-color] cursor-pointer" /> : <AiOutlinePlayCircle onClick={() => audioRef.current.play()} className="text-2xl sm:text-4xl text-[--web-primary-color] cursor-pointer" />}
+                  {(isPlaying && audioRef.current.play) ? <AiOutlinePauseCircle onClick={() => audioRef.current.pause()} className="text-2xl sm:text-4xl text-[--web-primary-color] cursor-pointer" /> : <AiOutlinePlayCircle onClick={() => audioRef.current.play()} className="text-2xl sm:text-4xl text-[--web-primary-color] cursor-pointer" />}
                 </div>
               </div>
             )
@@ -123,7 +123,7 @@ function Page({ params }) {
                   {
                     transcript && (
                       transcript.map((item, i) => {
-                        return <p className={`${(currentTime*1000 >= item.start && currentTime <= item.end+200) ? 'bg-blue-300 text-white rounded-lg' : ''} text-gray-800 px-[5px]`} key={i}>{item.text}</p>
+                        return <p className={`${(currentTime*1000 >= item.start && currentTime <= item.end) ? 'bg-blue-100 text-blue-500' : 'text-gray-800'} py-1 px-[5px]`} key={i}>{item.text}</p>
                       })
                     )
                   }
