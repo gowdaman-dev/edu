@@ -53,7 +53,7 @@ const Requestform = () => {
     <div className="mt-16">
       <p className="text-center px-10 pb-8 text-lg">
         Note: This form is only for new school registeration by admin, If you are member of registered school, then {''}
-        <Link className="text-[--web-primary-color]" href={'new/member/request'} >Register your account </Link>{''}as member
+        <Link className="text-[--web-primary-color]" href={'/new/member/request'} >Register your account </Link>{''}as member
         instead.
       </p>
       <div className=" rounded-lg md:shadow-[0px_0px_2px_0px] sm:w-fit w-full px-1 md:px-10 mx-auto flex-col justify-center">

@@ -21,7 +21,7 @@ function SideNav() {
     const menuref = useRef();
     const menulistref = useRef();
     const path = usePathname();
-    const { nav, addmanually, setAddmanually,toggleRequest, setToggleRequest, showAccInfo, setShowAccInfo, showsklinfo, setShowSklInfo } = useContext(UserContext)
+    const { nav,setnav, addmanually, setAddmanually,toggleRequest, setToggleRequest, showAccInfo, setShowAccInfo, showsklinfo, setShowSklInfo } = useContext(UserContext)
     const [addorganisermanually, setaddorganisermanually] = useState(false)
     const anime = (variants) => {
         return {

@@ -203,7 +203,6 @@ function UserProvider() {
         e.preventDefault();
         const formdata = new FormData(e.target)
         await formdata.append('id', selecteddetailpop.id)
-        await formdata.append('oldschool', selecteddetailpop.school)
         await formdata.append('grade', selecteddetailpop.standard)
         const res = await fetch('/api/adminupdater', {
             method: 'PUT',
@@ -244,18 +243,10 @@ function UserProvider() {
                                     }
                                 </div>
                                 <div className="flex w-full justify-between items-center">
-                                    <label htmlFor="school">school</label>
-                                    {
-                                        dataeditable ?
-                                            <input type="text" placeholder='school' id='school' name='school' className='bg-gray-200 rounded-lg px-2 py-1 w-[80%]' /> :
-                                            <input type="text" placeholder='school' id='school' name='school' value={selecteddetailpop.school} disabled={!dataeditable} className='w-[80%] rounded-lg px-2 py-1 w-[80%]' />
-                                    }
-                                </div>
-                                <div className="flex w-full justify-between items-center">
                                     <label htmlFor="school">Grade</label>
                                     {
                                         dataeditable ?
-                                            <select className='w-[80%] rounded-lg px-2 py-1 w-[80%]' name="grade" id="grade">
+                                            <select className='w-[80%] rounded-lg px-2 py-1 w-[80%]' defaultValue={selecteddetailpop.standard} name="grade" id="grade">
                                                 <option value="">update grade</option>
                                                 {
                                                     grades.map((item, i) => {
@@ -263,7 +254,7 @@ function UserProvider() {
                                                     })
                                                 }
                                             </select> :
-                                            <p className='w-[80%] rounded-lg px-2 py-1 w-[80%]'>{selecteddetailpop.standard} grade</p>
+                                            <p className='w-[80%] rounded-lg px-2 py-1 w-[80%]'>Grade {selecteddetailpop.standard}</p>
                                     }
                                 </div>
                                 {

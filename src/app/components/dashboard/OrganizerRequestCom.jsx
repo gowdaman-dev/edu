@@ -1,5 +1,5 @@
 'use client'
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { AiOutlineCheckCircle, AiOutlineCloseCircle, AiOutlineDown, AiOutlineLeft, AiOutlineRight } from 'react-icons/ai';
 import { useSession } from 'next-auth/react';
@@ -10,7 +10,7 @@ const OraganizerRequestPage = () => {
     const { data: session } = useSession()
     const { setToggleRequest } = useContext(UserContext);
     const [selectedAccountFromRequest, setselectedAccountFromRequest] = useState('');
-    const [counter, setCounter] = useState(1)
+    const [error, setError] = useState(1)
     const [requestCount, setRequestCount] = useState(0)
     const role = session?.user?.role == "admin" ? "" : "student"
     const fetchMemberRequesthandler = async () => {
@@ -19,13 +19,17 @@ const OraganizerRequestPage = () => {
                 method: 'PUT',
             });
             const data = await response.json();
+            if (response.status == 400) {
+                setError('there is no request action')
+                return
+            }
             console.log(data);
             return data
         } catch (error) {
             console.error('Error fetching member requests:', error);
         }
     };
-    const {data:memberRequesthandler , isLoading:datafetcher , mutate} = useSWR('request fetch', fetchMemberRequesthandler)
+    const { data: memberRequesthandler, isLoading: datafetcher, mutate } = useSWR('request fetch', fetchMemberRequesthandler)
     const handleDecline = async (id) => {
         try {
             const response = await fetch(`/api/organizerrequestevent`, {
@@ -54,14 +58,15 @@ const OraganizerRequestPage = () => {
             });
             if (response.status === 200) {
                 mutate([])
-                return ;
+                return;
             }
         } catch (error) {
             console.error('Error declining member request:', error);
         }
     };
+    const ignoreMenu = useRef(null)
+    const toggleShowAccInfo = (event, id) => {
 
-    const toggleShowAccInfo = (id) => {
         if (id == selectedAccountFromRequest) {
             setselectedAccountFromRequest(null);
             return
@@ -80,17 +85,22 @@ const OraganizerRequestPage = () => {
             </div>
             <div className="flex flex-col gap-2 w-full px-4 mt-4 h-full overflow-y-scroll scrollbar-hide">
                 {
-                    !memberRequesthandler?"":memberRequesthandler.map((request, i) => {
+                    error && (
+                        <p className='text-sm font-light text-gray-800 text-center'>{error}</p>
+                    )
+                }
+                {
+                    !memberRequesthandler ? "" : memberRequesthandler.map((request, i) => {
                         if (request) {
-                            return <motion.div key={request._id} onClick={() => { toggleShowAccInfo(i) }} className="shadow-md rounded-lg p-4 cursor-pointer h-fit" style={{ overflow: "hidden" }}
+                            return <motion.div key={request._id} className="shadow-md rounded-lg p-4 cursor-pointer h-fit" style={{ overflow: "hidden" }}
                             >
-                                <div className="flex items-center justify-between py-2">
-                                    <div className="flex items-center gap-6">
+                                <div className="flex items-center justify-between">
+                                    <div className="flex items-center gap-6 w-full px-2 py-2" onClick={() => { toggleShowAccInfo(event, i) }}>
                                         <p className="font-bold">{request.name}</p>
                                         <p className="text-sm text-gray-500">{request.schoolname}</p>
                                     </div>
                                     <div className="flex items-center gap-2">
-                                        <div className="flex py-2">
+                                        <div className="flex py-2" ref={ignoreMenu}>
                                             <button onClick={() => handleAccept(request._id)} className="px-2 py-1 rounded ">
                                                 <AiOutlineCheckCircle className="text-green-500" />
                                             </button>
