@@ -10,7 +10,7 @@ function Page({ params }) {
     let handler = async () => {
       const { data } = await axios.get(`https://firebasestorage.googleapis.com/v0/b/lmsedu-e5dbc.appspot.com/o/transcript%2F${params.fileid}?alt=media&token=c193bafc-ce23-49f1-a2fc-8c65381721f2`)
       const { words } = await data;
-      console.log(words);
+      console.log(data);
       setTransScript(words)
     }
     handler()
@@ -22,7 +22,6 @@ function Page({ params }) {
   const audioRef = useRef(null);
   const handleTimeUpdate = () => {
     const audio = audioRef.current;
-    console.log(audio.currentTime*1000);
     setCurrentTime(audio.currentTime);
   };
 
@@ -124,7 +123,7 @@ function Page({ params }) {
                   {
                     transcript && (
                       transcript.map((item, i) => {
-                        return <p className={`${(currentTime*1000 >= item.start+200 && currentTime*1000 <= item.end+200) ? 'bg-blue-300 text-white rounded-lg' : ''} text-gray-800 px-[5px]`} key={i}>{item.text}</p>
+                        return <p className={`${(currentTime*1000 >= item.start && currentTime <= item.end+200) ? 'bg-blue-300 text-white rounded-lg' : ''} text-gray-800 px-[5px]`} key={i}>{item.text}</p>
                       })
                     )
                   }
