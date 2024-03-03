@@ -1,45 +1,40 @@
 'use client'
-import { motion } from "framer-motion";
 import { AiFillPlayCircle, AiOutlineLeft, AiOutlineMore, AiOutlinePauseCircle, AiOutlinePlayCircle } from "react-icons/ai";
 import { useState, useEffect, useRef } from 'react';
 import PdfViewer from '@/app/components/readercomp/Renderpdf'
-import Transcribe from "./Transcribe";
-import Audio from "./Audio";
+import axios from "axios";
 
 function Page({ params }) {
-  const [isPlay, setIsPlay] = useState(false)
-  //const [transcript, setTransScript] = useState(Transcribe(fileid))
+  const [transcript, setTransScript] = useState([])
+  useEffect(() => {
+    let handler = async () => {
+      const { data } = await axios.get(`https://firebasestorage.googleapis.com/v0/b/lmsedu-e5dbc.appspot.com/o/transcript%2F${params.fileid}?alt=media&token=c193bafc-ce23-49f1-a2fc-8c65381721f2`)
+      const { words } = await data;
+      console.log(words);
+      setTransScript(words)
+    }
+    handler()
+  }, [])
   const [openPlayer, setOpenPlayer] = useState(false)
-  const audioData = `https://firebasestorage.googleapis.com/v0/b/lmsedu-e5dbc.appspot.com/o/audio%2F${params.fileid}?alt=media&token=11fccbc3-c457-40bc-9c96-386a5bbef464`
-  const playerRef = useRef(null)
-  useEffect(() => {
-    if (isPlay) {
-      console.log('ply');
-      playerRef.current.play()
-    }
-  })
+  //player
+  const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
+  const audioRef = useRef(null);
+  const handleTimeUpdate = () => {
+    const audio = audioRef.current;
+    console.log(audio.currentTime*1000);
+    setCurrentTime(audio.currentTime);
+  };
 
-  useEffect(() => {
-    const updateCurrentDuration = () => {
-      if (playerRef.current) {
-        // Access the currentTime property of the audio element
-        setCurrentTime(playerRef.current.currentTime);
-      }
-    };
+  const handleSeek = (event) => {
+    const audio = audioRef.current;
+    const seekTime = parseFloat(event.target.value);
+    audio.currentTime = seekTime;
+    setCurrentTime(seekTime);
+  };
+  //player end
 
-    // Attach event listener to update the current time
-    if (playerRef.current) {
-      playerRef.current.addEventListener('timeupdate', updateCurrentDuration);
-    }
 
-    // Cleanup function
-    return () => {
-      if (playerRef.current) {
-        playerRef.current.removeEventListener('timeupdate', updateCurrentDuration);
-      }
-    };
-  }, []);
   function secondsToTime(secs) {
     const hours = Math.floor(secs / 3600);
     const minutes = Math.floor((secs % 3600) / 60);
@@ -51,81 +46,18 @@ function Page({ params }) {
 
     return hoursStr + minutesStr + secondsStr;
   }
-
-  const audioRef = useRef();
-  const sliderRef = useRef(null);
-  const [isDragging, setIsDragging] = useState(false);
-
-  const handleSliderChange = (e) => {
-    const newValue = e.target.value;
-    if (audioRef.current) {
-      audioRef.current.currentTime = (newValue / 100) * audioRef.current.duration;
-    }
-  };
-
-  const handleSliderDragStart = () => {
-    setIsDragging(true);
-  };
-
-  const handleSliderDragEnd = () => {
-    setIsDragging(false);
-  };
-
-  const updateSlider = () => {
-    if (audioRef.current && !isDragging) {
-      const value = (audioRef.current.currentTime / audioRef.current.duration) * 100;
-      sliderRef.current.value = value;
-    }
-  };
-  const [buffered, setBuffered] = useState(0);
-  const progressBarRef = useRef(null);
-
-  // Update current time and buffered progress on playback changes
-  useEffect(() => {
-    if (audioRef.current) {
-      const updateCurrentTime = () => {
-        setCurrentTime(audioRef.current.currentTime);
-      };
-      audioRef.current.addEventListener('timeupdate', updateCurrentTime);
-
-      const updateBuffered = () => {
-        setBuffered((audioRef.current.buffered.end(0) / audioRef.current.duration) * 100);
-      };
-      audioRef.current.addEventListener('progress', updateBuffered);
-
-      return () => {
-        audioRef.current.removeEventListener('timeupdate', updateCurrentTime);
-        audioRef.current.removeEventListener('progress', updateBuffered);
-      };
-    }
-  }, [audioRef]);
-
-  // Update progress bar on time change
-  useEffect(() => {
-    if (progressBarRef.current && !isNaN(currentTime)) {
-      const progress = (currentTime / audioRef.current.duration) * 100;
-      progressBarRef.current.style.width = `${progress}%`;
-    }
-  }, [currentTime]);
-
-  // Handle user interaction with the progress bar
-  const handleProgressBarClick = (event) => {
-    const clickPosition = event.nativeEvent.offsetX / progressBarRef.current.offsetWidth;
-    const newTime = clickPosition * audioRef.current.duration;
-    // Seek to the new time
-    audioRef.current.currentTime = newTime;
-  };
-
+  const audioData = `https://firebasestorage.googleapis.com/v0/b/lmsedu-e5dbc.appspot.com/o/audio%2F${params.fileid}?alt=media&token=11fccbc3-c457-40bc-9c96-386a5bbef464`
   return (
     <>
-      <header className="flex w-screen justify-between flex-col items-center pt-4 border-b bg-white px-4">
-        <div className="flex w-full justify-between items-center bg-white px-4">
+      <header className="flex fixed w-screen justify-between flex-col items-center pt-4 border-b bg-white px-4">
+        <div className="flex w-full justify-between items-center bg-white px-4 pb-2">
           <div className="w-10">
             {
               openPlayer && (
                 <AiOutlineLeft onClick={() => {
-                  setIsPlay(false)
+                  setIsPlaying(false)
                   setOpenPlayer(false)
+                  audioRef.current.pause()
                 }} />
               )
             }
@@ -133,16 +65,17 @@ function Page({ params }) {
           {
             !openPlayer && (
               <AiFillPlayCircle className="text-2xl sm:text-4xl text-[--web-primary-color] cursor-pointer" onClick={() => {
-                setIsPlay(true)
+                setIsPlaying(true)
                 setOpenPlayer(true)
+                audioRef.current.play()
               }} />
             )
           }
           {
             openPlayer && (
               <div className="player">
-                <div className="playpause" onClick={() => setIsPlay(!isPlay)}>
-                  {isPlay ? <AiOutlinePauseCircle onClick={() => playerRef.current.pause()} className="text-2xl sm:text-4xl text-[--web-primary-color] cursor-pointer" /> : <AiOutlinePlayCircle onCanPlay={() => playerRef.current.play()} className="text-2xl sm:text-4xl text-[--web-primary-color] cursor-pointer" />}
+                <div className="playpause" onClick={() => setIsPlaying(!isPlaying)}>
+                  {isPlaying ? <AiOutlinePauseCircle onClick={() => audioRef.current.pause()} className="text-2xl sm:text-4xl text-[--web-primary-color] cursor-pointer" /> : <AiOutlinePlayCircle onClick={() => audioRef.current.play()} className="text-2xl sm:text-4xl text-[--web-primary-color] cursor-pointer" />}
                 </div>
               </div>
             )
@@ -151,43 +84,55 @@ function Page({ params }) {
             <AiOutlineMore className="text-2xl cursor-pointer" />
           </div>
         </div>
-        {
-          audioData && (
-            <audio ref={playerRef}>
-              <source src={audioData} />
-            </audio>
-          )
-        }
-        <div className="w-full flex flex-col">
+        <div className={`w-full flex-col ${openPlayer ? "flex" : 'hidden'}`}>
           <div className="px-2 pt-2 w-full flex justify-between items-center text-sm fonr-light text-gray-800">
             {
-              playerRef.current && (
+              audioRef.current && (
                 <>
                   <p>{secondsToTime(Math.round(currentTime.toFixed(2)))}</p>
-                  <p>{secondsToTime(Math.round(playerRef.current.duration))}</p>
+                  <p>{secondsToTime(Math.round(audioRef.current.duration))}</p>
                 </>
               )
             }
           </div>
+          <audio
+            ref={audioRef}
+            src={audioData}
+            onTimeUpdate={handleTimeUpdate}
+          ></audio>
+          <input
+            type="range"
+            min="0"
+            max={audioRef.current?.duration || 0}
+            value={currentTime}
+            onChange={handleSeek}
+            className="w-full appearance-none h-1 mt-2 bg-blue-400 rounded-full outline-none"
+          />
+        </div>
+      </header>
+      <div className={`flex flex-col z-[1] ${openPlayer ? "h-fit" : 'h-screen'} overflow-y-scroll`}>
+        {/* {
+          !openPlayer && (
+            <PdfViewer />
+          )
+        } */}
+        <div className="w-screen px-4 py-2 mt-[100px] flex">
           {
-            playerRef.current && (
-              <div className="duration-controller">
-                <motion.div
-                  className="progress-bar flex h-2 rounded-full bg-gray-200 overflow-hidden"
-                  ref={progressBarRef}
-                  onClick={handleProgressBarClick}
-                >
-                  <div className="buffered-bar flex h-full rounded-full bg-gray-300" style={{ width: `${buffered}%` }} />
-                </motion.div>
-                <span className="current-time text-sm text-gray-700">{secondsToTime(currentTime)}</span>
-                <span className="duration text-sm text-gray-700">{secondsToTime(audioRef.current.duration)}</span>
-              </div>
+            openPlayer && (
+              <>
+                <p className="flex flex-wrap w-full h-fit">
+                  {
+                    transcript && (
+                      transcript.map((item, i) => {
+                        return <p className={`${(currentTime*1000 >= item.start+100 && currentTime*1000 <= item.end) ? 'bg-blue-300 text-white rounded-lg' : ''} text-gray-800 px-[5px]`} key={i}>{item.text}</p>
+                      })
+                    )
+                  }
+                </p>
+              </>
             )
           }
         </div>
-      </header>
-      <div className='h-screen    flex flex-col fixed z-[1]'>
-        <PdfViewer />
       </div>
     </>
   )
