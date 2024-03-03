@@ -124,7 +124,7 @@ function Page({ params }) {
                   {
                     transcript && (
                       transcript.map((item, i) => {
-                        return <p className={`${(currentTime*1000 >= item.start+100 && currentTime*1000 <= item.end) ? 'bg-blue-300 text-white rounded-lg' : ''} text-gray-800 px-[5px]`} key={i}>{item.text}</p>
+                        return <p className={`${(currentTime*1000 >= item.start+200 && currentTime*1000 <= item.end+200) ? 'bg-blue-300 text-white rounded-lg' : ''} text-gray-800 px-[5px]`} key={i}>{item.text}</p>
                       })
                     )
                   }
