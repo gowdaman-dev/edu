@@ -18,12 +18,15 @@ if(query){
 
     
     if (data.length > 0) {
-      const fileData = data.map(({ file_name, file_size, file_date, file_id,file_url }) => ({
+      const fileData = data.map(({ file_name, file_size, file_date, file_id,file_url,trans_url,audio_url }) => ({
         fname: file_name,
        fsize: file_size,
         fdate: file_date,
         fid: file_id,
-        furl:file_url
+        furl:file_url,
+        aurl:audio_url,
+        turl:trans_url,
+        
       }));
       
       return NextResponse.json(fileData);
@@ -43,14 +46,15 @@ console.log("from api post /files");
   try {
     let { fname,fsize,_fid,fgrade,fschool,furl } = await req.json()
     fgrade=Number(fgrade);
-    console.log(fschool);
     
 
 
     const date = new Date()
     await connectMongoBD()
-await libFiles.create({ file_name:fname, file_id:_fid,file_size:fsize, file_date:date,file_grade:fgrade,file_school:fschool,file_url:furl })
+await libFiles.create({ file_name:fname, file_id:_fid,file_size:fsize, file_date:date,file_grade:fgrade,file_school:fschool,file_url:furl})
   } catch (err) {
+    
+    console.log(err.message);
     return NextResponse.json(
       { message: 'internal server error' },
       { status: 500 }

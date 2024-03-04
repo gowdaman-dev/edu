@@ -22,6 +22,7 @@
     "@react-pdf-viewer/zoom": "^3.12.0",
     "@uidotdev/usehooks": "^2.4.1",
     "ag-grid-react": "^31.0.3",
+    "assemblyai": "^4.3.1",
     "axios": "^1.6.7",
     "bcryptjs": "^2.4.3",
     "firebase": "^10.8.0",

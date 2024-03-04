@@ -2,6 +2,7 @@
 
 import { initializeApp } from "firebase/app";
 import {getStorage} from "firebase/storage";
+import { getDatabase } from "firebase/database";
 
 
 const firebaseConfig = {
@@ -20,7 +21,7 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 
   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
-
+  databaseURL:process.env.DATABASE_URL
 };
 
 
@@ -28,3 +29,4 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 export const db=getStorage(app)
+export const database = getDatabase(app);

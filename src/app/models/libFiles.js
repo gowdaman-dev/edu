@@ -31,8 +31,7 @@ const libSchema=new Schema({
         type:String,
         required:true
         
-    },
-
+    }
 
 
 })
