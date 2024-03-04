@@ -1,5 +1,5 @@
 import React from "react";
-import Recommend from "@/app/components/form/Recommend"
+import Recommend from "@/app/components/form/Organizer"
 
 const page = () => {
  

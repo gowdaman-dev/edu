@@ -140,7 +140,6 @@ function Files() {
     const threeDotSvg = e.target.parentElement.classList.contains("three_dot")
     if ((!threeDotParent && !threeDotSvg) && pop_DEl_Rename === null) {
       if (!isRenameOpen) {
-
         router.push("/reader/" + URL)
       }
     }
@@ -253,8 +252,6 @@ setProgress({
   icon:"transcript"
 })
 await getTranscript(audioURl,_uuid)
-
-
           if (ROLE === "superadmin") {
             SCHOOL = "default"
           }

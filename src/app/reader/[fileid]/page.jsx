@@ -1,11 +1,15 @@
 'use client'
-import { AiFillPlayCircle, AiOutlineLeft, AiOutlineMore, AiOutlinePauseCircle, AiOutlinePlayCircle } from "react-icons/ai";
+import { AiFillPauseCircle, AiFillPlayCircle, AiOutlineLeft, AiOutlineMore, AiOutlinePauseCircle, AiOutlinePlayCircle, AiOutlineRotateLeft } from "react-icons/ai";
+import { TbRotate2, TbRotateClockwise2 } from 'react-icons/tb'
 import { useState, useEffect, useRef } from 'react';
 import PdfViewer from '@/app/components/readercomp/Renderpdf'
 import axios from "axios";
+import { BiRotateLeft, BiRotateRight } from "react-icons/bi";
 
 function Page({ params }) {
   const [transcript, setTransScript] = useState([])
+  const [audioRate, setAudioRate] = useState(1)
+  const [audioRateToggle, setAudioRateToggle] = useState(false)
   useEffect(() => {
     let handler = async () => {
       const { data } = await axios.get(`https://firebasestorage.googleapis.com/v0/b/lmsedu-e5dbc.appspot.com/o/transcript%2F${params.fileid}?alt=media&token=c193bafc-ce23-49f1-a2fc-8c65381721f2`)
@@ -20,9 +24,11 @@ function Page({ params }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const audioRef = useRef(null);
+  const currentText = useRef(null);
   const handleTimeUpdate = () => {
     const audio = audioRef.current;
     setCurrentTime(audio.currentTime);
+    audioRef.current.playbackRate = audioRate;
   };
 const [isTools,setIsTools]=useState(false)
   const handleSeek = (event) => {
@@ -32,17 +38,13 @@ const [isTools,setIsTools]=useState(false)
     setCurrentTime(seekTime);
   };
   //player end
-
-
   function secondsToTime(secs) {
     const hours = Math.floor(secs / 3600);
     const minutes = Math.floor((secs % 3600) / 60);
     const seconds = Math.floor(secs % 60);
-
     const hoursStr = hours > 0 ? hours.toString().padStart(2, '0') + ':' : '';
     const minutesStr = minutes.toString().padStart(2, '0') + ':';
     const secondsStr = seconds.toString().padStart(2, '0');
-
     return hoursStr + minutesStr + secondsStr;
   }
   const audioData = `https://firebasestorage.googleapis.com/v0/b/lmsedu-e5dbc.appspot.com/o/audio%2F${params.fileid}?alt=media&token=11fccbc3-c457-40bc-9c96-386a5bbef464`
@@ -50,37 +52,59 @@ const [isTools,setIsTools]=useState(false)
     <>
       <header className="flex fixed z-[8] w-screen justify-between flex-col items-center pt-4 border-b bg-white px-4">
         <div className="flex w-full justify-between items-center bg-white px-4 pb-2">
-          <div className="w-10">
-            {
-              openPlayer && (
-                <AiOutlineLeft onClick={() => {
-                  setIsPlaying(false)
-                  setOpenPlayer(false)
-                  audioRef.current.pause()
-                }} />
-              )
-            }
-          </div>
           {
-            !openPlayer && (
-              <AiFillPlayCircle className="text-2xl sm:text-4xl text-[--web-primary-color] cursor-pointer" onClick={() => {
-                setIsPlaying(true)
-                setOpenPlayer(true)
-                audioRef.current.play()
+            openPlayer && (
+              <AiOutlineLeft onClick={() => {
+                setIsPlaying(false)
+                setOpenPlayer(false)
+                audioRef.current.pause()
               }} />
             )
           }
           {
-            openPlayer && (
-              <div className="player">
-                <div className="playpause" onClick={() => setIsPlaying(!isPlaying)}>
-                  {(isPlaying && audioRef.current.play) ? <AiOutlinePauseCircle onClick={() => audioRef.current.pause()} className="text-2xl sm:text-4xl text-[--web-primary-color] cursor-pointer" /> : <AiOutlinePlayCircle onClick={() => audioRef.current.play()} className="text-2xl sm:text-4xl text-[--web-primary-color] cursor-pointer" />}
-                </div>
+            !openPlayer && (
+              <div className="flex items-center gap-2 justify-center">
+                <AiFillPlayCircle className="text-2xl sm:text-4xl text-[--web-primary-color] cursor-pointer" onClick={() => {
+                  setIsPlaying(true)
+                  setOpenPlayer(true)
+                  audioRef.current.play()
+                }} />
+                <p className="text-gray-800 font-semibold">Play</p>
               </div>
             )
           }
-          <div className="toggler" onClick={() => setIsTools(!isTools)}>
-            <AiOutlineMore className="text-2xl cursor-pointer" />
+          {
+            openPlayer && (
+              <div className="player flex items-center gap-4">
+                <BiRotateLeft className="text-3xl text-gray-700 cursor-pointer" onClick={()=>audioRef.current.currentTime-=1}/>
+                <div className="playpause" onClick={() => setIsPlaying(!isPlaying)}>
+                  {(isPlaying && audioRef.current.play) ? <AiFillPauseCircle onClick={() => audioRef.current.pause()} className="text-2xl sm:text-4xl text-[--web-primary-color] cursor-pointer" /> : <AiFillPlayCircle onClick={() => audioRef.current.play()} className="text-2xl sm:text-4xl text-[--web-primary-color] cursor-pointer" />}
+                </div>
+                  <BiRotateRight className="text-3xl text-gray-700 cursor-pointer" onClick={()=>audioRef.current.currentTime+=1}/>
+              </div>
+            )
+          }
+          <div className="toggler flex items-center justify-center gap-2">
+            {
+              openPlayer && (
+                <div className=" relative border px-2 py-1 rounded text-gray-800">
+                  <button onClick={() => setAudioRateToggle(!audioRateToggle)}>Speed:{audioRate}x</button>
+                  {
+                    audioRateToggle && (
+                      <div className="speed absolute top-full py-1 z-[5] rounded-lg border flex flex-col gap-2 bg-white w-full items-center left-0 mt-2">
+                        <button className="rounded hover:bg-gray-100 w-[90%]" onClick={() => { setAudioRate(.75); setAudioRateToggle(false) }}>0.75x</button>
+                        <button className="rounded hover:bg-gray-100 w-[90%]" onClick={() => { setAudioRate(1); setAudioRateToggle(false) }}>1x</button>
+                        <button className="rounded hover:bg-gray-100 w-[90%]" onClick={() => { setAudioRate(1.5); setAudioRateToggle(false) }}>1.5x</button>
+                        <button className="rounded hover:bg-gray-100 w-[90%]" onClick={() => { setAudioRate(2); setAudioRateToggle(false) }}>2 x</button>
+                        <button className="rounded hover:bg-gray-100 w-[90%]" onClick={() => { setAudioRate(2.5); setAudioRateToggle(false) }}>2.5x</button>
+                        <button className="rounded hover:bg-gray-100 w-[90%]" onClick={() => { setAudioRate(3); setAudioRateToggle(false) }}>3 x</button>
+                      </div>
+                    )
+                  }
+                </div>
+              )
+            }
+            <AiOutlineMore onClick={() => setIsTools(!isTools)} className="text-2xl cursor-pointer" />
           </div>
         </div>
         <div className={`w-full flex-col ${openPlayer ? "flex" : 'hidden'}`}>
@@ -123,7 +147,7 @@ const [isTools,setIsTools]=useState(false)
                   {
                     transcript && (
                       transcript.map((item, i) => {
-                        return <p className={`${(currentTime*1000 <= item.end &&currentTime*1000 >= item.start) ? 'bg-blue-100 text-blue-500' : 'text-gray-800'} py-1 px-[5px]`} key={i}>{item.text}</p>
+                        return <p ref={currentText} className={`${(currentTime * 1000 >= item.start) ? 'bg-blue-100 text-blue-500' : 'text-gray-800'} py-1 px-[5px]`} key={i}>{item.text}</p>
                       })
                     )
                   }

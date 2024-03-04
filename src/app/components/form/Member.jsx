@@ -1,4 +1,5 @@
 "use client";
+import { BiLoaderCircle } from "react-icons/bi"; 
 import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -86,13 +87,17 @@ const Requestform = () => {
 
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [mloader,setMloader] = useState(false);
+  const formRef = useRef(null)
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setMloader(true);
     setError('')
     setSuccess('')
     console.log(data);
     if (data.userName == '' || data.email == '' || data.role == '' || data.grade == '' || data.schoolName == '') {
       setError('Please fill all the fields')
+      setMloader(false);
       return
     }
     try {
@@ -106,13 +111,24 @@ const Requestform = () => {
       const res = await response.json();
       if (response.status === 400) {
         setError(res.message);
+        setMloader(false);
         return
       } else {
         setSuccess(res.message)
+        setMloader(false);
+        formRef.current.reset();
+        setData({
+          schoolName: "",
+          role: "",
+          grade: "",
+        });
+
         return
       }
     } catch (error) {
       console.log(error);
+      setMloader(false);
+
     }
   };
   const toggleRole = () => {
@@ -193,6 +209,7 @@ const Requestform = () => {
               className="my-4 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-4 rounded-lg shadow-lg z-50"
             >
               <p className="text-red-500 text-center">{error}</p>
+              
             </motion.div>
           )}
         </AnimatePresence>
@@ -206,10 +223,11 @@ const Requestform = () => {
               className="my-4 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-4 rounded-lg shadow-lg z-50"
             >
               <p className="text-green-500 text-center">Request submitted successfully!</p>
+             
             </motion.div>
           )}
         </AnimatePresence>
-        <form action="" onSubmit={handleSubmit}>
+        <form action="" onSubmit={handleSubmit} ref={formRef}>
           <div className="flex justify-center">
             <div className="flex md:flex-row flex-col justify-center gap-10 md:gap-6">
               <div className="flex flex-col  gap-10 w-72 ">
@@ -369,10 +387,11 @@ const Requestform = () => {
 
               className="rounded-lg resize-none pl-2 pt-1 min-h-56   h-auto w-72 md:w-[600px] mx-auto  border bg-[--web-container]"
             />
-            <input
+            <button
               type="submit"
+              
               className="rounded-[5px] cursor-pointer text-white h-14 bg-[--web-primary-color] text-center w-72 md:w-[600px] mx-auto  border-2"
-            />
+            >{mloader &&(<span className="flex justify-center gap-2"> <BiLoaderCircle className="mt-1" /> <p>submitting...</p> </span> ) || "Submit Query"}</button>
           </div>
         </form>
       </div>
@@ -387,7 +406,7 @@ const Requestform = () => {
 
             <li>
               2. If your school is not yet registered, then you can{" "}
-              <Link href={"recommend"} className="text-[--web-primary-color]">
+              <Link href={"/new/organizer/request"} className="text-[--web-primary-color]">
                 Register Your school
               </Link>{" "} to
               open an account with us.
