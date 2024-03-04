@@ -1,8 +1,10 @@
 'use client'
-import { AiFillPauseCircle, AiFillPlayCircle, AiOutlineLeft, AiOutlineMore, AiOutlinePauseCircle, AiOutlinePlayCircle } from "react-icons/ai";
+import { AiFillPauseCircle, AiFillPlayCircle, AiOutlineLeft, AiOutlineMore, AiOutlinePauseCircle, AiOutlinePlayCircle, AiOutlineRotateLeft } from "react-icons/ai";
+import { TbRotate2, TbRotateClockwise2 } from 'react-icons/tb'
 import { useState, useEffect, useRef } from 'react';
 import PdfViewer from '@/app/components/readercomp/Renderpdf'
 import axios from "axios";
+import { BiRotateLeft, BiRotateRight } from "react-icons/bi";
 
 function Page({ params }) {
   const [transcript, setTransScript] = useState([])
@@ -48,7 +50,7 @@ function Page({ params }) {
   const audioData = `https://firebasestorage.googleapis.com/v0/b/lmsedu-e5dbc.appspot.com/o/audio%2F${params.fileid}?alt=media&token=11fccbc3-c457-40bc-9c96-386a5bbef464`
   return (
     <>
-      <header className="flex fixed z-[8] w-screen justify-between md:flex-row flex-col items-center pt-4 border-b bg-white px-4">
+      <header className="flex fixed z-[8] w-screen justify-between flex-col items-center pt-4 border-b bg-white px-4">
         <div className="flex w-full justify-between items-center bg-white px-4 pb-2">
           {
             openPlayer && (
@@ -73,10 +75,12 @@ function Page({ params }) {
           }
           {
             openPlayer && (
-              <div className="player">
+              <div className="player flex items-center gap-4">
+                <BiRotateLeft className="text-3xl text-gray-700 cursor-pointer" onClick={()=>audioRef.current.currentTime-=1}/>
                 <div className="playpause" onClick={() => setIsPlaying(!isPlaying)}>
                   {(isPlaying && audioRef.current.play) ? <AiFillPauseCircle onClick={() => audioRef.current.pause()} className="text-2xl sm:text-4xl text-[--web-primary-color] cursor-pointer" /> : <AiFillPlayCircle onClick={() => audioRef.current.play()} className="text-2xl sm:text-4xl text-[--web-primary-color] cursor-pointer" />}
                 </div>
+                  <BiRotateRight className="text-3xl text-gray-700 cursor-pointer" onClick={()=>audioRef.current.currentTime+=1}/>
               </div>
             )
           }
