@@ -30,7 +30,7 @@ function Page({ params }) {
     setCurrentTime(audio.currentTime);
     audioRef.current.playbackRate = audioRate;
   };
-const [isTools,setIsTools]=useState(false)
+  const [isTools, setIsTools] = useState(false)
   const handleSeek = (event) => {
     const audio = audioRef.current;
     const seekTime = parseFloat(event.target.value);
@@ -76,19 +76,19 @@ const [isTools,setIsTools]=useState(false)
           {
             openPlayer && (
               <div className="player flex items-center gap-4">
-                <BiRotateLeft className="text-3xl text-gray-700 cursor-pointer" onClick={()=>audioRef.current.currentTime-=1}/>
+                <BiRotateLeft className="text-3xl text-gray-700 cursor-pointer" onClick={() => audioRef.current.currentTime -= 1} />
                 <div className="playpause" onClick={() => setIsPlaying(!isPlaying)}>
                   {(isPlaying && audioRef.current.play) ? <AiFillPauseCircle onClick={() => audioRef.current.pause()} className="text-2xl sm:text-4xl text-[--web-primary-color] cursor-pointer" /> : <AiFillPlayCircle onClick={() => audioRef.current.play()} className="text-2xl sm:text-4xl text-[--web-primary-color] cursor-pointer" />}
                 </div>
-                  <BiRotateRight className="text-3xl text-gray-700 cursor-pointer" onClick={()=>audioRef.current.currentTime+=1}/>
+                <BiRotateRight className="text-3xl text-gray-700 cursor-pointer" onClick={() => audioRef.current.currentTime += 1} />
               </div>
             )
           }
           <div className="toggler flex items-center justify-center gap-2">
             {
               openPlayer && (
-                <div className=" relative border px-2 py-1 rounded text-gray-800">
-                  <button onClick={() => setAudioRateToggle(!audioRateToggle)}>Speed:{audioRate}x</button>
+                <div className=" absolute border px-2 py-1 rounded text-gray-800 mr-[100px] w-16 text-center">
+                  <button className="w-full" onClick={() => setAudioRateToggle(!audioRateToggle)}>{audioRate}x</button>
                   {
                     audioRateToggle && (
                       <div className="speed absolute top-full py-1 z-[5] rounded-lg border flex flex-col gap-2 bg-white w-full items-center left-0 mt-2">
