@@ -24,7 +24,7 @@ function Page({ params }) {
     const audio = audioRef.current;
     setCurrentTime(audio.currentTime);
   };
-
+const [isTools,setIsTools]=useState(false)
   const handleSeek = (event) => {
     const audio = audioRef.current;
     const seekTime = parseFloat(event.target.value);
@@ -112,7 +112,7 @@ function Page({ params }) {
       <div className={`flex flex-col z-[1] ${openPlayer ? "h-fit" : 'h-screen'} overflow-y-scroll`}>
         {
           !openPlayer && (
-            <PdfViewer />
+            <PdfViewer setTools={setIsTools} stateTools={isTools} />
           )
         }
         <div className="w-screen px-4 py-2 mt-[100px] flex">

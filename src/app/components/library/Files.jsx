@@ -28,7 +28,7 @@ function Files() {
 
   const { data: session, loading } = useSession()
   let { school: SCHOOL, role: ROLE } = session.user
-  const [isStudent, setStudent] = useState(session.user.role === "student")
+  const [isSuperadmin, setSuperAdmin] = useState(session.user.role === "superadmin")
   const { navGrade: GRADE, schoolFilter } = useContext(UserContext)
   const [data, setData] = useState([])
   const [isAnimate, setIsAnimate] = useState(true)
@@ -182,7 +182,7 @@ function Files() {
             {name}
           </p>
           {
-            !isStudent &&
+            isSuperadmin &&
             <span className='grid col-span-2 sm:col-span-1 row-span-3 text-xl bg-gray-100 py-0 place-content-center   three_dot  ' key={index} onClick={() => { handlePopClick(index, id, trimName) }} >
               <BsThreeDotsVertical />
             </span>
@@ -366,14 +366,14 @@ await axios.post(`/api/transcript`,{URL:url,fid:fid})
   return (
     <div>
       <ul className='flex items-center justify-between h-16 border-b border-gray-100 w-screen md:w-full'>
-        {isStudent ?
+        {!isSuperadmin ?
           <li className="px-4 text-gray-600 flex justify-center  w-full">
             <b>Shared Library ({data.length || 0})</b>
           </li> :
           <li className="px-4 text-gray-600 text-center">
             <b>Shared Library ({data.length || 0})</b>
           </li>}
-        {!isStudent && <li>
+        {isSuperadmin && <li>
           <input
             type='file'
             accept='.pdf,.doc,.docx'
