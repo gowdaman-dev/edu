@@ -48,7 +48,7 @@ function Page({ params }) {
   const audioData = `https://firebasestorage.googleapis.com/v0/b/lmsedu-e5dbc.appspot.com/o/audio%2F${params.fileid}?alt=media&token=11fccbc3-c457-40bc-9c96-386a5bbef464`
   return (
     <>
-      <header className="flex fixed w-screen justify-between flex-col items-center pt-4 border-b bg-white px-4">
+      <header className="flex fixed z-[8] w-screen justify-between flex-col items-center pt-4 border-b bg-white px-4">
         <div className="flex w-full justify-between items-center bg-white px-4 pb-2">
           <div className="w-10">
             {

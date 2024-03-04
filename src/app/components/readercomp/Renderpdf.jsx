@@ -97,7 +97,7 @@ console.log(progVisible);
   return (
     <>
 
-      <main className='w-screen h-[90%] '>
+      <main className='w-screen h-[90%]  mt-[80px]'>
 
         <section className={` fixed z-[10] w-screen grid grid-cols-12 ${stateTools ? "h-screen" : null} grid-rows-12 tool`} >
           {stateTools && (
