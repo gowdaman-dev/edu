@@ -1,7 +1,7 @@
 "use client"
 import { MdDelete } from "react-icons/md";
 import { MdOutlineDriveFileRenameOutline } from "react-icons/md";
-import { AnimatePresence,motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 
 import axios from "axios";
 import { ref, deleteObject } from "firebase/storage";
@@ -9,36 +9,55 @@ import { db } from "@/firebase/firebase";
 import { Anybody } from "next/font/google";
 function Popper(props) {
   const id = props.id
- async function handleDelete() {
-
-
+  async function handleDelete() {
 
     if (id) {
-try{
-  
-  const deleteFile = ref(db, `files/${id}`);
-  const deleteAudio = ref(db,`audio/${id}`);
-  const deleteTrans = ref(db,`transcript/${id}`);
- await deleteObject(deleteFile)
-await   deleteObject(deleteAudio)
-await   deleteObject(deleteTrans)
-  
+      try {
+        props.progressVisible(true)
+        const deleteFile = ref(db, `files/${id}`);
+        const deleteAudio = ref(db, `audio/${id}`);
+        const deleteTrans = ref(db, `transcript/${id}`);
+        try {
+          props.progressSet({
+            title: " Deleting Pdf",
+            icon: "extract"
+          })
+          await deleteObject(deleteFile).then((data)=>console.log(data)).catch((err)=>console.log(err.message));
+          props.progressSet({
+            title: "Deleting Audio",
+            icon: "audio"
+          })
+          await deleteObject(deleteAudio).then((data)=>console.log(data)).catch((err)=>console.log(err.message));
+          props.progressSet({
+            title: "Deleting Transcript",
+            icon: "transcript"
+          })
+          await deleteObject(deleteTrans).then((data)=>console.log(data)).catch((err)=>console.log(err.message));
+          props.progressSet({
+            title: "Clearing Data",
+            icon: "transcript"
+          })
+        } catch (error) {
+          
+        }
 
-axios.delete("/api/files", { data: { id: id } })
-        .then(res => {
-          props.update(id);
-          props.animate(true)
-          props.closePop(null)
+        await fetch('/api/files',{
+          method: 'DELETE',
+          headers:{
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ id })
         })
+          .then(res => {
+            props.update(id);
+            props.animate(true)
+            props.closePop(null)
+            props.progressVisible(false)
 
-}catch (e) {
+          })
 
-
-}
-
-
-
-
+      } catch (e) {
+      }
     }
 
   }

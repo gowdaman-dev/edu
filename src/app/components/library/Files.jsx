@@ -29,7 +29,7 @@ function Files() {
   const { data: session, loading } = useSession()
   let { school: SCHOOL, role: ROLE } = session.user
   const [isSuperadmin, setSuperAdmin] = useState(session.user.role === "superadmin")
-  const { navGrade: GRADE, schoolFilter } = useContext(UserContext)
+  const { navGrade: GRADE, schoolFilter , setnav } = useContext(UserContext)
   const [data, setData] = useState([])
   const [isAnimate, setIsAnimate] = useState(true)
   const [newFile, setNewFile] = useState(0)
@@ -44,7 +44,11 @@ function Files() {
   const [delete_id, setDelete_id] = useState(null)
   const [file_Name, setName] = useState(null)
   const [alert, setAlert] = useState({ alert: false, message: "" })
-
+  useEffect(()=>{
+    if(progVisible) {
+      setnav(false)
+    }
+  },[progVisible])
  
   useEffect(() => {
     const fetchData = () => {
@@ -207,7 +211,7 @@ function Files() {
 
 
 
-              <Popper name={file_Name} id={delete_id} rename={setIsRenameOpen} update={setNewFile} closePop={setPop_Del_Rename} animate={setIsAnimate} />
+              <Popper name={file_Name} id={delete_id} rename={setIsRenameOpen} update={setNewFile} closePop={setPop_Del_Rename} animate={setIsAnimate}  progressVisible={setProgVisible} progressSet={setProgress}/>
 
             }
           </AnimatePresence>
@@ -273,7 +277,6 @@ await getTranscript(audioURl,_uuid)
             }
 
           }, (err) => {
-
 
           }, () => {
             getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
@@ -393,8 +396,7 @@ await axios.post(`/api/transcript`,{URL:url,fid:fid})
       <section className='relative flex flex-col items-center w-full  z-[1] '>
         <AnimatePresence mode="wait">
           {progVisible && (
-            <div className="h-screen w-screen fixed backdrop-blur-sm z-[3] top-0 ">
-
+            <div className="h-screen w-screen fixed backdrop-blur-sm z-[9] left-0 top-0 ">
               <ProgressComp progressChange={progress}   />
             </div>
           )}

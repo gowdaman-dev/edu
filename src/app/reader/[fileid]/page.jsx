@@ -37,6 +37,7 @@ function Page({ params }) {
     audio.currentTime = seekTime;
     setCurrentTime(seekTime);
   };
+
   //player end
   function secondsToTime(secs) {
     const hours = Math.floor(secs / 3600);
@@ -104,7 +105,7 @@ function Page({ params }) {
                 </div>
               )
             }
-            <AiOutlineMore onClick={() => setIsTools(!isTools)} className="text-2xl cursor-pointer" />
+            <AiOutlineMore onClick={() =>!openPlayer?setIsTools(!isTools):null} className="text-2xl cursor-pointer" />
           </div>
         </div>
         <div className={`w-full flex-col ${openPlayer ? "flex" : 'hidden'}`}>

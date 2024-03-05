@@ -18,7 +18,7 @@ const iconRender_progress=(
 
   return (
     <motion.div initial={{ opacity: .4 }} animate={{ opacity: 1 }} transition={{ type: 'spring', duration: .5 }} exit={{ opacity: 0 }}  className='relative flex justify-center top-40 '>
-      <div className='absolute  items-center justify-center md:h-52  md:w-96 backdrop-blur-sm top-7 z-[60] rounded-2xl  border-gray-200 border-2 w-52 h-36 grid grid-cols-4 grid-rows-9 grid-flow-col bg-white'>
+      <div className='absolute   items-center justify-center md:h-52  md:w-96 backdrop-blur-sm top-7  rounded-2xl  border-gray-200 border-2 w-52 h-36 grid grid-cols-4 grid-rows-9 grid-flow-col bg-white'>
         
         <span className='row-span-4 col-span-4 text-5xl text-[--web-primary-color] flex justify-center'>{iconRender_progress}
 
@@ -27,7 +27,7 @@ const iconRender_progress=(
 
           <span className='self-center duration-1000 ease-in ransition-all'>
             
-            {progressChange.title}{`${ progressChange.state? progressChange.state +" %":""}`}
+            {progressChange.title}{`${ progressChange.state? progressChange.state +" %":progressChange.title=="uploading"?"0":""}`}
           </span>
           <span className='w-[80%] flex ml-[10%]'>
             <span
