@@ -1,5 +1,6 @@
 'use client'
-import React, { useState } from "react";
+import { BiLoaderCircle } from "react-icons/bi"; 
+import React, { useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { webName } from "../globalDetails";
@@ -14,6 +15,7 @@ const Requestform = () => {
   });
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
+  const [oloader,setOloader] = useState(false);
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -24,9 +26,11 @@ const Requestform = () => {
   const submitEvent = async (e) => {
     setError('')
     setSuccess('')
+    setOloader(true);
     e.preventDefault();
     if (formData.name === '' || formData.schoolname === '' || formData.email === '' || formData.role === '') {
       setError('Please fill all the fields')
+      setOloader(false);
       return
     }
     try {
@@ -41,11 +45,26 @@ const Requestform = () => {
       console.log();
       if (response.status === 400) {
         setError(data.message)
+        setOloader(false);
         return
       }
-      setSuccess(data.message)
+      setSuccess(data.message);
+      setFormData(
+        {
+          name: "",
+          schoolname: "",
+          email: "",
+          role: "",
+          description: "",
+        }
+      );
+  
+      setOloader(false);
+
     } catch (error) {
       console.error("Error:", error);
+      setOloader(false);
+
     }
   };
 
@@ -87,13 +106,14 @@ const Requestform = () => {
               className="my-4 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-4 rounded-lg shadow-lg z-50"
             >
               <p className="text-green-500 text-center">Request submitted successfully!</p>
+            
             </motion.div>
           )}
         </AnimatePresence>
         <h1 className="text-center  font-bold text-2xl py-10">
           {webName} Organizer Request Form
         </h1>
-        <form onSubmit={submitEvent} className="text-gray-800" action="">
+        <form onSubmit={submitEvent} className="text-gray-800" action="" >
           <div className="flex justify-center">
             <div className="flex md:flex-row w-full flex-col justify-center gap-10 md:gap-6">
               <div className="flex flex-col gap-10 md:w-72 w-full">
@@ -149,10 +169,11 @@ const Requestform = () => {
               onChange={handleChange}
               className="rounded-lg pl-2 pt-1 min-h-56  order border resize-none"
             />
-            <input
+            <button
               type="submit"
+              
               className="rounded-[5px] cursor-pointer text-white h-14 bg-[--web-primary-color] text-center w-full mx-auto  border-2 border-[--web-primary-color]"
-            />
+            > {oloader &&(<span className="flex justify-center gap-2"> <BiLoaderCircle className="mt-1" /> <p>submitting...</p> </span> ) || "Submit Query"} </button>
           </div>
         </form>
       </div>

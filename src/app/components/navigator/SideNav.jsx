@@ -83,7 +83,7 @@ function SideNav() {
     })
     const { data: session, loading } = useSession();
     return (
-        <motion.div animate={nav ? 'enter' : 'exit'} exit={"exit"} variants={navvarient} className='h-full flex z-[8] relative left-0 justify-end bg-[--web-container]'>
+        <motion.div animate={nav ? 'enter' : 'exit'} exit={"exit"} variants={navvarient} className='h-full flex z-[4] relative left-0 justify-end bg-[--web-container]'>
             <div className="flex min-w-[250px] h-full border-r border-gray-200/[.4]">
                 <div className="relative flex flex-col items-center w-full gap-4 px-2 py-2">
                     <button ref={menuref} onClick={() => setAddmember(!addmember)} className='flex items-center justify-center bg-white  text-gray-800 shadow-sm shadow-[--web-primary-color] py-2 rounded w-full'>

@@ -1,4 +1,5 @@
 "use client";
+import { BiLoaderCircle } from "react-icons/bi"; 
 import { AnimatePresence, motion } from "framer-motion";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
@@ -24,11 +25,13 @@ function page() {
     });
   });
   const [homemenu, setHomemenu] = useState(false);
+  const [cloader,setCloader] = useState(false)
   const [contactMessage, setContactMessage] = useState('');
   const { data: session, error } = useSession();
 
   const contactEvent = (e) => {
     e.preventDefault();
+    setCloader(true);
     const formdata = new FormData(e.target);
     fetch('/api/contact', {
       method: 'POST',
@@ -38,6 +41,7 @@ function page() {
         const form = e.target;
         form.reset();
         setContactMessage('mail sent !')
+        setCloader(false);
         setInterval(() => {
           
           setContactMessage("")
@@ -342,7 +346,7 @@ function page() {
                     className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                     type="submit"
                   >
-                    Send Message
+                    {cloader && (<span className="flex justify-center gap-2"> <BiLoaderCircle className="mt-1" /> <p>sending...</p> </span>) || "Send Message"}
                   </button>
                 </div>
               </div>
