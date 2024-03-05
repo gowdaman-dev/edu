@@ -29,14 +29,14 @@ function Files() {
   const { data: session, loading } = useSession()
   let { school: SCHOOL, role: ROLE } = session.user
   const [isSuperadmin, setSuperAdmin] = useState(session.user.role === "superadmin")
-  const { navGrade: GRADE, schoolFilter , setnav } = useContext(UserContext)
+  const { navGrade: GRADE, schoolFilter, setnav } = useContext(UserContext)
   const [data, setData] = useState([])
   const [isAnimate, setIsAnimate] = useState(true)
   const [newFile, setNewFile] = useState(0)
   const [progress, setProgress] = useState({
     state: 0,
     title: "",
-    icon:""
+    icon: ""
 
   })
   const [progVisible, setProgVisible] = useState(false)
@@ -44,12 +44,12 @@ function Files() {
   const [delete_id, setDelete_id] = useState(null)
   const [file_Name, setName] = useState(null)
   const [alert, setAlert] = useState({ alert: false, message: "" })
-  useEffect(()=>{
-    if(progVisible) {
+  useEffect(() => {
+    if (progVisible) {
       setnav(false)
     }
-  },[progVisible])
- 
+  }, [progVisible])
+
   useEffect(() => {
     const fetchData = () => {
 
@@ -211,7 +211,7 @@ function Files() {
 
 
 
-              <Popper name={file_Name} id={delete_id} rename={setIsRenameOpen} update={setNewFile} closePop={setPop_Del_Rename} animate={setIsAnimate}  progressVisible={setProgVisible} progressSet={setProgress}/>
+              <Popper name={file_Name} id={delete_id} rename={setIsRenameOpen} update={setNewFile} closePop={setPop_Del_Rename} animate={setIsAnimate} progressVisible={setProgVisible} progressSet={setProgress} />
 
             }
           </AnimatePresence>
@@ -232,7 +232,7 @@ function Files() {
 
 
 
- async function handleChange(e) {
+  async function handleChange(e) {
     let file = e.target.files[0]
     const _uuid = uuid()
     const NAME = file.name
@@ -241,21 +241,21 @@ function Files() {
     if (file) {
       if (NAME.includes(".pdf")) {
         if ((file.size / 1024) / 1024 <= 5) {
-          
+
           const fileData = new FormData
           fileData.append("pdf", file)
           setProgVisible(true)
-        setProgress({
-         title:"extracting Text",
-         icon:"extract"
-        })
-const audioURl= await getText(fileData,_uuid)
+          setProgress({
+            title: "extracting Text",
+            icon: "extract"
+          })
+          const audioURl = await getText(fileData, _uuid)
 
-setProgress({
-  title:"Creating Transcript",
-  icon:"transcript"
-})
-await getTranscript(audioURl,_uuid)
+          setProgress({
+            title: "Creating Transcript",
+            icon: "transcript"
+          })
+          await getTranscript(audioURl, _uuid)
           if (ROLE === "superadmin") {
             SCHOOL = "default"
           }
@@ -266,7 +266,7 @@ await getTranscript(audioURl,_uuid)
             let progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
             progress = Math.round(progress)
 
-            setProgress({ state: progress, title: "uploading : ",icon:"upload" });
+            setProgress({ state: progress, title: "uploading : ", icon: "upload" });
             switch (snapshot.state) {
               case 'paused':
                 console.log('Upload is paused');
@@ -285,7 +285,7 @@ await getTranscript(audioURl,_uuid)
                 fsize: file.size,
                 _fid: _uuid,
                 furl: downloadURL,
-              
+
                 fgrade: GRADE,
                 fschool: SCHOOL
 
@@ -328,41 +328,41 @@ await getTranscript(audioURl,_uuid)
       // need to handle jk
       console.log('file send failed')
     } else {
-        setProgVisible(false)
+      setProgVisible(false)
 
       setIsAnimate(true)
       setNewFile(newFile + 1)
     }
   }
-  const getText=async(fileData,_uuid)=>{
-         
+  const getText = async (fileData, _uuid) => {
+
 
     try {
       const response = await axios.post("/api/parser", fileData, {
         headers: { 'Content-Type': 'multipart/form-data' } // Set correct content type for multi-part request
       });
       setProgress({
-        title:"audio genearation",
-        icon:"audio"
+        title: "audio genearation",
+        icon: "audio"
       })
-      const data=  await  getAudio(response.data.text,_uuid)
-     return data
-  
-      
+      const data = await getAudio(response.data.text, _uuid)
+      return data
+
+
     } catch (error) {
       console.error("Error sending request:", error);
       // Handle error appropriately, e.g., display an error message to the user
     }
-    
-
-   }
-   const getTranscript= async(url,fid)=>{
 
 
+  }
+  const getTranscript = async (url, fid) => {
 
-await axios.post(`/api/transcript`,{URL:url,fid:fid})
 
-   }
+
+    await axios.post(`/api/transcript`, { URL: url, fid: fid })
+
+  }
   return (
     <div>
       <ul className='flex items-center justify-between h-16 border-b border-gray-100 w-screen md:w-full'>
@@ -397,7 +397,7 @@ await axios.post(`/api/transcript`,{URL:url,fid:fid})
         <AnimatePresence mode="wait">
           {progVisible && (
             <div className="h-screen w-screen fixed backdrop-blur-sm z-[9] left-0 top-0 ">
-              <ProgressComp progressChange={progress}   />
+              <ProgressComp progressChange={progress} />
             </div>
           )}
 
@@ -409,7 +409,7 @@ await axios.post(`/api/transcript`,{URL:url,fid:fid})
         {isAnimate && <SkeletonAnimation />}
         {isAnimate && <SkeletonAnimation />}
         {alert.state && <Alert msg={alert.message} title={"ALERT"} click={setAlert} />}
-        
+
       </section>
     </div>
   )

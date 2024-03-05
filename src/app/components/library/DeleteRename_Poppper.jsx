@@ -43,10 +43,7 @@ function Popper(props) {
 
         await fetch('/api/files',{
           method: 'DELETE',
-          headers:{
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ id })
+          body: id
         })
           .then(res => {
             props.update(id);

@@ -5,6 +5,7 @@ import { useState, useEffect, useRef } from 'react';
 import PdfViewer from '@/app/components/readercomp/Renderpdf'
 import axios from "axios";
 import { BiRotateLeft, BiRotateRight } from "react-icons/bi";
+import { FaCcAmex } from "react-icons/fa6";
 
 function Page({ params }) {
   const [transcript, setTransScript] = useState([])
@@ -148,7 +149,7 @@ function Page({ params }) {
                   {
                     transcript && (
                       transcript.map((item, i) => {
-                        return <p ref={currentText} className={`${(currentTime * 1000 >= item.start) ? 'bg-blue-100 text-blue-500' : 'text-gray-800'} py-1 px-[5px]`} key={i}>{item.text}</p>
+                        return <p ref={currentText} id={`${(currentTime * 1000 >= item.start && currentTime * 1000 >= item.end)?'currentword':''}`} className={`${(currentTime * 1000 >= item.start) ? 'bg-blue-100 text-blue-500' : 'text-gray-800'} py-1 px-[5px]`} key={i}>{item.text}</p>
                       })
                     )
                   }
@@ -156,6 +157,12 @@ function Page({ params }) {
               </>
             )
           }
+        </div>
+        <div className="fixed bottom-4 right-4 p-2">
+          <a href="#currentword">
+            <FaCcAmex/>
+
+          </a>
         </div>
       </div>
     </>
