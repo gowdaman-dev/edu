@@ -41,17 +41,15 @@ function Popper(props) {
           
         }
 
-        await fetch('/api/files',{
-          method: 'DELETE',
-          body: id
-        })
-          .then(res => {
-            props.update(id);
-            props.animate(true)
-            props.closePop(null)
-            props.progressVisible(false)
+        
+axios.delete("/api/files", { data: { id: id } })
+.then(res => {
+  props.update(id);
+  props.animate(true)
+  props.closePop(null)
+})
 
-          })
+
 
       } catch (e) {
       }
