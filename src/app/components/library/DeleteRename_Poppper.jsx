@@ -47,6 +47,8 @@ axios.delete("/api/files", { data: { id: id } })
   props.update(id);
   props.animate(true)
   props.closePop(null)
+  props.progressVisible(false)
+
 })
 
 

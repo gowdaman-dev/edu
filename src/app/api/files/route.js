@@ -71,7 +71,7 @@ export async function DELETE(req) {
     await connectMongoBD()
     console.log(typeof id);
     if (id) {
-      await libFiles.findByIdAndDelete(id).then((data) => console.log(data)).catch((err) => console.log(err.message))
+      await libFiles.deleteOne({file_id:id}).then((data) => console.log(data)).catch((err) => console.log(err.message))
       return NextResponse.json({ message: "deleted successfully" }, { status: 200 })
 
     }
