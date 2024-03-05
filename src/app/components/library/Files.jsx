@@ -409,6 +409,7 @@ await axios.post(`/api/transcript`,{URL:url,fid:fid})
         {isAnimate && <SkeletonAnimation />}
         {isAnimate && <SkeletonAnimation />}
         {alert.state && <Alert msg={alert.message} title={"ALERT"} click={setAlert} />}
+        
       </section>
     </div>
   )
