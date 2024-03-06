@@ -102,7 +102,7 @@ function LoginForm() {
                     {
                       exist && (
                         <>
-                          <input onChange={(e) => setPassword(e.target.value)} className="px-2 rounded-lg border border-[--web-primary-color] py-2 outline-none text-gray-700" type="password" placeholder="Your Password" />
+                          <input autoFocus onChange={(e) => setPassword(e.target.value)} className="px-2 rounded-lg border border-[--web-primary-color] py-2 outline-none text-gray-700" type="password" placeholder="Your Password" />
                           {
                             error && (
                               <p className="text-[12px] px-2 font-light text-red-400">{error}</p>
