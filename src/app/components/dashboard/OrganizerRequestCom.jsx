@@ -10,8 +10,7 @@ const OraganizerRequestPage = () => {
     const { data: session } = useSession()
     const { setToggleRequest } = useContext(UserContext);
     const [selectedAccountFromRequest, setselectedAccountFromRequest] = useState('');
-    const [error, setError] = useState(1)
-    const [requestCount, setRequestCount] = useState(0)
+    const [error, setError] = useState('')
     const role = session?.user?.role == "admin" ? "" : "student"
     const fetchMemberRequesthandler = async () => {
         try {
@@ -92,9 +91,8 @@ const OraganizerRequestPage = () => {
                 {
                     !memberRequesthandler ? "" : memberRequesthandler.map((request, i) => {
                         if (request) {
-                            return <motion.div key={request._id} className="shadow-md rounded-lg p-4 cursor-pointer h-fit" style={{ overflow: "hidden" }}
-                            >
-                                <div className="flex items-center justify-between">
+                            return <div key={request._id} className="shadow-md rounded-lg p-4 cursor-pointer min-h-fit">
+                                <div className="flex items-center justify-between h-fit">
                                     <div className="flex items-center gap-6 w-full px-2 py-2" onClick={() => { toggleShowAccInfo(event, i) }}>
                                         <p className="font-bold">{request.name}</p>
                                         <p className="text-sm text-gray-500">{request.schoolname}</p>
@@ -134,7 +132,7 @@ const OraganizerRequestPage = () => {
                                         </div>
                                     </div>
                                 </motion.div>
-                            </motion.div>
+                            </div>
                         } else {
                             return
                         }
