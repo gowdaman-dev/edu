@@ -252,7 +252,7 @@ function Files() {
           const audioURl = await getText(fileData, _uuid)
 
           setProgress({
-            title: "Creating Transcript",
+            title: "Creating Transcript...",
             icon: "transcript"
           })
           await getTranscript(audioURl, _uuid)
@@ -342,7 +342,7 @@ function Files() {
         headers: { 'Content-Type': 'multipart/form-data' } // Set correct content type for multi-part request
       });
       setProgress({
-        title: "audio genearation",
+        title: "Generating Audio...",
         icon: "audio"
       })
       const data = await getAudio(response.data.text, _uuid)

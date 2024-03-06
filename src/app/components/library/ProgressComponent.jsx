@@ -27,7 +27,7 @@ const iconRender_progress=(
 
           <span className='self-center duration-1000 ease-in ransition-all'>
             
-            {progressChange.title}{`${ progressChange.state? progressChange.state +" %":progressChange.title=="uploading"?"0":""}`}
+            {progressChange.title}{`${ progressChange.state? progressChange.state +" %":progressChange.icon=="upload"?"0":""}`}
           </span>
           <span className='w-[80%] flex ml-[10%]'>
             <span
