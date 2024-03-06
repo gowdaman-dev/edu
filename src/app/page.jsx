@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import { FaBars, FaCircleChevronRight } from "react-icons/fa6";
+import LoaderPage from "./components/loader/LoadingPage";
 function page() {
   const [homemenusrl, setHomemenusrl] = useState(false);
   useEffect(() => {
@@ -63,13 +64,13 @@ function page() {
         ></Image>
       </div>
       <div
-        className={` homenav fixed px-8 w-screen py-4 flex items-center justify-between transition-color ease-linear duration-500 ${homemenusrl ? "bg-white text-gray-800 border-b" : ""
+        className={` homenav fixed z-[10] px-8 w-screen py-4 flex items-center justify-between transition-color ease-linear duration-500 ${homemenusrl ? "bg-white text-gray-800 border-b" : ""
           } `}
       >
         <div className="flex items-center justify-center gap-2">
           <Image src={"/logos/logo.svg"} height={40} width={40} alt="" />
           <h1 className="text-lg font-semibold text-[--web-primary-color] md:flex hidden">
-            MiWay
+          <Image src={"/logo2.svg"} height={40} width={40} alt="" />
           </h1>
         </div>
         <div className="flex gap-4 items-center justify-center">
@@ -178,7 +179,7 @@ function page() {
       </div>
       <section
         id="home"
-        className="w-screen h-fit flex md:flex-row flex-col px-8 py-8 py-[6rem] bg-[url(/hero_shape.png)] bg-[center] bg-cover bg-blue-300 items-center md:justify-between justify-center"
+        className="w-screen h-fit flex md:flex-row flex-col px-8 py-8 py-[6rem] bg-[url(/hero_shape.png)] bg-[center] bg-cover bg-purple-300 items-center md:justify-between justify-center"
       >
         <div className="md:w-[50%] w-full h-full grid place-items-center">
           <div className="flex w-full flex-col items-start gap-2">
@@ -223,7 +224,7 @@ function page() {
           </p>
         </div>
       </section>
-      <section id="service" className="py-20 px-8 bg-blue-50">
+      <section id="service" className="py-20 px-8 bg-purple-100">
         <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 items-center">
           <div className="text-center md:text-left text-gray-800">
             <h2 className="text-4xl font-bold mb-4">MiWay LMS</h2>
@@ -343,7 +344,7 @@ function page() {
               <div className="flex flex-wrap -mx-3 mb-2">
                 <div className="w-full px-3 text-right">
                   <button
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                    className="bg-[--web-primary-color] hover:bg-purple-700 text-white font-bold py-2 px-4 rounded"
                     type="submit"
                   >
                     {cloader && (<span className="flex justify-center gap-2"> <BiLoaderCircle className="mt-1" /> <p>sending...</p> </span>) || "Send Message"}
