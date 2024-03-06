@@ -360,11 +360,14 @@ function Files() {
 
 
 
-    await axios.post(`/api/transcript`, { URL: url, fid: fid })
+    await axios.post(`/api/transcript`, { URL: url, fid: fid }).catch(e=>console.log(e))
 
   }
   return (
-    <div>
+    <div>• Perform a request or
+    the page to see detailed information about network activity.
+    • Click on the
+    button to start performance analysis.
       <ul className='flex items-center justify-between h-16 border-b border-gray-100 w-screen md:w-full'>
         {!isSuperadmin ?
           <li className="px-4 text-gray-600 flex justify-center  w-full">
