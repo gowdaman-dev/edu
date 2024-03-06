@@ -467,7 +467,7 @@ function SuperAdminMember() {
                 {
                   schoolfilter && (
                     <button
-                      className='relative bg-white max-w-[100px] pr-8 overflow-hidden text-gray-800 p-2 rounded-lg border flex items-center md:text-md text-sm gap-2'
+                      className='relative bg-white max-w-[100px] pr-8 overflow-hidden text-nowarp text-ellipsis text-gray-800 p-2 rounded-lg border flex items-center md:text-md text-sm gap-2'
                       onClick={() => { setSchoolFilterToggle(false); setSchoolFilter('') }}
                     >
                       {schoolfilter}<AiOutlineCloseCircle className='absolute bg-white text-[30px] p-2 right-0' />
