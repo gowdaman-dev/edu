@@ -63,7 +63,7 @@ function LoginForm() {
       {
         loading ? <LoaderPage /> : ''
       }
-      <div className="flex items-center xl:bg-[url(/bg1.png)] bg-left bg-contain  bg-no-repeat justify-center min-w-[100vw] h-[100vh] overflow-x-hidden ">
+      <div className="flex items-center bg-left bg-contain  bg-no-repeat justify-center min-w-[100vw] h-[100vh] overflow-x-hidden ">
         <div className="absolute top-0 left-0 z-[1] w-full h-full flex items-center justify-center">
           <div className="w-[60%] h-screen  bg-contain bg-right bg-no-repeat hidden xl:flex flex-col items-start justify-center">
             <div className="px-10 w-[80%] grid place-items-center">
@@ -95,14 +95,13 @@ function LoginForm() {
                           )
                         }
                       </>
-
                     )
                   }
                   <>
                     {
                       exist && (
                         <>
-                          <input onChange={(e) => setPassword(e.target.value)} className="px-2 rounded-lg border border-[--web-primary-color] py-2 outline-none text-gray-700" type="password" placeholder="Your Password" />
+                          <input autoFocus onChange={(e) => setPassword(e.target.value)} className="px-2 rounded-lg border border-[--web-primary-color] py-2 outline-none text-gray-700" type="password" placeholder="Your Password" />
                           {
                             error && (
                               <p className="text-[12px] px-2 font-light text-red-400">{error}</p>

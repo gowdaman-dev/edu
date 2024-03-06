@@ -74,8 +74,10 @@ function NavBar() {
         <div className='w-screen py-4 flex justify-between px-4 items-center border-b border-gray-200/[.4]'>
             <div className="flex items-center justify-center gap-4">
                 <AiOutlineMenu onClick={() => { setnav(!nav); setnavmob(!navmob) }} className='text-2xl' />
-                <Image src={'/logo.svg'} height={34} width={34} alt=""></Image>
-                <h1 className='text-[--web-primary-color] text-2xl font-bold md:flex hidden'>EDULEARN</h1>
+                <Image src={'/logo.svg'} height={34} width={34} alt="" />
+                <h1 className='text-[--web-primary-color] text-2xl font-bold md:flex hidden'>
+                    <Image src={'/logo2.svg'} height={34} width={68} alt="" />
+                </h1>
             </div>
             <div className="search md:flex hidden rounded-full bg-gray-200 px-4 py-2">
                 <input onChange={(e) => { setNavSearch(e.target.value) }} type="text" placeholder='search...' className='bg-transparent outline-none text-sm' />
@@ -126,12 +128,12 @@ function NavBar() {
                                         className='bg-white text-gray-800 p-2 rounded-lg border flex items-center md:text-md text-sm gap-2'
                                     >
                                         {
-                                            schoolFilter?<p className=' max-w-[100px] text-ellipsis whitespace-nowrap overflow-hidden'>{schoolFilter}</p>:""
+                                            schoolFilter ? <p className=' max-w-[100px] text-ellipsis whitespace-nowrap overflow-hidden'>{schoolFilter}</p> : ""
                                         }
                                         {
                                             !schoolFilter && (
                                                 <p className='flex items-center justify-center'>Filter School {schoolfiltertoggle ? <AiOutlineUp /> : <AiOutlineDown />}</p>
-                                            ) 
+                                            )
                                         }
                                     </button>
                                     {
