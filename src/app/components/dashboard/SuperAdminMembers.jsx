@@ -132,6 +132,7 @@ function SuperAdminMember() {
   }
   const [updatinguser, setupdatinguser] = useState(false)
   const [deleteuser, setdeleteuser] = useState(false)
+  const [status, setStatus] = useState(false)
   const UpdateUserEvent = async (e) => {
     setupdatinguser(true);
     e.preventDefault();
@@ -139,6 +140,7 @@ function SuperAdminMember() {
     formdata.append('id', selectedrecord.id)
     formdata.append('oldschool', selectedrecord.school)
     formdata.append('role', selectedrecord.role)
+    setStatus(true)
     const res = await fetch('/api/register', {
       method: 'PUT',
       body: formdata
@@ -147,6 +149,8 @@ function SuperAdminMember() {
       setUsereditable(false)
       setUserDetailpopup(false)
       setupdatinguser(false)
+      setStatus(false)
+      setCount(count + 1)
     }
 
   }
@@ -155,17 +159,22 @@ function SuperAdminMember() {
     setUserDetailpopup(false)
     setdeleteuser(true)
   }
-  const RemoveUserconformed = () => {
-    const remover = fetch('/api/superadmin/remover', {
+  const RemoveUserconformed = async () => {
+    setStatus(true)
+    const remover = await fetch('/api/superadmin/remover', {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({ role: selectedrecord.role, school: selectedrecord.school, id: selectedrecord.id })
+    }).then((data) => {
+      if (data.ok) {
+        setdeleteuser(false)
+        setStatus(false)
+        setCount(count + 1)
+
+      }
     })
-    if (remover) {
-      setdeleteuser(false)
-    }
   }
 
   const [schoolfilterdata, setSchoolFilterData] = useState({})
@@ -442,7 +451,7 @@ function SuperAdminMember() {
                     <p className='font-light text-sm text-gray-700 py-2'>Warning removing account {selectedrecord.email} will terminate <strong>user</strong> belong to {selectedrecord.school} school. click conform to remove</p>
                   )
                 }
-                <button onClick={RemoveUserconformed} className='w-full p-2 text-white rounded-lg bg-red-400'>Conform</button>
+                <button onClick={RemoveUserconformed} className='w-full p-2 text-white rounded-lg bg-red-400'>{status ? "Removing.." : "Conform"}</button>
               </motion.div>
             </motion.div>
           )
