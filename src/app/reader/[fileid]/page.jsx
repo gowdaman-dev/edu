@@ -1,11 +1,9 @@
 'use client'
 import { AiFillPauseCircle, AiFillPlayCircle, AiOutlineLeft, AiOutlineMore, AiOutlinePauseCircle, AiOutlinePlayCircle, AiOutlineRotateLeft } from "react-icons/ai";
-import { TbRotate2, TbRotateClockwise2 } from 'react-icons/tb'
 import { useState, useEffect, useRef } from 'react';
 import PdfViewer from '@/app/components/readercomp/Renderpdf'
 import axios from "axios";
 import { BiRotateLeft, BiRotateRight } from "react-icons/bi";
-import { FaCcAmex } from "react-icons/fa6";
 
 function Page({ params }) {
   const [transcript, setTransScript] = useState([])
@@ -145,7 +143,7 @@ function Page({ params }) {
           {
             openPlayer && (
               <>
-                <p className="flex flex-wrap w-full h-fit">
+                <p className="flex flex-wrap w-full h-fit pb-[250px]">
                   {
                     transcript && (
                       transcript.map((item, i) => {
@@ -157,6 +155,10 @@ function Page({ params }) {
               </>
             )
           }
+        </div>
+        <div className="fixed bottom-0 left-0 w-screen h-[250px] bg-purple-200/[.7] backdrop-blur-sm flex items-center justify-center">
+
+          <p className="text-[--web-primary-color] text-xl tracking-widest">hello Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti, eum.</p>
         </div>
       </div>
     </>
