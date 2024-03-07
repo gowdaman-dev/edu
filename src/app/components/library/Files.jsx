@@ -7,6 +7,7 @@ import { BsThreeDotsVertical } from 'react-icons/bs'
 import SkeletonAnimation from '../SkeletonAnimation'
 import fetchFiles from '@/utils/FetchFiles'
 import axios from 'axios'
+import { getTrans } from "@/utils/Transcript";
 import Rename from "./Rename";
 import { getAudio } from "./Tts";
 import ProgressComp from './ProgressComponent'
@@ -255,7 +256,8 @@ function Files() {
             title: "Creating Transcript...",
             icon: "transcript"
           })
-          await getTranscript(audioURl, _uuid)
+/*           await getTranscript(audioURl, _uuid)
+ */          await getTrans(audioURl, _uuid)
           if (ROLE === "superadmin") {
             SCHOOL = "default"
           }
@@ -360,7 +362,7 @@ function Files() {
 
 
 
-    await axios.post(`/api/transcript`, { URL: url, fid: fid },{timeout:60000}).catch(e=>console.log(e))
+    await getTrans(url, fid)
 
   }
   return (
