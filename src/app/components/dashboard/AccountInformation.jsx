@@ -23,7 +23,7 @@ function Accountinformation() {
             setInterval(() => {
                 setresetrequesttext('')
             }, 2000);
-        }).catch((err))
+        }).catch((err)=>{})
 
         setresetrequest(false)
     }

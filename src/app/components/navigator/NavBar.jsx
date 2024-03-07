@@ -65,7 +65,7 @@ function NavBar() {
                 "Content-Type": 'application/json'
             },
             cache: 'no-store', next: { revalidate: 0 }
-        }).then((data) => data.json()).then((values) => { setSchoolFilterData(values); }).catch((err))
+        }).then((data) => data.json()).then((values) => { setSchoolFilterData(values); }).catch((err) => { })
     }, [schoolfiltertoggle])
     const [popsearch, setPopSearch] = useState(false)
     const schoolFilterRef = useRef(null);
@@ -123,7 +123,7 @@ function NavBar() {
                             <div className="relative flex items-center justify-center">
                                 <div className=" relative flex flex-col justify-right">
                                     <button
-                                        onClick={() => { setSchoolFilterToggle(!schoolFilterToggle);  }}
+                                        onClick={() => { setSchoolFilterToggle(!schoolFilterToggle); }}
                                         ref={schoolFilterRef}
                                         className='bg-white text-gray-800 p-2 rounded-lg border flex items-center md:text-md text-sm gap-2'
                                     >

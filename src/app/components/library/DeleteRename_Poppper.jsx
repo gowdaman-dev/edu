@@ -22,17 +22,17 @@ function Popper(props) {
             title: " Deleting Pdf",
             icon: "extract"
           })
-          await deleteObject(deleteFile).catch((err));
+          await deleteObject(deleteFile).catch((err)=>{});
           props.progressSet({
             title: "Deleting Audio",
             icon: "audio"
           })
-          await deleteObject(deleteAudio).catch((err));
+          await deleteObject(deleteAudio).catch((err)=>{});
           props.progressSet({
             title: "Deleting Transcript",
             icon: "transcript"
           })
-          await deleteObject(deleteTrans).catch((err));
+          await deleteObject(deleteTrans).catch((err)=>{});
           props.progressSet({
             title: "Clearing Data",
             icon: "transcript"

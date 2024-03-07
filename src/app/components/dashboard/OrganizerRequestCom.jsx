@@ -24,7 +24,6 @@ const OraganizerRequestPage = () => {
             }
             return data
         } catch (error) {
-            console.error('Error fetching member requests:', error);
         }
     };
     const { data: memberRequesthandler, isLoading: datafetcher, mutate } = useSWR('request fetch', fetchMemberRequesthandler)

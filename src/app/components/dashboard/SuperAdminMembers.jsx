@@ -218,7 +218,7 @@ function SuperAdminMember() {
         "Content-Type": 'application/json'
       },
       cache: 'no-store', next: { revalidate: 0 }
-    }).then((data) => data.json()).then((values) => setSchoolFilterData(values)).catch((err) )
+    }).then((data) => data.json()).then((values) => setSchoolFilterData(values)).catch((err)=>{} )
   }, [schoolfilter, schoolfiltertoggle])
   useEffect(() => {
     let filter = async () => {

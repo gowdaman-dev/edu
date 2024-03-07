@@ -27,7 +27,6 @@ const schoolInformation = () => {
       const data = await res.json();
       // Additional logic based on response if needed
     } catch (error) {
-      console.error('Error deleting school:', error);
     }
   };
   useEffect(() => {
