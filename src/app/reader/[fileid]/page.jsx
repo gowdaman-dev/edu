@@ -1,9 +1,9 @@
 'use client'
-import { AiFillPauseCircle, AiFillPlayCircle, AiOutlineLeft, AiOutlineMore, AiOutlinePauseCircle, AiOutlinePlayCircle, AiOutlineRotateLeft } from "react-icons/ai";
+import { AiFillPauseCircle, AiFillPlayCircle, AiOutlineLeft, AiOutlineMore } from "react-icons/ai";
 import { useState, useEffect, useRef } from 'react';
 import PdfViewer from '@/app/components/readercomp/Renderpdf'
 import axios from "axios";
-import { BiRotateLeft, BiRotateRight, BiCaptions } from "react-icons/bi";
+import { BiRotateLeft, BiRotateRight } from "react-icons/bi";
 
 function Page({ params }) {
   const [transcript, setTransScript] = useState([])
@@ -27,7 +27,6 @@ function Page({ params }) {
   const handleTimeUpdate = () => {
     const audio = audioRef.current;
     setCurrentTime(audio.currentTime);
-    setCrtText(currentText.current.innerText)
     audioRef.current.playbackRate = audioRate;
   };
   const [isTools, setIsTools] = useState(false)
