@@ -7,7 +7,6 @@ export async function GET(req) {
   const parsedUrl = parseUrl(request)
   const query = parsedUrl.query
   const GRADE = Number(query.grade) || 1
-  console.log("from api get /files");
   if (query) {
 
     try {
@@ -41,7 +40,6 @@ export async function GET(req) {
 }
 
 export async function POST(req) {
-  console.log("from api post /files");
 
   try {
     let { fname, fsize, _fid, fgrade, fschool, furl } = await req.json()
@@ -54,7 +52,6 @@ export async function POST(req) {
     await libFiles.create({ file_name: fname, file_id: _fid, file_size: fsize, file_date: date, file_grade: fgrade, file_school: fschool, file_url: furl })
   } catch (err) {
 
-    console.log(err.message);
     return NextResponse.json(
       { message: 'internal server error' },
       { status: 500 }

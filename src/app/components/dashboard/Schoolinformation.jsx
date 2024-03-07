@@ -25,7 +25,6 @@ const schoolInformation = () => {
         body: JSON.stringify({ role: 'admin', school: session?.user?.school, id:'' })
       });
       const data = await res.json();
-      console.log(data);
       // Additional logic based on response if needed
     } catch (error) {
       console.error('Error deleting school:', error);

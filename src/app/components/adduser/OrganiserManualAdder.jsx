@@ -78,7 +78,6 @@ function ManualAdder({ close }) {
 				return
 			}
 		} catch (error) {
-			console.log(error);
 			setsaloader(false)
 		}
 		try {
@@ -89,14 +88,12 @@ function ManualAdder({ close }) {
 				},
 				body: JSON.stringify({ school })
 			})
-			console.log(resschoolexist.status);
 			if (resschoolexist.status == 200) {
 				setError('School already Exists!')
 				setsaloader(false)
 				return
 			}
 		} catch (error) {
-			console.log(error);
 		}
 		try {
 			const res = await fetch('/api/organiser/postadmin', {
@@ -114,7 +111,6 @@ function ManualAdder({ close }) {
 				return
 			}
 		} catch (error) {
-			console.log(error);
 		}
 	}
 	useEffect(() => {

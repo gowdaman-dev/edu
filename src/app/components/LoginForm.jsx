@@ -34,7 +34,6 @@ function LoginForm() {
         setLoading(false)
       }
     } catch (error) {
-      console.log('error :', error)
     }
   }
   const handleSubmit = async e => {
@@ -54,7 +53,6 @@ function LoginForm() {
       setLoading(false);
       router.replace('/dashboard')
     } catch (error) {
-      console.log(error)
     }
   }
   const [exist, setexist] = useState(false)

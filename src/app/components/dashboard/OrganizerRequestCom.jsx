@@ -22,7 +22,6 @@ const OraganizerRequestPage = () => {
                 setError('there is no request action')
                 return
             }
-            console.log(data);
             return data
         } catch (error) {
             console.error('Error fetching member requests:', error);
@@ -71,12 +70,11 @@ const OraganizerRequestPage = () => {
             return
         }
         setselectedAccountFromRequest(id)
-        console.log("id: " + id)
     };
     return (
         <div className='w-screen h-screen top-0 left-0 fixed z-8 bg-white'>
             <div className="flex items-center justify-between py-2 px-4">
-                <button className="font-bold flex items-center justify-center text-gray-600 text-md" onClick={() => { setToggleRequest(false); console.log("clicked"); }}>
+                <button className="font-bold flex items-center justify-center text-gray-600 text-md" onClick={() => { setToggleRequest(false); }}>
                     <AiOutlineLeft />Back
                 </button>
                 <h1 className="text-2xl font-bold text-gray-900">Organizer Requests</h1>

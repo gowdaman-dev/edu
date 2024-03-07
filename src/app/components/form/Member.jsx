@@ -81,7 +81,6 @@ const Requestform = () => {
     };
     validate();
 
-    console.log(schoolName);
 
   }, [check]);
 
@@ -94,7 +93,6 @@ const Requestform = () => {
     setMloader(true);
     setError('')
     setSuccess('')
-    console.log(data);
     if (data.userName == '' || data.email == '' || data.role == '' || data.grade == '' || data.schoolName == '') {
       setError('Please fill all the fields')
       setMloader(false);
@@ -126,7 +124,6 @@ const Requestform = () => {
         return
       }
     } catch (error) {
-      console.log(error);
       setMloader(false);
 
     }

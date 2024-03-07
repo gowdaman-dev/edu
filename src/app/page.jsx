@@ -14,14 +14,11 @@ function page() {
     window.addEventListener("scroll", async () => {
       if (window.scrollY >= 50) {
         setHomemenusrl(true);
-        console.log(homemenusrl);
         return;
       }
       if (window.scrollY <= 49) {
         setHomemenusrl(false);
-        console.log(homemenusrl);
       }
-      console.log(window.scrollY);
       return;
     });
   });

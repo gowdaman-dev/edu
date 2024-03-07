@@ -9,7 +9,6 @@ function Accountinformation() {
     const [resetrequest, setresetrequest] = useState(false)
     const [resetrequesttext, setresetrequesttext] = useState('')
     const { data: session } = useSession()
-    console.log(session?.user);
     const mailnow = async (e) => {
         setresetrequesttext('sending mail...')
         e.preventDefault();
@@ -24,7 +23,7 @@ function Accountinformation() {
             setInterval(() => {
                 setresetrequesttext('')
             }, 2000);
-        }).catch((err) => console.log(err))
+        }).catch((err))
 
         setresetrequest(false)
     }
@@ -40,9 +39,7 @@ function Accountinformation() {
         return user
     }
     const { data: userdata } = useSWR('user info', infofetch);
-    useEffect(() => {
-        console.log(userdata);
-    }, [userdata])
+   
     return (
         <motion.div initial={{ opacity: .4 }} animate={{ opacity: 1 }} transition={{ type: 'spring', duration: .5 }} exit={{ opacity: 0 }} className='flex fixed w-screen top-0 left-0 justify-center h-[100vh]  bg-slate-200/[.5] backdrop-blur-sm flex items-center justify-center '>
             <motion.div initial={{ scale: .7, opacity: .4 }} animate={{ scale: 1, opacity: 1 }} transition={{ type: 'spring', duration: .5 }} exit={{ scale: .7, opacity: 0 }} className='h-[500px] md:w-[600px] w-[90%] text-gray-800 flex flex-col items-start bg-white p-4 overflow-hidden rounded-lg shadow-xl shadow-slate-800/20 relative '>

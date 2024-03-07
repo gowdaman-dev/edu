@@ -23,7 +23,6 @@ const datalist = async ({ standard, school, role }) => {
         const data = await res.json();
         return data
     } catch (error) {
-        console.log(error);
     }
 }
 
@@ -38,9 +37,7 @@ function UserProvider() {
         datalist({ standard: navGrade, school: session?.user?.school, role: session?.user?.role }).then((data) => {
             setMemberdata(data)
             setPulse(false)
-            console.log(data);
         })
-        //console.log(datalist);
     }, [count, navGrade])
     createTheme('edulearntable', {
         text: {
@@ -123,7 +120,6 @@ function UserProvider() {
                 link.click();
             };
             handleDownload()
-            console.log(csvContent);
             setExporter("false")
         }
     }, [exporter])

@@ -42,7 +42,6 @@ const Requestform = () => {
         body: JSON.stringify(formData),
       });
       const data = await response.json();
-      console.log();
       if (response.status === 400) {
         setError(data.message)
         setOloader(false);

@@ -185,9 +185,7 @@ function SuperAdminMember() {
     fetcher().then((data) => {
       setMemberdata(data)
       setPulse(false)
-      console.log(data);
     })
-    //console.log(datalist);
   }, [count])
 
   const [schoolfilter, setSchoolFilter] = useState('')
@@ -220,7 +218,7 @@ function SuperAdminMember() {
         "Content-Type": 'application/json'
       },
       cache: 'no-store', next: { revalidate: 0 }
-    }).then((data) => data.json()).then((values) => setSchoolFilterData(values)).catch((err) => console.log("fetching data"))
+    }).then((data) => data.json()).then((values) => setSchoolFilterData(values)).catch((err) )
   }, [schoolfilter, schoolfiltertoggle])
   useEffect(() => {
     let filter = async () => {
@@ -233,10 +231,7 @@ function SuperAdminMember() {
           setFilterdata(sckfilter)
         }
         if (roleFilter) {
-          console.log('selected role', roleFilter);
-          console.log('data', filterdata);
           const rlfilter = memberdata.filter((item) => item.role.toLowerCase().includes(roleFilter.toLowerCase()))
-          console.log('filtered data', rlfilter);
           setFilterdata(rlfilter)
         }
         if (navSearch) {
@@ -244,11 +239,9 @@ function SuperAdminMember() {
           setFilterdata(nvfilter)
         }
       } catch (error) {
-        console.log("data undefined");
       }
     }
     filter()
-    console.log(filterdata);
   }, [navSearch, roleFilter, schoolfilter, schoolfiltertoggle])
 
   const [inSchoolName, setInSchoolName] = useState([]);

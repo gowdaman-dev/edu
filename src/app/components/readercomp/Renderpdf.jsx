@@ -68,13 +68,11 @@ const PdfViewer = ({setTools,stateTools}) => {
         setProgress(0)
         setProgVisible(false)
       } catch (error) {
-        console.log(error.message);
       }
     }
     fetchBytes();
   }, []);
 
-console.log(progVisible);
   useEffect(() => {
 
     const dataPresent = viewerRef.current

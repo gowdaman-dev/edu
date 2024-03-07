@@ -272,10 +272,8 @@ function Files() {
             setProgress({ state: progress, title: "uploading : ", icon: "upload" });
             switch (snapshot.state) {
               case 'paused':
-                console.log('Upload is paused');
                 break;
               case 'running':
-                console.log('Upload is running');
                 break;
             }
 
@@ -329,7 +327,6 @@ function Files() {
       data)
     if (sendFile.status !== 200) {
       // need to handle jk
-      console.log('file send failed')
     } else {
       setProgVisible(false)
 
@@ -353,7 +350,6 @@ function Files() {
 
 
     } catch (error) {
-      console.error("Error sending request:", error);
       // Handle error appropriately, e.g., display an error message to the user
     }
 
@@ -376,10 +372,8 @@ function Files() {
       const jsonString = JSON.stringify(transcript);
       const blob = Buffer.from(jsonString, 'utf-8'); 
     const reference = ref(db,`transcript/${FID}`)
-    console.log(transcript);
     const upload = await uploadBytesResumable(reference, blob)
     const downloadURL = await getDownloadURL(upload.ref);
-    console.log("transcript upload",downloadURL);
     return downloadURL
 
   }

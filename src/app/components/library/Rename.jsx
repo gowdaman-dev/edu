@@ -14,10 +14,8 @@ import { AnimatePresence,motion } from "framer-motion";
     setFileName( e.target.value)
   }
     const rename=async()=>{
-      console.log("rename called ");
     const fieldVal=refRename.current.value.trim()
  if(!fieldVal){
-  console.log("yes no feild val");
    refRename.current.classList.add("border-[#ef233c]","border-[1px]","text-[#ef233c]")
    refRename.current.value="enter any text"
  }
@@ -26,9 +24,7 @@ import { AnimatePresence,motion } from "framer-motion";
     id:id,
     name:fileName
   }
-  console.log("date sent");
 await axios.put("/api/files",data).then((res)=>{
-  console.log("yes response came");
   if(res.status===200){
     props.update(fileName)
     props.animate(true)

@@ -82,7 +82,6 @@ function ManualAdder({ close }) {
                 return
             }
         } catch (error) {
-            console.log(error);
         }
         try {
             const res = await fetch('/api/register', {
@@ -100,7 +99,6 @@ function ManualAdder({ close }) {
                 return
             }
         } catch (error) {
-            console.log(error);
         }
     }
     useEffect(() => {

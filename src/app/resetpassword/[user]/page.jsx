@@ -34,15 +34,12 @@ function page({ params }) {
                 body: JSON.stringify({ id: user })
             })
             const { password } = await res.json();
-            console.log(password, user);
             const passverify = await bcrypt.compare(oldpass, password);
             if (!passverify) {
                 setstatus('')
-                console.log(passverify);
                 seterror('Invalid password')
                 return
             }
-            console.log(passverify);
             const resreset = await fetch('/api/resetpassword', {
                 method: 'PUT',
                 headers: {
@@ -51,14 +48,12 @@ function page({ params }) {
                 body: JSON.stringify({ _id: user, password: currentpass.password , email:session?.user?.email , name:session?.user?.name })
             })
             if (resreset.ok) {
-                console.log("success");
                 setstatus('')
                 signOut()
                 router.replace('/signin')
                 return
             }
         } catch (err) {
-            console.log(err);
         }
     }
     return (

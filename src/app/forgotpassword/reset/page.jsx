@@ -21,7 +21,6 @@ function page() {
     }
 
     function handleOnComplete() {
-        console.log("Completed");
     }
     useEffect(() => {
         if (otpResendTimer === 0) return;
@@ -80,7 +79,6 @@ function page() {
                 return
             }
         } catch (error) {
-            console.log(error.message);
         }
     }
     const resendOTP = async (e) => {
