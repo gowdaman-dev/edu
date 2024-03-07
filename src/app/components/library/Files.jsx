@@ -19,6 +19,7 @@ import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage"
 import { useSession } from "next-auth/react";
 import { UserContext } from "@/ContextUser";
 import Alert from "./Alert";
+import { AssemblyAI } from "assemblyai";
 import { AnimatePresence, motion } from "framer-motion";
 let filesShow = []
 function Files() {
@@ -257,7 +258,7 @@ function Files() {
             icon: "transcript"
           })
 /*           await getTranscript(audioURl, _uuid)
- */          await getTrans(audioURl, _uuid)
+ */          await getTranscript(audioURl, _uuid)
           if (ROLE === "superadmin") {
             SCHOOL = "default"
           }
@@ -362,7 +363,24 @@ function Files() {
 
 
 
-    await getTrans(url, fid)
+    const URL=url
+    const FID=fid
+    const client = new AssemblyAI({
+        apiKey: process.env.NEXT_PUBLIC_ASSEMBLY_AI_APIKEY,
+      });
+      const data = {
+        audio_url: URL,
+       
+      }
+      const transcript = await client.transcripts.create(data);
+      const jsonString = JSON.stringify(transcript);
+      const blob = Buffer.from(jsonString, 'utf-8'); 
+    const reference = ref(db,`transcript/${FID}`)
+    console.log(transcript);
+    const upload = await uploadBytesResumable(reference, blob)
+    const downloadURL = await getDownloadURL(upload.ref);
+    console.log("transcript upload",downloadURL);
+    return downloadURL
 
   }
   return (
