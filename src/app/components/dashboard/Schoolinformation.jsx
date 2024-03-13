@@ -22,7 +22,7 @@ const schoolInformation = () => {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ role: 'admin', school: session?.user?.school, id:'' })
+        body: JSON.stringify({ role: 'admin', school: session?.user?.school, id: '' })
       });
       const data = await res.json();
       // Additional logic based on response if needed
@@ -65,7 +65,7 @@ const schoolInformation = () => {
     }
   }, [sklstudentdata]);
   return (
-    <div className={`fixed top-0 left-0 h-screen w-screen grid place-items-center bg-white/[.2] backdrop-blur-sm ${skldataloader?"animate-pulse":''}` }>
+    <div className={`fixed top-0 left-0 h-screen w-screen grid place-items-center bg-white/[.2] backdrop-blur-sm ${skldataloader ? "animate-pulse" : ''}`}>
       <div className=" flex flex-col items-center relative h-fit bg-white border rounded-lg md:w-[600px] w-[90%]  ">
         <h1 className=" font-bold text-xl p-3 border-b-2 w-[90%]">School School</h1>
         <dl className="flex flex-col w-[90%]">
@@ -75,11 +75,6 @@ const schoolInformation = () => {
               <dd>{skldata.schoolname}</dd>
             </div>
             <dd className="flex">
-              {
-                session?.user?.role === "admin" && (
-                  <button onClick={deleteSchool} className="text-teal-700">Delete School</button>
-                )
-              }
             </dd>
           </div>
           <div className="flex justify-between p-2 items-center h-[20%]">
@@ -108,7 +103,7 @@ const schoolInformation = () => {
               )
             }
             {
-              sklstudentgradecount == [] &&(
+              sklstudentgradecount == [] && (
                 <p>No class data in server</p>
               )
             }
