@@ -218,7 +218,7 @@ function SuperAdminMember() {
         "Content-Type": 'application/json'
       },
       cache: 'no-store', next: { revalidate: 0 }
-    }).then((data) => data.json()).then((values) => setSchoolFilterData(values)).catch((err)=>{} )
+    }).then((data) => data.json()).then((values) => setSchoolFilterData(values)).catch((err) => { })
   }, [schoolfilter, schoolfiltertoggle])
   useEffect(() => {
     let filter = async () => {
@@ -406,7 +406,7 @@ function SuperAdminMember() {
                   </div>
                   {
                     usereditable && (
-                      <button type='submit' className='w-full p-2 bg-yellow-200 rounded-lg'>Update Account</button>
+                         <button type='submit' disabled={isNotValid} className='w-full p-2 bg-yellow-200 rounded-lg'>Update Account</button>
                     )
                   }
                   {
