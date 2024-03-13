@@ -79,12 +79,16 @@ function NavBar() {
                     <Image src={'/logo2.svg'} height={34} width={68} alt="" />
                 </h1>
             </div>
-            <div className="search md:flex hidden rounded-full bg-gray-200 px-4 py-2">
-                <input onChange={(e) => { setNavSearch(e.target.value) }} type="text" placeholder='search...' className='bg-transparent outline-none text-sm' />
-            </div>
+            {
+                path == "/dashboard" && (
+                    <div className="search md:flex hidden rounded-full bg-gray-200 px-4 py-2">
+                        <input onChange={(e) => { setNavSearch(e.target.value) }} type="text" placeholder='search...' className='bg-transparent outline-none text-sm' />
+                    </div>
+                )
+            }
             <AiOutlineSearch className='text-xl md:hidden block' onClick={() => setPopSearch(true)} />
             {
-                (popsearch) && (
+                (popsearch && path == "/dashboard") && (
                     <div className="md:hidden w-screen flex absolute z-[12] top-0 left-0 py-5 bg-white items-center justify-between px-4">
                         <input onChange={(e) => { setNavSearch(e.target.value) }} type="text" placeholder='search...' className='bg-transparent outline-none text-sm' />
                         <AiOutlineClose className="text-xl" onClick={() => setPopSearch(false)} />
