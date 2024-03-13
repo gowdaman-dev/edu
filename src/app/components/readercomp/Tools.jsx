@@ -4,7 +4,7 @@ import { AiOutlineDownload } from "react-icons/ai";
 import { BsZoomOut } from "react-icons/bs";
 import { BsZoomIn } from "react-icons/bs";
 import { AiOutlineFullscreen } from "react-icons/ai";
-import React from 'react';
+import React, { useEffect } from 'react';
 import { AiOutlineClose } from "react-icons/ai";
 import { AnimatePresence,motion } from "framer-motion";
 
@@ -28,6 +28,8 @@ function Tools({ click, fullScreen, zoomIn, zoomOut, download, newFile, rotation
   const handleRotate = () => {
     rotation.onClick(); // Safe call with optional chaining
   };
+
+  
 
   return (
     <motion.div initial={{ opacity: .4 }} animate={{ opacity: 1 }} transition={{ type: 'spring', duration: .5 }} exit={{ opacity: 0 }}    className='tool col-end-12 row-span-4  absolute grid grid-cols-8    grid-rows-5 bg-white w-72 rounded-lg border-[2px]  box-border  right-1 justify-center'>
