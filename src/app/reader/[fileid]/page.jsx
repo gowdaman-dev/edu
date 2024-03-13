@@ -48,7 +48,6 @@ function Page({ params }) {
   }
 
   //caption
-  const [captionData, setCaptionData] = useState([])
   const audioData = `https://firebasestorage.googleapis.com/v0/b/lmsedu-e5dbc.appspot.com/o/audio%2F${params.fileid}?alt=media&token=11fccbc3-c457-40bc-9c96-386a5bbef464`
   return (
     <>
@@ -90,9 +89,6 @@ function Page({ params }) {
             {
               openPlayer && (
                 <>
-                  <div className="absolute right-[150px] cursor-pointer" onClick={() => setCaptions(!captions)}>
-                    <p className={`${captions ? "text-[--web-primary-color] bg-purple-200" : "text-gray-800"} px-2 border py-1 font-bold rounded-full`}>cc</p>
-                  </div>
                   <div className=" absolute border px-2 py-1 rounded text-gray-800 mr-[100px] w-16 text-center">
                     <button className="w-full" onClick={() => setAudioRateToggle(!audioRateToggle)}>{audioRate}x</button>
                     {
