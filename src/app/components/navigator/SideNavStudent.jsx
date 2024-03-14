@@ -100,7 +100,7 @@ function SideNavStudent() {
                             <motion.p {...animenavtext(navtext)} className='text-gray-800 text-md'>Account</motion.p>
                         </div>
                     </button>
-                    <button onClick={()=>signOut()} className="flex w-full  justify-start overflow-hidden hover:bg-gray-100 rounded-lg">
+                    <button onClick={()=>signOut({callbackUrl:"/signin"})} className="flex w-full  justify-start overflow-hidden hover:bg-gray-100 rounded-lg">
                         <div className="w-fit flex justify-start  py-2 px-3 items-center gap-4">
                             <IoIosLogOut className='text-xl' />
                             <motion.p {...animenavtext(navtext)} className='text-gray-800 text-md'>Logout</motion.p>

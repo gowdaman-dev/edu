@@ -21,7 +21,7 @@ function SideNav() {
     const menuref = useRef();
     const menulistref = useRef();
     const path = usePathname();
-    const { nav,setnav, addmanually, setAddmanually,toggleRequest, setToggleRequest, showAccInfo, setShowAccInfo, showsklinfo, setShowSklInfo } = useContext(UserContext)
+    const { nav, setnav, addmanually, setAddmanually, toggleRequest, setToggleRequest, showAccInfo, setShowAccInfo, showsklinfo, setShowSklInfo } = useContext(UserContext)
     const [addorganisermanually, setaddorganisermanually] = useState(false)
     const anime = (variants) => {
         return {
@@ -104,7 +104,7 @@ function SideNav() {
                                         <button onClick={() => setToggleRequest(true)}>Request</button>
                                         <AnimatePresence mode='wait'>
                                             {
-                                                toggleRequest && (session?.user?.role ==='superadmin'?<OraganizerRequestPage/>:<MemberRequestPage/>)
+                                                toggleRequest && (session?.user?.role === 'superadmin' ? <OraganizerRequestPage /> : <MemberRequestPage />)
                                             }
                                         </AnimatePresence>
                                     </div>
@@ -177,7 +177,7 @@ function SideNav() {
                             )
                         }
                     </AnimatePresence>
-                    <button onClick={() => signOut()} className='text-md hover:bg-gray-200/[.5] flex items-center justify-start gap-2 px-4 text-gray-800 w-full py-2 text-center rounded'>
+                    <button onClick={() => signOut({callbackUrl:"/signin"})} className='text-md hover:bg-gray-200/[.5] flex items-center justify-start gap-2 px-4 text-gray-800 w-full py-2 text-center rounded'>
                         <IoIosLogOut className='text-xl' />
                         <p>Logout</p>
                     </button>

@@ -182,7 +182,7 @@ function SideNav() {
                             )
                         }
                     </AnimatePresence>
-                    <button onClick={() => signOut()} className='text-md hover:bg-gray-200/[.5] flex items-center justify-start gap-2 px-4 text-gray-800 w-full py-2 text-center rounded'>
+                    <button onClick={() => signOut({callbackUrl:"/signin"})} className='text-md hover:bg-gray-200/[.5] flex items-center justify-start gap-2 px-4 text-gray-800 w-full py-2 text-center rounded'>
                         <IoIosLogOut className='text-xl' />
                         <p>Logout</p>
                     </button>
