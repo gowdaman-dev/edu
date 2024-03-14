@@ -42,13 +42,7 @@ function NavBarStudent() {
     })
     return (
         <div className='w-full h-[60px] py-2 flex justify-between px-10 items-center border-b border-gray-200/[.4]'>
-            {
-                (path == '/dashboard/library') && (
-                    <div className="search md:flex hidden rounded-full bg-gray-200 px-4 py-2">
-                        <input onChange={(e) => { setNavSearch(e.target.value) }} type="text" placeholder='search...' className='bg-transparent outline-none text-sm' />
-                    </div>
-                )
-            }
+            
         </div>
     )
 }

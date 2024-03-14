@@ -20,18 +20,17 @@ function page() {
               )
             }
             {
-              (session?.user?.role == "admin"||session?.user?.role == "teacher") && (
+              (session?.user?.role == "admin" || session?.user?.role == "teacher") && (
                 <>
-                  <MainDash/>
-                  <UserProvider/>
+                  <MainDash />
+                  <UserProvider />
                 </>
               )
             }
             {
               (session?.user?.role == "student") && (
                 <>
-                  student1234
-                  
+                  <p className='text-center py-4 px-4 text-red-500 text-2xl'>Restricted Page</p>
                 </>
               )
             }

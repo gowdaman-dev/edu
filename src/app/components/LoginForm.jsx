@@ -51,7 +51,11 @@ function LoginForm() {
         return
       }
       setLoading(false);
-      router.replace('/dashboard')
+      if (session?.user?.role === 'admin' || session?.user?.role === 'superadmin') {
+        router.replace('/dashboard')
+        return
+      }
+      router.replace('/dashboard/library')
     } catch (error) {
     }
   }

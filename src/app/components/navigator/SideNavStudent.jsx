@@ -16,8 +16,8 @@ function SideNavStudent() {
     const menuref = useRef();
     const menulistref = useRef();
     const path = usePathname();
-    const { nav, setnav, addmanually, setAddmanually , showAccInfo,
-        setShowAccInfo} = useContext(UserContext)
+    const { nav, setnav, addmanually, setAddmanually, showAccInfo,
+        setShowAccInfo } = useContext(UserContext)
     const [addorganisermanually, setaddorganisermanually] = useState(false)
     const animenavtext = (variants) => {
         return {
@@ -84,23 +84,23 @@ function SideNavStudent() {
             <div className="flex flex-col justify-left items-start w-full h-full border-r border-gray-200/[.4] overflow-hidden">
                 <div className="flex w-full items-center justify-start gap-4 py-2 px-4 h-[60px] border-b">
                     <Image src={'/logo.svg'} height={30} width={30} alt=""></Image>
-                    <motion.p {...animenavtext(navtext)} className='text-[--web-primary-color] text-xl font-bold'>EDULEARN</motion.p>
+                    <motion.p {...animenavtext(navtext)} className='text-[--web-primary-color] text-xl font-bold'><Image src={'/logo2.svg'} height={35} width={60} alt='' /></motion.p>
                 </div>
                 <div className="flex flex-col w-full px-2 py-2 items-start gap-4">
-                   
+
                     <Link href={'/dashboard/library'} className={`flex w-full  justify-start overflow-hidden rounded-lg ${(path == '/dashboard/library') ? "bg-[--web-primary-color] text-white" : "hover:bg-gray-100 text-gray-800"} `}>
                         <div className="w-fit flex justify-start  py-2 px-3 items-center gap-4">
                             <IoLibraryOutline className='text-xl' />
                             <motion.p {...animenavtext(navtext)} className='text-md'>Library</motion.p>
                         </div>
                     </Link>
-                    <button onClick={()=>setShowAccInfo(true)} className="flex w-full  justify-start overflow-hidden hover:bg-gray-100 rounded-lg">
+                    <button onClick={() => setShowAccInfo(true)} className="flex w-full  justify-start overflow-hidden hover:bg-gray-100 rounded-lg">
                         <div className="w-fit flex justify-start  py-2 px-3 items-center gap-4">
                             <FaRegUser className='text-xl' />
                             <motion.p {...animenavtext(navtext)} className='text-gray-800 text-md'>Account</motion.p>
                         </div>
                     </button>
-                    <button onClick={()=>signOut({callbackUrl:"/signin"})} className="flex w-full  justify-start overflow-hidden hover:bg-gray-100 rounded-lg">
+                    <button onClick={() => signOut({callbackUrl:`${window.location.origin}/signin`})} className="flex w-full  justify-start overflow-hidden hover:bg-gray-100 rounded-lg">
                         <div className="w-fit flex justify-start  py-2 px-3 items-center gap-4">
                             <IoIosLogOut className='text-xl' />
                             <motion.p {...animenavtext(navtext)} className='text-gray-800 text-md'>Logout</motion.p>
