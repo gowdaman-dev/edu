@@ -241,7 +241,7 @@ function Files() {
     //TODO:firebase operation
     if (file) {
       if (NAME.includes(".pdf")) {
-        if ((file.size / 1024) / 1024 <= 5) {
+     //   if ((file.size / 1024) / 1024 <= 5) {
 
           const fileData = new FormData
           fileData.append("pdf", file)
@@ -300,13 +300,13 @@ function Files() {
             })
 
           })
-        }
-        else {
+      //  }
+        /* else {
           setAlert({ state: true, message: "Important! Only PDFs with 5MB are accepted . Please split your file." })
 
           e.target.value = ""
 
-        }
+        } */
 
 
 
@@ -358,19 +358,19 @@ function Files() {
 
 
 
-    const URL=url
-    const FID=fid
+    const URL = url
+    const FID = fid
     const client = new AssemblyAI({
-        apiKey: process.env.NEXT_PUBLIC_ASSEMBLY_AI_APIKEY,
-      });
-      const data = {
-        audio_url: URL,
-       
-      }
-      const transcript = await client.transcripts.create(data);
-      const jsonString = JSON.stringify(transcript);
-      const blob = Buffer.from(jsonString, 'utf-8'); 
-    const reference = ref(db,`transcript/${FID}`)
+      apiKey: process.env.NEXT_PUBLIC_ASSEMBLY_AI_APIKEY,
+    });
+    const data = {
+      audio_url: URL,
+
+    }
+    const transcript = await client.transcripts.create(data);
+    const jsonString = JSON.stringify(transcript);
+    const blob = Buffer.from(jsonString, 'utf-8');
+    const reference = ref(db, `transcript/${FID}`)
     const upload = await uploadBytesResumable(reference, blob)
     const downloadURL = await getDownloadURL(upload.ref);
     return downloadURL
