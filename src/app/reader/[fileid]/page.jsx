@@ -1,15 +1,20 @@
 'use client'
+import { MdWifiProtectedSetup } from "react-icons/md";
+import { MdTextRotateVertical } from "react-icons/md";
+import { GoMirror } from "react-icons/go";
 import { AiFillPauseCircle, AiFillPlayCircle, AiOutlineLeft, AiOutlineMore } from "react-icons/ai";
 import { useState, useEffect, useRef } from 'react';
 import PdfViewer from '@/app/components/readercomp/Renderpdf'
 import axios from "axios";
 import { BiRotateLeft, BiRotateRight } from "react-icons/bi";
 
+
 function Page({ params }) {
   const [transcript, setTransScript] = useState([])
+  const [rotateTools, setRotateTools] = useState(false)
   const [audioRate, setAudioRate] = useState(1)
+  const [rotateStyles, setRotateStyles] = useState({styles:"rotateY(0deg)"})
   const [audioRateToggle, setAudioRateToggle] = useState(false)
-  const [captions, setCaptions] = useState(false)
   useEffect(() => {
     let handler = async () => {
       const { data } = await axios.get(`https://firebasestorage.googleapis.com/v0/b/lmsedu-e5dbc.appspot.com/o/transcript%2F${params.fileid}?alt=media&token=c193bafc-ce23-49f1-a2fc-8c65381721f2`)
@@ -36,6 +41,20 @@ function Page({ params }) {
     audio.currentTime = seekTime;
     setCurrentTime(seekTime);
   };
+  const handleMirror=()=>{
+    setRotateStyles({styles:"rotateY(180deg)"})
+    setRotateTools(false)
+  }
+  const handleDown=()=>{
+    setRotateStyles({styles:"rotateZ(180deg)"})
+    setRotateTools(false)
+
+  }
+  const handleDefault=()=>{
+    setRotateStyles({styles:"rotateY(0deg)"})
+    setRotateTools(false)
+
+  }
   //player end
   function secondsToTime(secs) {
     const hours = Math.floor(secs / 3600);
@@ -46,7 +65,7 @@ function Page({ params }) {
     const secondsStr = seconds.toString().padStart(2, '0');
     return hoursStr + minutesStr + secondsStr;
   }
-
+ 
   //caption
   const audioData = `https://firebasestorage.googleapis.com/v0/b/lmsedu-e5dbc.appspot.com/o/audio%2F${params.fileid}?alt=media&token=11fccbc3-c457-40bc-9c96-386a5bbef464`
   return (
@@ -107,7 +126,7 @@ function Page({ params }) {
                 </>
               )
             }
-            <AiOutlineMore onClick={() => !openPlayer ? setIsTools(!isTools) : null} className="text-2xl cursor-pointer" />
+            <AiOutlineMore onClick={() => !openPlayer ? setIsTools(!isTools) : setRotateTools(!rotateTools)} className="text-2xl cursor-pointer" />
           </div>
         </div>
         <div className={`w-full flex-col ${openPlayer ? "flex" : 'hidden'}`}>
@@ -142,7 +161,7 @@ function Page({ params }) {
             <PdfViewer setTools={setIsTools} stateTools={isTools} />
           )
         }
-        <div className="w-screen px-4 py-2 mt-[100px] flex">
+        <div style={{transform:rotateStyles.styles}} className="w-[95vw] px-4 py-2 mt-[100px] flex ">
           {
             openPlayer && (
               <>
@@ -159,10 +178,24 @@ function Page({ params }) {
             )
           }
         </div>
+        {rotateTools && (
+          <div className="absolute top-[80px] p-4 gap-2 right-5 z-40 border bg-white rounded-xl flex w-[240px] ">
+            <button className=" order-3 flex-auto  bg-gray-100 rounded-md  flex flex-col  items-center active:scale-95"  onClick={handleMirror} ><span className="text-3xl mt-2 text-[--web-primary-color]">
+              <GoMirror /> </span><span className="text-sm text-black  rounded-t-xl h-full  block w-full">Mirror</span></button>
+
+            <button className=" order-2  flex-auto bg-gray-100 rounded-md  flex flex-col  items-center active:scale-95"  onClick={handleDown} ><span className="text-3xl mt-2 text-[--web-primary-color]">
+              <MdTextRotateVertical /> </span><span className="text-sm text-black  rounded-t-xl h-full  block w-full">Rotate</span></button>
+            <button className=" order-1  flex-auto  bg-gray-100 rounded-md  flex flex-col  items-center active:scale-95"  onClick={handleDefault} ><span className="text-3xl mt-2 text-[--web-primary-color]">
+              <MdWifiProtectedSetup /> </span><span className="text-sm text-black  rounded-t-xl h-full  block w-full">Default</span></button>
+          </div>
+        )
+
+        }
       </div>
     </>
   )
 }
+
 
 
 export default Page

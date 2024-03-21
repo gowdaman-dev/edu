@@ -7,4 +7,11 @@ module.exports = {
   plugins: [
     require('tailwind-scrollbar-hide')
   ],
+  theme: {
+    extend: {
+      rotate: {
+        '19': '19deg',
+      }
+    }
+  }
 };
