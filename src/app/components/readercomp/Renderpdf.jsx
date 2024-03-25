@@ -17,17 +17,21 @@ import "@react-pdf-viewer/default-layout/lib/styles/index.css";
 import axios from "axios";
 import { getDownloadURL, ref } from "firebase/storage";
 import { db } from "@/firebase/firebase";
-import ProgressComp from "../library/ProgressComponent";
 //test
-const PdfViewer = ({setTools,stateTools}) => {
+const PdfViewer = ({ setTools, stateTools }) => {
 
   const params = useParams()
   const [buffer, setBuffer] = useState([]);
   const viewerRef = useRef(null);
   const [progress, setProgress] = useState({
-    state:0
+    state: 0
   })
   const [progVisible, setProgVisible] = useState(false)
+  //rotate
+  const [pdfRotate, setPdfRotate] = useState({
+    style: "rotateY(0)"
+  })
+
   //plugins 
   const zoomPluginInstance = zoomPlugin();
   const { CurrentScale, ZoomIn, ZoomOut } = zoomPluginInstance;
@@ -41,7 +45,7 @@ const PdfViewer = ({setTools,stateTools}) => {
   const { Rotate } = rotatePluginInstance;
   const [originalPdfBuffer, setOriginalPdfBuffer] = useState([])
   //player
-
+console.log(pdfRotate);
 
   const [pdfrender, setpdfRender] = useState(false)
 
@@ -89,7 +93,7 @@ const PdfViewer = ({setTools,stateTools}) => {
     setpdfRender(!pdfrender)
   };
 
-  
+
 
 
   return (
@@ -111,7 +115,7 @@ const PdfViewer = ({setTools,stateTools}) => {
                               {(zoomIn) => (
                                 <EnterFullScreen>
                                   {(screen) => (
-                                    <Tools click={setTools} fullScreen={screen} zoomIn={zoomIn} zoomOut={zoomOut} download={getFile} newFile={open} rotation={rotate} />
+                                    <Tools click={setTools} fullScreen={screen} zoomIn={zoomIn} zoomOut={zoomOut} download={getFile} newFile={open} rotation={rotate}  customRotate={pdfRotate} setCustomRotate={setPdfRotate}/>
                                   )}
                                 </EnterFullScreen>
                               )}
@@ -131,16 +135,16 @@ const PdfViewer = ({setTools,stateTools}) => {
         <section className='absolute flex flex-col items-center w-screen z-[1] '>
           {progVisible && (
             <div className="h-screen  w-screen fixed backdrop-blur-sm z-[3] top-0 ">
-<div className="relative flex justify-center top-40  ">
-<div className="h-10 w-10 border-4 border-r-transparent rounded-full border-[--web-primary-color] animate-spin "></div>
-  <div className=" flex items-center ml-5 text-xl">Processing...</div>
-</div>
-              
+              <div className="relative flex justify-center top-40  ">
+                <div className="h-10 w-10 border-4 border-r-transparent rounded-full border-[--web-primary-color] animate-spin "></div>
+                <div className=" flex items-center ml-5 text-xl">Processing...</div>
+              </div>
+
             </div>
           )}
         </section>
         {!progVisible && (
-          <div ref={viewerRef} className={`h-screen w-screen scrollbar-hide font-mono text-2xl`} >
+          <div ref={viewerRef} style={{ transform: pdfRotate.style }} className={`h-screen w-screen scrollbar-hide font-mono text-2xl `} >
             <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js">
               <Viewer fileUrl={buffer} plugins={[fullScreenPluginInstance, zoomPluginInstance, getFilePluginInstance, openPluginInstance, rotatePluginInstance]} enableSmoothScroll onDocumentLoad={handleDocumentLoad} defaultScale={SpecialZoomLevel.PageWidth} />
             </Worker>

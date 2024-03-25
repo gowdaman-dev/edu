@@ -11,9 +11,10 @@ import { BiRotateLeft, BiRotateRight } from "react-icons/bi";
 
 function Page({ params }) {
   const [transcript, setTransScript] = useState([])
+  const heightRef = useRef(null)
   const [rotateTools, setRotateTools] = useState(false)
   const [audioRate, setAudioRate] = useState(1)
-  const [rotateStyles, setRotateStyles] = useState({styles:"rotateY(0deg)"})
+  const [rotateStyles, setRotateStyles] = useState({ styles: "rotateY(0deg)" })
   const [audioRateToggle, setAudioRateToggle] = useState(false)
   useEffect(() => {
     let handler = async () => {
@@ -41,17 +42,20 @@ function Page({ params }) {
     audio.currentTime = seekTime;
     setCurrentTime(seekTime);
   };
-  const handleMirror=()=>{
-    setRotateStyles({styles:"rotateY(180deg)"})
+  const handleMirror = () => {
+   heightRef.current.scrollBy(50,50)
+
+    setRotateStyles({ styles: "rotateY(180deg)" })
     setRotateTools(false)
   }
-  const handleDown=()=>{
-    setRotateStyles({styles:"rotateZ(180deg)"})
+  const handleDown = () => {
+    setRotateStyles({ styles: "rotateZ(180deg)" })
     setRotateTools(false)
 
   }
-  const handleDefault=()=>{
-    setRotateStyles({styles:"rotateY(0deg)"})
+  const handleDefault = () => {
+
+    setRotateStyles({ styles: "rotateY(0deg)" })
     setRotateTools(false)
 
   }
@@ -65,7 +69,7 @@ function Page({ params }) {
     const secondsStr = seconds.toString().padStart(2, '0');
     return hoursStr + minutesStr + secondsStr;
   }
- 
+
   //caption
   const audioData = `https://firebasestorage.googleapis.com/v0/b/lmsedu-e5dbc.appspot.com/o/audio%2F${params.fileid}?alt=media&token=11fccbc3-c457-40bc-9c96-386a5bbef464`
   return (
@@ -161,7 +165,7 @@ function Page({ params }) {
             <PdfViewer setTools={setIsTools} stateTools={isTools} />
           )
         }
-        <div style={{transform:rotateStyles.styles}} className="w-[95vw] px-4 py-2 mt-[100px] flex ">
+        <div ref={heightRef} style={{ transform: rotateStyles.styles }} className="w-[95vw] px-4 py-2 mt-[100px] flex ">
           {
             openPlayer && (
               <>
@@ -179,13 +183,14 @@ function Page({ params }) {
           }
         </div>
         {rotateTools && (
-          <div className="absolute top-[80px] p-4 gap-2 right-5 z-40 border bg-white rounded-xl flex w-[240px] ">
-            <button className=" order-3 flex-auto  bg-gray-100 rounded-md  flex flex-col  items-center active:scale-95"  onClick={handleMirror} ><span className="text-3xl mt-2 text-[--web-primary-color]">
+
+          <div className="fixed top-[80px] p-4 gap-2 right-5 z-40 border bg-white rounded-xl flex w-[240px] ">
+            <button className=" order-3 flex-auto  bg-gray-100 rounded-md  flex flex-col  items-center active:scale-95" onClick={handleMirror} ><span className="text-3xl mt-2 text-[--web-primary-color]">
               <GoMirror /> </span><span className="text-sm text-black  rounded-t-xl h-full  block w-full">Mirror</span></button>
 
-            <button className=" order-2  flex-auto bg-gray-100 rounded-md  flex flex-col  items-center active:scale-95"  onClick={handleDown} ><span className="text-3xl mt-2 text-[--web-primary-color]">
+            <button className=" order-2  flex-auto bg-gray-100 rounded-md  flex flex-col  items-center active:scale-95" onClick={handleDown} ><span className="text-3xl mt-2 text-[--web-primary-color]">
               <MdTextRotateVertical /> </span><span className="text-sm text-black  rounded-t-xl h-full  block w-full">Rotate</span></button>
-            <button className=" order-1  flex-auto  bg-gray-100 rounded-md  flex flex-col  items-center active:scale-95"  onClick={handleDefault} ><span className="text-3xl mt-2 text-[--web-primary-color]">
+            <button className=" order-1  flex-auto  bg-gray-100 rounded-md  flex flex-col  items-center active:scale-95" onClick={handleDefault} ><span className="text-3xl mt-2 text-[--web-primary-color]">
               <MdWifiProtectedSetup /> </span><span className="text-sm text-black  rounded-t-xl h-full  block w-full">Default</span></button>
           </div>
         )

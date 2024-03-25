@@ -21,6 +21,7 @@ import { UserContext } from "@/ContextUser";
 import Alert from "./Alert";
 import { AssemblyAI } from "assemblyai";
 import { AnimatePresence, motion } from "framer-motion";
+import Gtts from "./Gtts";
 let filesShow = []
 function Files() {
   const router = useRouter()
@@ -241,66 +242,66 @@ function Files() {
     //TODO:firebase operation
     if (file) {
       if (NAME.includes(".pdf")) {
-     //   if ((file.size / 1024) / 1024 <= 5) {
+        //   if ((file.size / 1024) / 1024 <= 5) {
 
-          const fileData = new FormData
-          fileData.append("pdf", file)
-          setProgVisible(true)
-          setProgress({
-            title: "extracting Text",
-            icon: "extract"
-          })
-          const audioURl = await getText(fileData, _uuid)
+        const fileData = new FormData
+        fileData.append("pdf", file)
+        setProgVisible(true)
+        setProgress({
+          title: "extracting Text",
+          icon: "extract"
+        })
+        const audioURl = await getText(fileData, _uuid)
 
-          setProgress({
-            title: "Creating Transcript...",
-            icon: "transcript"
-          })
+        setProgress({
+          title: "Creating Transcript...",
+          icon: "transcript"
+        })
 /*           await getTranscript(audioURl, _uuid)
  */          await getTranscript(audioURl, _uuid)
-          if (ROLE === "superadmin") {
-            SCHOOL = "default"
+        if (ROLE === "superadmin") {
+          SCHOOL = "default"
+        }
+        const reference = ref(db, `files/${_uuid}`)
+        const uploadTask = uploadBytesResumable(reference, file);
+
+        uploadTask.on("state_changed", (snapshot) => {
+          let progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          progress = Math.round(progress)
+
+          setProgress({ state: progress, title: "uploading : ", icon: "upload" });
+          switch (snapshot.state) {
+            case 'paused':
+              break;
+            case 'running':
+              break;
           }
-          const reference = ref(db, `files/${_uuid}`)
-          const uploadTask = uploadBytesResumable(reference, file);
 
-          uploadTask.on("state_changed", (snapshot) => {
-            let progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-            progress = Math.round(progress)
+        }, (err) => {
 
-            setProgress({ state: progress, title: "uploading : ", icon: "upload" });
-            switch (snapshot.state) {
-              case 'paused':
-                break;
-              case 'running':
-                break;
+        }, () => {
+          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            const fileData = {
+              fname: file.name,
+              fsize: file.size,
+              _fid: _uuid,
+              furl: downloadURL,
+
+              fgrade: GRADE,
+              fschool: SCHOOL
+
             }
 
-          }, (err) => {
 
-          }, () => {
-            getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-              const fileData = {
-                fname: file.name,
-                fsize: file.size,
-                _fid: _uuid,
-                furl: downloadURL,
-
-                fgrade: GRADE,
-                fschool: SCHOOL
-
-              }
-
-
-              sendData(fileData)
-              setProgVisible(false)
-              setProgress(0)
-              e.target.value = ""
-
-            })
+            sendData(fileData)
+            setProgVisible(false)
+            setProgress(0)
+            e.target.value = ""
 
           })
-      //  }
+
+        })
+        //  }
         /* else {
           setAlert({ state: true, message: "Important! Only PDFs with 5MB are accepted . Please split your file." })
 
@@ -344,8 +345,10 @@ function Files() {
         title: "Generating Audio...",
         icon: "audio"
       })
-      const data = await getAudio(response.data.text, _uuid)
-      return data
+/*       const data = await getAudio(response.data.text, _uuid)
+ */    
+const data=await Gtts(response.data.text, _uuid)
+return data
 
 
     } catch (error) {

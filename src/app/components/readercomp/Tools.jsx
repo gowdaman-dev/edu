@@ -9,7 +9,7 @@ import { AiOutlineClose } from "react-icons/ai";
 import { AnimatePresence, motion } from "framer-motion";
 
 
-function Tools({ click, fullScreen, zoomIn, zoomOut, download, newFile, rotation }) {
+function Tools({ click, fullScreen, zoomIn, zoomOut, download, newFile, rotation,customRotate,setCustomRotate }) {
   const handleFullScreen = () => {
     fullScreen.onClick(); // Safe call with optional chaining
   };
@@ -29,6 +29,22 @@ function Tools({ click, fullScreen, zoomIn, zoomOut, download, newFile, rotation
     rotation.onClick(); // Safe call with optional chaining
   };
 
+  const handleCustomRotate=()=>{
+    const currentStyle=customRotate.style
+  
+    if(currentStyle=="rotateY(0)"){
+    setCustomRotate({style:"rotateY(180deg)"})
+
+    }
+    else if(currentStyle=="rotateY(180deg)"){
+    setCustomRotate({style:"rotateZ(180deg)"})
+
+    }
+    else if(currentStyle=="rotateZ(180deg)"){
+      setCustomRotate({style:"rotateY(0)"})
+  
+      }
+  }
 
 
   return (
@@ -62,8 +78,12 @@ function Tools({ click, fullScreen, zoomIn, zoomOut, download, newFile, rotation
         </label>
 
       </button>  */}
-      <button className="col-span-5 row-span-2 m-1 col-start-5 col-end-9     bg-gray-100 rounded-md gap-y-5 flex flex-col items-center" onClick={handleRotate}><span className="text-3xl mt-2 text-[--web-primary-color]">
-        <BiRotateRight /></span><span className="text-sm text-black  rounded-t-xl h-full  block w-full">Rotate</span></button>
+     {/*
+     this is default pdf rotate but we need to show up the pdf like mirror ,back so what i use custom division and style that
+     <button className="col-span-5 row-span-2 m-1 col-start-5 col-end-9     bg-gray-100 rounded-md gap-y-5 flex flex-col items-center" onClick={handleRotate}><span className="text-3xl mt-2 text-[--web-primary-color]">
+        <BiRotateRight /></span><span className="text-sm text-black  rounded-t-xl h-full  block w-full">Rotate</span></button> */}
+        <button className="col-span-5 row-span-2 m-1 col-start-5 col-end-9     bg-gray-100 rounded-md gap-y-5 flex flex-col items-center" onClick={handleCustomRotate}><span className="text-3xl mt-2 text-[--web-primary-color]">
+        <BiRotateRight /></span><span className="text-sm text-black  rounded-t-xl h-full  block w-full">Rotate</span></button> 
     </motion.div>
   );
 }
