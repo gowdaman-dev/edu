@@ -2,12 +2,14 @@
 import { MdWifiProtectedSetup } from "react-icons/md";
 import { MdTextRotateVertical } from "react-icons/md";
 import { GoMirror } from "react-icons/go";
-import { AiFillPauseCircle, AiFillPlayCircle, AiOutlineLeft, AiOutlineMore } from "react-icons/ai";
+import { AiFillPauseCircle, AiFillPlayCircle, AiOutlineLeft, AiOutlineMore, AiOutlineUser } from "react-icons/ai";
 import { useState, useEffect, useRef } from 'react';
 import PdfViewer from '@/app/components/readercomp/Renderpdf'
 import axios from "axios";
 import { BiRotateLeft, BiRotateRight } from "react-icons/bi";
-
+import { motion } from "framer-motion";
+import { FaUserCircle } from "react-icons/fa";
+import Image from "next/image";
 
 function Page({ params }) {
   const [transcript, setTransScript] = useState([])
@@ -43,7 +45,7 @@ function Page({ params }) {
     setCurrentTime(seekTime);
   };
   const handleMirror = () => {
-   heightRef.current.scrollBy(50,50)
+    heightRef.current.scrollBy(50, 50)
 
     setRotateStyles({ styles: "rotateY(180deg)" })
     setRotateTools(false)
@@ -72,19 +74,67 @@ function Page({ params }) {
 
   //caption
   const audioData = `https://firebasestorage.googleapis.com/v0/b/lmsedu-e5dbc.appspot.com/o/audio%2F${params.fileid}?alt=media&token=11fccbc3-c457-40bc-9c96-386a5bbef464`
+  const [showDropdown, setShowDropdown] = useState(false);
+  const models = [
+    {
+      id: 1,
+      name: 'gorgia',
+      path: '/ai Images/1.jpeg'
+    },
+    {
+      id: 2,
+      name: 'jack',
+      path: '/ai Images/2.jpg'
+    },
+    {
+      id: 3,
+      name: 'jill',
+      path: '/ai Images/3.jpg'
+    },
+    {
+      id: 4,
+      name: 'james',
+      path: '/ai Images/4.jpeg'
+    }
+  ]
+  const [currentModel, setCurrentModel] = useState(models[0]);
   return (
     <>
       <header className="flex fixed z-[8] w-screen justify-between flex-col items-center pt-4 border-b bg-white px-4">
         <div className="flex w-full justify-between items-center bg-white px-4 pb-2">
           {
             openPlayer && (
-              <AiOutlineLeft onClick={() => {
-                setIsPlaying(false)
-                setOpenPlayer(false)
-                audioRef.current.pause()
-              }} />
+              <div className="flex items-center justify-center gap-8">
+                <AiOutlineLeft onClick={() => {
+                  setIsPlaying(false)
+                  setOpenPlayer(false)
+                  audioRef.current.pause()
+                }} />
+                <div className="relative" onClick={() => setShowDropdown(!showDropdown)}>
+                  <div className="w-10 h-10 rounded-full bg-gray-200 flex justify-center items-center">
+                    <Image className="h-full w-full rounded-full bg-gray-200" src={currentModel.path} height={20} width={20} alt='logo' />
+                  </div>
+                  {
+                    showDropdown && (
+                      <motion.div className="absolute top-full left-0 w-44 rounded-md bg-white py-2 shadow-md"
+                        initial={{ opacity: 0, y: -5 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ type: "spring", stiffness: 300, damping: 30 }}>
+                        <div className="grid grid-cols-4 gap-2 px-2">
+                          {
+                            models.map((model, index) => (
+                              <motion.button onClick={() => setCurrentModel(model)} key={index} className=""><Image className="h-full w-full rounded-full bg-gray-200" src={model.path} height={20} width={20} alt='logo' /></motion.button>
+                            ))
+                          }
+                        </div>
+                      </motion.div>
+                    )
+                  }
+                </div>
+              </div>
             )
           }
+
           {
             !openPlayer && (
               <div className="flex items-center gap-2 justify-center">
