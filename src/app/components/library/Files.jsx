@@ -7,7 +7,6 @@ import { BsThreeDotsVertical } from 'react-icons/bs'
 import SkeletonAnimation from '../SkeletonAnimation'
 import fetchFiles from '@/utils/FetchFiles'
 import axios from 'axios'
-import { getTrans } from "@/utils/Transcript";
 import Rename from "./Rename";
 import { getAudio } from "./Tts";
 import ProgressComp from './ProgressComponent'
@@ -22,6 +21,7 @@ import Alert from "./Alert";
 import { AssemblyAI } from "assemblyai";
 import { AnimatePresence, motion } from "framer-motion";
 import Gtts from "./Gtts";
+import LoaderPage from "@/app/loading";
 let filesShow = []
 function Files() {
   const router = useRouter()
@@ -345,14 +345,14 @@ function Files() {
         title: "Generating Audio...",
         icon: "audio"
       })
-/*       const data = await getAudio(response.data.text, _uuid)
- */   
-//get audio link 
-const data=await Gtts(response.data.text, _uuid,"H",.90)
-await Gtts(response.data.text, _uuid+"F","F",1)
-await Gtts(response.data.text, _uuid+"J","J",.95)
-await Gtts(response.data.text, _uuid+"A","A",1)
-return data
+      /*       const data = await getAudio(response.data.text, _uuid)
+       */
+      //get audio link 
+      const data = await Gtts(response.data.text, _uuid, "H", .90)
+      await Gtts(response.data.text, _uuid + "F", "F", 1)
+      await Gtts(response.data.text, _uuid + "J", "J", .95)
+      await Gtts(response.data.text, _uuid + "A", "A", 1)
+      return data
 
 
     } catch (error) {
@@ -431,6 +431,7 @@ return data
         {alert.state && <Alert msg={alert.message} title={"ALERT"} click={setAlert} />}
 
       </section>
+   
     </div>
   )
 }
