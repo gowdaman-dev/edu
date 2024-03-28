@@ -44,7 +44,7 @@ export const getAudio = async (text, fid) => {
                 continue;
             }
         }
-        console.log("final:", len, 'actual:', textres.length);
+     /*    console.log("final:", len, 'actual:', textres.length);
         const blob = new Blob(buffer, { type: 'audio/mp3' })
       const bufferAudio=  await blob.arrayBuffer()
             const storageRef = ref(db, `audio/${fid}`);
@@ -52,11 +52,12 @@ export const getAudio = async (text, fid) => {
            downloadURL = await getDownloadURL(upload.ref);
            console.log(downloadURL);
            return downloadURL;
-           /* 8438195553 */
+         */
       
 
         
     } else {
+        
         try {
 
             const buffer = await getAudioBuffer(text);
