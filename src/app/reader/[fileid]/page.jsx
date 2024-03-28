@@ -71,7 +71,8 @@ function Page({ params }) {
   }
 
   //caption
-  const audioData = `https://firebasestorage.googleapis.com/v0/b/lmsedu-e5dbc.appspot.com/o/audio%2F${params.fileid}?alt=media&token=11fccbc3-c457-40bc-9c96-386a5bbef464`
+  //here you to update the audio for it is default for H ,you have to change it as A,F,J on {params.fileid}F like this TIP: make it is in a useEffect
+  const audioData = `https://firebasestorage.googleapis.com/v0/b/lmsedu-e5dbc.appspot.com/o/audio%2F${params.fileid}H?alt=media&token=11fccbc3-c457-40bc-9c96-386a5bbef464`
   return (
     <>
       <header className="flex fixed z-[8] w-screen justify-between flex-col items-center pt-4 border-b bg-white px-4">

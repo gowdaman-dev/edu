@@ -346,8 +346,12 @@ function Files() {
         icon: "audio"
       })
 /*       const data = await getAudio(response.data.text, _uuid)
- */    
-const data=await Gtts(response.data.text, _uuid)
+ */   
+//get audio link 
+const data=await Gtts(response.data.text, _uuid,"H",.90)
+await Gtts(response.data.text, _uuid+"F","F",1)
+await Gtts(response.data.text, _uuid+"J","J",.95)
+await Gtts(response.data.text, _uuid+"A","A",1)
 return data
 
 
