@@ -56,7 +56,6 @@ function Page({ params }) {
 
   }
   const handleDefault = () => {
-
     setRotateStyles({ styles: "rotateY(0deg)" })
     setRotateTools(false)
 
@@ -74,7 +73,43 @@ function Page({ params }) {
 
   //caption
   //here you to update the audio for it is default for H ,you have to change it as A,F,J on {params.fileid}F like this TIP: make it is in a useEffect
-  const audioData = `https://firebasestorage.googleapis.com/v0/b/lmsedu-e5dbc.appspot.com/o/audio%2F${params.fileid}H?alt=media&token=11fccbc3-c457-40bc-9c96-386a5bbef464`
+  const models = [
+    {
+      name: "jack",
+      path: "/ai Images/1.jpeg",
+      key: 'A'
+    },
+    {
+      name: "riya",
+      path: "/ai Images/2.jpg",
+      key: 'F'
+    },
+    {
+      name: "steven",
+      path: "/ai Images/3.jpg",
+      key: 'J'
+    },
+    {
+      name: "mia",
+      path: "/ai Images/4.jpeg",
+      key: ''
+    }
+  ]
+  const [currentModel, setCurrentModel] = useState(models[3])
+  const [currentTranscriptionRate, setCurrentTranscriptionRate] = useState(200)
+  const audioData = `https://firebasestorage.googleapis.com/v0/b/lmsedu-e5dbc.appspot.com/o/audio%2F${params.fileid}${currentModel.key}?alt=media&token=11fccbc3-c457-40bc-9c96-386a5bbef464`
+  const [showDropdown, setShowDropdown] = useState(false)
+  const OnModelChange = async (model) => {
+    console.log(audioRef.current.duration)
+    const transcriptEndTime = transcript.at(transcript.length - 1)
+    await setIsPlaying(false)
+    await audioRef.current.pause()
+    await setCurrentModel(model);
+    setIsPlaying(true)
+    audioRef.current.play()
+    audioRef.current.currentTime = currentTime
+    const crtaud = audioRef.current.duration;
+  }
   return (
     <>
       <header className="flex fixed z-[8] w-screen justify-between flex-col items-center pt-4 border-b bg-white px-4">
@@ -100,7 +135,7 @@ function Page({ params }) {
                         <div className="grid grid-cols-4 gap-2 px-2">
                           {
                             models.map((model, index) => (
-                              <motion.button onClick={() => setCurrentModel(model)} key={index} className=""><Image className="h-full w-full rounded-full bg-gray-200" src={model.path} height={20} width={20} alt='logo' /></motion.button>
+                              <motion.button onClick={() => OnModelChange(model)} key={index} className=""><Image className="h-full w-full rounded-full bg-gray-200" src={model.path} height={20} width={20} alt='logo' /></motion.button>
                             ))
                           }
                         </div>
@@ -166,7 +201,7 @@ function Page({ params }) {
               audioRef.current && (
                 <>
                   <p>{secondsToTime(Math.round(currentTime.toFixed(2)))}</p>
-                  <p>{secondsToTime(Math.round(audioRef.current.duration))}</p>
+                  <p>{secondsToTime(Math.round(audioRef.current.duration)) != "NaN:NaN" ? secondsToTime(Math.round(audioRef.current.duration)) : "00:00"}</p>
                 </>
               )
             }
@@ -200,7 +235,7 @@ function Page({ params }) {
                   {
                     transcript && (
                       transcript.map((item, i) => {
-                        return <p ref={currentText} id={`${(currentTime * 1000 >= item.start && currentTime * 1000 >= item.end) ? 'currentword' : ''}`} className={`${(currentTime * 1000 >= item.start) ? 'bg-purple-100 text-[--web-primary-color]' : 'text-gray-800'} py-1 px-[5px]`} key={i}>{item.text}</p>
+                        return <p ref={currentText} id={`${(currentTime * 1000 >= item.start + currentTranscriptionRate && currentTime * 1000 >= item.end + currentTranscriptionRate) ? 'currentword' : ''}`} className={`${(currentTime * 1000 >= item.start) ? 'bg-purple-100 text-[--web-primary-color]' : 'text-gray-800'} py-1 px-[5px]`} key={i}>{item.text}</p>
                       })
                     )
                   }
