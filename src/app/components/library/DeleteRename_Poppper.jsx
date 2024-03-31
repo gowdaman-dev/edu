@@ -15,8 +15,15 @@ function Popper(props) {
       try {
         props.progressVisible(true)
         const deleteFile = ref(db, `files/${id}`);
-        const deleteAudio = ref(db, `audio/${id}`);
-        const deleteTrans = ref(db, `transcript/${id}`);
+        const deleteAudio1 = ref(db, `audio/${id}A`);
+        const deleteAudio2 = ref(db, `audio/${id}F`);
+        const deleteAudio3 = ref(db, `audio/${id}J`);
+        const deleteAudio4 = ref(db, `audio/${id}H`);
+
+        const deleteTrans1 = ref(db, `transcript/${id}A`);
+        const deleteTrans2 = ref(db, `transcript/${id}F`);
+        const deleteTrans3 = ref(db, `transcript/${id}H`);
+        const deleteTrans4 = ref(db, `transcript/${id}J`);
         try {
           props.progressSet({
             title: " Deleting Pdf",
@@ -27,12 +34,18 @@ function Popper(props) {
             title: "Deleting Audio",
             icon: "audio"
           })
-          await deleteObject(deleteAudio).catch((err)=>{});
+          await deleteObject(deleteAudio1).catch((err)=>{});
+          await deleteObject(deleteAudio2).catch((err)=>{});
+          await deleteObject(deleteAudio3).catch((err)=>{});
+          await deleteObject(deleteAudio4).catch((err)=>{});
           props.progressSet({
             title: "Deleting Transcript",
             icon: "transcript"
           })
-          await deleteObject(deleteTrans).catch((err)=>{});
+          await deleteObject(deleteTrans1).catch((err)=>{});
+          await deleteObject(deleteTrans2).catch((err)=>{});
+          await deleteObject(deleteTrans3).catch((err)=>{});
+          await deleteObject(deleteTrans4).catch((err)=>{});
           props.progressSet({
             title: "Clearing Data",
             icon: "transcript"
