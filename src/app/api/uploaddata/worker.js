@@ -120,7 +120,7 @@ async function Gtts(text, fid) {
             console.log("final:", len, 'actual:', textres.length);
             const blob = new Blob([Buffer.from(buffer, 'base64')], { type: 'audio/mp3' });
             const bufferAudio = await blob.arrayBuffer()
-            const storageRef = ref(db, `audio/${fid}`);
+            const storageRef = ref(db, `audio/${fid}${voice}`);
             const upload = await uploadBytesResumable(storageRef, bufferAudio)
             downloadURL = await getDownloadURL(upload.ref);
             console.log(voice, ' completed');
@@ -139,7 +139,7 @@ async function Gtts(text, fid) {
             const transcript = await client.transcripts.create(data);
             const jsonString = JSON.stringify(transcript);
             const blobTranscript = Buffer.from(jsonString, 'utf-8');
-            const reference = ref(db, `transcript/${fid}`)
+            const reference = ref(db, `transcript/${fid}${voice}`)
             const uploadTranscript = await uploadBytesResumable(reference, blobTranscript)
             await getDownloadURL(uploadTranscript.ref);
             console.log(voice, 'Transcript completed');
