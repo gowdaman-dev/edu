@@ -1,14 +1,18 @@
 'use client'
+import { AiOutlineCloseCircle } from "react-icons/ai";
+import { BiCheckCircle } from "react-icons/bi";
 // pending :hadle file size, file not send eroor handle
+import { AiOutlineClose } from "react-icons/ai";
+import { BiInfoCircle } from "react-icons/bi";
 import { MdPictureAsPdf } from "react-icons/md";
 import { BiCloudUpload } from 'react-icons/bi'
+import useSWR from 'swr'
 import React, { useEffect, useState, useContext } from 'react'
 import { BsThreeDotsVertical } from 'react-icons/bs'
 import SkeletonAnimation from '../SkeletonAnimation'
 import fetchFiles from '@/utils/FetchFiles'
 import axios from 'axios'
 import Rename from "./Rename";
-import { getAudio } from "./Tts";
 import ProgressComp from './ProgressComponent'
 import Popper from './DeleteRename_Poppper'
 import { db } from '@/firebase/firebase'
@@ -21,7 +25,6 @@ import Alert from "./Alert";
 import { AssemblyAI } from "assemblyai";
 import { AnimatePresence, motion } from "framer-motion";
 import Gtts from "./Gtts";
-import LoaderPage from "@/app/loading";
 let filesShow = []
 function Files() {
   const router = useRouter()
@@ -47,6 +50,11 @@ function Files() {
   const [delete_id, setDelete_id] = useState(null)
   const [file_Name, setName] = useState(null)
   const [alert, setAlert] = useState({ alert: false, message: "" })
+  const [fileStatus, setFileStatus] = useState("")
+  const [statusPopup, setStatusPopup] = useState(false)
+  const [fileUploadStatus, setFileUploadStatus] = useState([])
+
+
   useEffect(() => {
     if (progVisible) {
       setnav(false)
@@ -72,6 +80,9 @@ function Files() {
     fetchData()
 
   }, [newFile, GRADE, loading, schoolFilter])
+
+
+
 
   useEffect(() => {
     // Define the event listener function
@@ -151,12 +162,61 @@ function Files() {
     }
 
   }
+
+
+  const statusIndicator = (e, id) => {
+    setStatusPopup(true)
+
+    axios.get("/api/status", { params: { id: id } }).then((res) => {
+      setFileUploadStatus(res.data)
+      console.log(res.data);
+    })
+  }
+
+  const status = fileUploadStatus.map((item) => {
+    const audio = item.audio
+    const transcript = item.transcript
+    const status = []
+    for (let index = 0; index < 4; index++) {
+      if (audio[index] == index + 1) {
+        if (transcript[index] == index + 1) {
+          status.push(
+            <div className="col-span-7 flex justify-around">
+              <section className="flex justify-evenly gap-x-4 font-semibold"  > voice {index + 1} <span className="text-green-400"><BiCheckCircle /></span></section>
+              <section className="flex justify-evenly gap-x-4 font-semibold"> Transcript {index + 1} <span className="text-green-400"><BiCheckCircle /></span></section>
+            </div>
+          )
+        }
+        else {
+          status.push(
+            <div className="col-span-7 flex justify-around">
+              <section className="flex justify-evenly gap-x-4 font-semibold"  > voice {index + 1} <span className="text-green-400"><BiCheckCircle /></span></section>
+              <section className="flex justify-evenly gap-x-4 font-semibold"> Transcript {index + 1} <span className="text-red-400"><AiOutlineCloseCircle /></span></section>
+            </div>
+          )
+        }
+      }
+      else {
+
+        status.push(
+          <div className="col-span-7 flex justify-around">
+            <section className="flex justify-evenly gap-x-4 font-semibold"  > voice {index + 1} <span className="text-red-400"><AiOutlineCloseCircle /></span></section>
+            <section className="flex justify-evenly gap-x-4 font-semibold"> Transcript {index + 1} <span className="text-red-400"><AiOutlineCloseCircle /></span></section>
+          </div>
+        )
+      }
+
+    }
+
+    return status
+  })
+
   if (!data.message && data) {
     filesShow = data.map((item, index) => {
       let name = item.fname
       let size = item.fsize
       let id = item.fid
-
+      let status = item.fstatus
       const URLID = id
       //work done on items
       //for file name
@@ -170,55 +230,102 @@ function Files() {
       size = size > 1000
         ? (size / 1000).toFixed(2) + 'MB/s'
         : Math.floor(size) + ' KB/s'
+      if (isSuperadmin) {
 
-      return (
-        <div
-          key={'file' + index}
-          className='grid grid-flow-col grid-rows-3   grid-cols-8 cursor-pointer  text-balance   text-gray-500 w-full border-gray-200 relative md:text-[16px] sm:text-md text-sm border-b-[1px]
-          '
-        >
-          <span className='grid col-span-1 row-span-3 text-3xl text-gray-500 sm:text-2xl  place-content-center py-3 ' onClick={(e) => pdfClick(e, URLID)}>
-            <MdPictureAsPdf />
-          </span>
-          <p
-            className='col-span-5 sm:col-span-6 row-span-3 font-light     flex  items-center' onClick={(e) => pdfClick(e, URLID)}
-            key={'filename' + index}
+
+        return (
+          <div
+            key={'file' + index}
+            className='grid grid-flow-col grid-rows-3   grid-cols-8 cursor-pointer  text-balance   text-gray-500 w-full border-gray-200 relative md:text-[16px] sm:text-md text-sm border-b-[1px]
+       '
           >
-            {name}
-          </p>
-          {
-            isSuperadmin &&
-            <span className='grid col-span-2 sm:col-span-1 row-span-3 text-xl bg-gray-100 py-0 place-content-center   three_dot  ' key={index} onClick={() => { handlePopClick(index, id, trimName) }} >
-              <BsThreeDotsVertical />
+            <span className='grid col-span-1 row-span-3 text-3xl text-gray-500 sm:text-2xl  place-content-center py-3 ' onClick={(e) => pdfClick(e, URLID)}>
+              <MdPictureAsPdf />
             </span>
-          }
-          <AnimatePresence mode="wait">
+            <p
+              className='col-span-5 sm:col-span-6 row-span-3 font-light     flex  items-center' onClick={(e) =>{
+                status==="completed" ?pdfClick(e, URLID):null}}
+              key={'filename' + index}
+            >
+              {name}
+            </p>
+            {
+              isSuperadmin &&
+              (status !== 'pending' ? (
 
-            {(renameId == index) && isRenameOpen && (
+                <span className='grid col-span-2 sm:col-span-1 row-span-3 text-xl bg-gray-100 py-0 place-content-center   three_dot  ' key={index} onClick={() => { handlePopClick(index, id, trimName) }} >
+                  <BsThreeDotsVertical />
+                </span>
+              ) : (
+                <div title="Processing ..." className='grid grid-flow-col col-span-2 sm:col-span-1 row-span-3 text-xl bg-gray-100 py-0 place-content-center cursor-default   three_dot  '>
+                  <div className="text-3xl text-green-400 cursor-pointer " onClick={(e) => statusIndicator(e, URLID)}>
+                    <BiInfoCircle />
+                  </div>
 
-              <div className="h-screen w-screen fixed backdrop-blur-sm z-[3] top-0 ">
-
-                <div className="fixed z-[3]  w-full flex justify-center top-48 left-1">
-                  <Rename name={file_Name} id={delete_id} update={setNewFile} closePop={setPop_Del_Rename} animate={setIsAnimate} rename={setIsRenameOpen} />
                 </div>
-              </div>
-            )
+              )
 
 
+              )
             }
-          </AnimatePresence>
-          <AnimatePresence mode="wait">
+            <AnimatePresence mode="wait">
 
-            {pop_DEl_Rename === index &&
+              {(renameId == index) && isRenameOpen && (
+
+                <div className="h-screen w-screen fixed backdrop-blur-sm z-[3] top-0 ">
+
+                  <div className="fixed z-[3]  w-full flex justify-center top-48 left-1">
+                    <Rename name={file_Name} id={delete_id} update={setNewFile} closePop={setPop_Del_Rename} animate={setIsAnimate} rename={setIsRenameOpen} />
+                  </div>
+                </div>
+              )
+
+
+              }
+            </AnimatePresence>
+            <AnimatePresence mode="wait">
+
+              {pop_DEl_Rename === index &&
 
 
 
-              <Popper name={file_Name} id={delete_id} rename={setIsRenameOpen} update={setNewFile} closePop={setPop_Del_Rename} animate={setIsAnimate} progressVisible={setProgVisible} progressSet={setProgress} />
+                <Popper name={file_Name} id={delete_id} rename={setIsRenameOpen} update={setNewFile} closePop={setPop_Del_Rename} animate={setIsAnimate} progressVisible={setProgVisible} progressSet={setProgress} />
 
-            }
-          </AnimatePresence>
-        </div>
-      )
+              }
+            </AnimatePresence>
+          </div>
+        )
+      }
+      else {
+        return (
+
+  status !== 'pending' ? (
+<div
+            key={'file' + index}
+            className='grid grid-flow-col grid-rows-3   grid-cols-8 cursor-pointer  text-balance   text-gray-500 w-full border-gray-200 relative md:text-[16px] sm:text-md text-sm border-b-[1px]
+      '
+          >
+            <span className='grid col-span-1 row-span-3 text-3xl text-gray-500 sm:text-2xl  place-content-center py-3 ' onClick={(e) => pdfClick(e, URLID)}>
+              <MdPictureAsPdf />
+            </span>
+            <p
+              className='col-span-5 sm:col-span-6 row-span-3 font-light     flex  items-center' onClick={(e) => pdfClick(e, URLID)}
+              key={'filename' + index}
+            >
+              {name}
+            </p>
+            
+          
+          </div>
+
+  ):null
+
+
+          
+        )
+
+      }
+
     })
   }
   const renderData = (
@@ -244,21 +351,21 @@ function Files() {
       if (NAME.includes(".pdf")) {
         //   if ((file.size / 1024) / 1024 <= 5) {
 
-        const fileData = new FormData
-        fileData.append("pdf", file)
+        /*  const fileData = new FormData
+         fileData.append("pdf", file) */
         setProgVisible(true)
-        setProgress({
-          title: "extracting Text",
-          icon: "extract"
-        })
-        const audioURl = await getText(fileData, _uuid)
-
-        setProgress({
-          title: "Creating Transcript...",
-          icon: "transcript"
-        })
-/*           await getTranscript(audioURl, _uuid)
- */          await getTranscript(audioURl, _uuid)
+        /*       setProgress({
+                title: "extracting Text",
+                icon: "extract"
+              }) */
+        /*         const audioURl = await getText(fileData, _uuid)
+         */
+        /*    setProgress({
+             title: "Creating Transcript...",
+             icon: "transcript"
+           }) */
+        /*           await getTranscript(audioURl, _uuid)
+         */        /*   await getTranscript(audioURl, _uuid) */
         if (ROLE === "superadmin") {
           SCHOOL = "default"
         }
@@ -297,6 +404,9 @@ function Files() {
             setProgVisible(false)
             setProgress(0)
             e.target.value = ""
+            axios.post('/api/uploaddata', { data: _uuid }).then(({ data }) => {
+              if (data.message == 'success') setFileStatus('pending')
+            })
 
           })
 
@@ -333,6 +443,7 @@ function Files() {
       setIsAnimate(true)
       setNewFile(newFile + 1)
     }
+
   }
   const getText = async (fileData, _uuid) => {
 
@@ -430,8 +541,36 @@ function Files() {
         {isAnimate && <SkeletonAnimation />}
         {alert.state && <Alert msg={alert.message} title={"ALERT"} click={setAlert} />}
 
+
+        <AnimatePresence>
+          {
+            statusPopup && (
+              <div className="h-screen w-screen fixed backdrop-blur-sm z-[9] left-0 top-0 flex justify-center items-center">
+
+
+
+                <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={
+                  {
+                    duration: .5,
+
+                    type: "tween",
+
+                  }
+                } exit={{ x: 1000 }} className=" grid  top-10 grid-rows-8 border backdrop-blur-md min-h-80 w-96 rounded-lg grid-flow-col grid-cols-6">
+
+                  <span className="text-xl col-start-7 p-3 text-gray-400 cursor-pointer row-span-1" onClick={() => setStatusPopup(false)}>
+                    <AiOutlineClose />
+                  </span>
+                  {status}
+
+                </motion.div>
+              </div>
+            )
+
+          }
+        </AnimatePresence>
       </section>
-   
+
     </div>
   )
 }

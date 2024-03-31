@@ -31,6 +31,10 @@ const libSchema=new Schema({
         type:String,
         required:true
         
+    },
+    file_status:{
+        type:String,
+        default:"pending"
     }
 
 

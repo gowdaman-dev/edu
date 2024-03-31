@@ -17,12 +17,13 @@ export async function GET(req) {
 
 
       if (data.length > 0) {
-        const fileData = data.map(({ file_name, file_size, file_date, file_id, file_url, trans_url, audio_url }) => ({
+        const fileData = data.map(({ file_name, file_size, file_date, file_id,file_status, file_url, trans_url, audio_url, }) => ({
           fname: file_name,
           fsize: file_size,
           fdate: file_date,
           fid: file_id,
           furl: file_url,
+          fstatus:file_status,
           aurl: audio_url,
           turl: trans_url,
 

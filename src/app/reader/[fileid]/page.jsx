@@ -20,7 +20,7 @@ function Page({ params }) {
   const [audioRateToggle, setAudioRateToggle] = useState(false)
   useEffect(() => {
     let handler = async () => {
-      const { data } = await axios.get(`https://firebasestorage.googleapis.com/v0/b/lmsedu-e5dbc.appspot.com/o/transcript%2F${params.fileid}?alt=media&token=c193bafc-ce23-49f1-a2fc-8c65381721f2`)
+      const { data } = await axios.get(`https://firebasestorage.googleapis.com/v0/b/lmsedu-e5dbc.appspot.com/o/transcript%2F${params.fileid}${`H`}?alt=media&token=c193bafc-ce23-49f1-a2fc-8c65381721f2`)
       const { words } = await data;
       setTransScript(words)
     }
@@ -92,7 +92,7 @@ function Page({ params }) {
     {
       name: "mia",
       path: "/ai Images/4.jpeg",
-      key: ''
+      key: 'H'
     }
   ]
   const [currentModel, setCurrentModel] = useState(models[3])
