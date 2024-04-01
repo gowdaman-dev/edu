@@ -1,7 +1,6 @@
 "use client"
 import { Viewer, Worker, SpecialZoomLevel, RotateDirection } from "@react-pdf-viewer/core";
 import Tools from "./Tools";
-
 import { fullScreenPlugin } from '@react-pdf-viewer/full-screen';
 import { getFilePlugin } from '@react-pdf-viewer/get-file';
 import { openPlugin } from '@react-pdf-viewer/open';
@@ -17,7 +16,6 @@ import "@react-pdf-viewer/default-layout/lib/styles/index.css";
 import axios from "axios";
 import { getDownloadURL, ref } from "firebase/storage";
 import { db } from "@/firebase/firebase";
-//test
 const PdfViewer = ({ setTools, stateTools }) => {
 
   const params = useParams()
@@ -45,7 +43,7 @@ const PdfViewer = ({ setTools, stateTools }) => {
   const { Rotate } = rotatePluginInstance;
   const [originalPdfBuffer, setOriginalPdfBuffer] = useState([])
   //player
-console.log(pdfRotate);
+  console.log(pdfRotate);
 
   const [pdfrender, setpdfRender] = useState(false)
 
@@ -94,8 +92,6 @@ console.log(pdfRotate);
   };
 
 
-
-
   return (
     <>
 
@@ -115,7 +111,7 @@ console.log(pdfRotate);
                               {(zoomIn) => (
                                 <EnterFullScreen>
                                   {(screen) => (
-                                    <Tools click={setTools} fullScreen={screen} zoomIn={zoomIn} zoomOut={zoomOut} download={getFile} newFile={open} rotation={rotate}  customRotate={pdfRotate} setCustomRotate={setPdfRotate}/>
+                                    <Tools click={setTools} fullScreen={screen} zoomIn={zoomIn} zoomOut={zoomOut} download={getFile} newFile={open} rotation={rotate} customRotate={pdfRotate} setCustomRotate={setPdfRotate} />
                                   )}
                                 </EnterFullScreen>
                               )}
