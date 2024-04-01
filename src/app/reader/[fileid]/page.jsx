@@ -18,14 +18,7 @@ function Page({ params }) {
   const [audioRate, setAudioRate] = useState(1)
   const [rotateStyles, setRotateStyles] = useState({ styles: "rotateY(0deg)" })
   const [audioRateToggle, setAudioRateToggle] = useState(false)
-  useEffect(() => {
-    let handler = async () => {
-      const { data } = await axios.get(`https://firebasestorage.googleapis.com/v0/b/lmsedu-e5dbc.appspot.com/o/transcript%2F${params.fileid}${`H`}?alt=media&token=c193bafc-ce23-49f1-a2fc-8c65381721f2`)
-      const { words } = await data;
-      setTransScript(words)
-    }
-    handler()
-  }, [])
+  
   const [openPlayer, setOpenPlayer] = useState(false)
   //player
   const [isPlaying, setIsPlaying] = useState(false);
@@ -96,6 +89,14 @@ function Page({ params }) {
     }
   ]
   const [currentModel, setCurrentModel] = useState(models[3])
+  useEffect(() => {
+    let handler = async () => {
+      const { data } = await axios.get(`https://firebasestorage.googleapis.com/v0/b/lmsedu-e5dbc.appspot.com/o/transcript%2F${params.fileid}${currentModel.key}?alt=media&token=c193bafc-ce23-49f1-a2fc-8c65381721f2`)
+      const { words } = await data;
+      setTransScript(words)
+    }
+    handler()
+  }, [currentModel])
   const [currentTranscriptionRate, setCurrentTranscriptionRate] = useState(200)
   const audioData = `https://firebasestorage.googleapis.com/v0/b/lmsedu-e5dbc.appspot.com/o/audio%2F${params.fileid}${currentModel.key}?alt=media&token=11fccbc3-c457-40bc-9c96-386a5bbef464`
   const [showDropdown, setShowDropdown] = useState(false)
@@ -235,7 +236,7 @@ function Page({ params }) {
                   {
                     transcript && (
                       transcript.map((item, i) => {
-                        return <p ref={currentText} id={`${(currentTime * 1000 >= item.start + currentTranscriptionRate && currentTime * 1000 >= item.end + currentTranscriptionRate) ? 'currentword' : ''}`} className={`${(currentTime * 1000 >= item.start) ? 'bg-purple-100 text-[--web-primary-color]' : 'text-gray-800'} py-1 px-[5px]`} key={i}>{item.text}</p>
+                        return <p ref={currentText} id={`${(currentTime * 1000 >= item.start && currentTime * 1000 >= item.end ) ? 'currentword' : ''}`} className={`${(currentTime * 1000 >= item.start) ? 'bg-purple-100 text-[--web-primary-color]' : 'text-gray-800'} py-1 px-[5px]`} key={i}>{item.text}</p>
                       })
                     )
                   }
